@@ -31,14 +31,18 @@ struct COccluder
     unsigned short m_fMidX;
     unsigned short m_fMidY;
     unsigned short m_fMidZ;
-    unsigned short m_fWidthY;
-    unsigned short m_fWidthX;
+    unsigned short m_fLength;
+    unsigned short m_fWidth;
     unsigned short m_fHeight;
     char m_cRotX;
     char m_cRotY;
     char m_cRotZ;
     char m_cPad;
-    unsigned short m_nFlags;
+    struct
+    {
+        unsigned short m_nNextIndex : 15;
+        unsigned short m_bFarAway : 1;
+    };
 
 public:
     void ProcessOneOccluder(CActiveOccluder* pActiveOccluder);
@@ -80,7 +84,7 @@ public:
 
 public:
     static void Init();
-    static void AddOne(float dirMidX, float dirMidY, float dirMidZ, float widthX, float widthY, float height, float rotX, float rotY, float rotZ, float flags, bool isInterior);
+    static void AddOne(float centerX, float centerY, float centerZ, float width, float length, float height, float rotX, float rotY, float rotZ, uint32_t flags, bool isInterior);
     static bool OccluderHidesBehind(CActiveOccluder* first, CActiveOccluder* second);
     static bool IsPositionOccluded(CVector vecPos, float fRadius);
     static void ProcessBeforeRendering();

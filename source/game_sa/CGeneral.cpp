@@ -5,20 +5,62 @@ https://github.com/DK22Pac/plugin-sdk
 Do not delete this comment block. Respect others' work!
 */
 
+constexpr float RAND_MAX_RECIPROCAL = 1.0f / static_cast<float>(RAND_MAX);
+
+void CGeneral::InjectHooks()
+{
+    ReversibleHooks::Install("CGeneral", "LimitAngle", 0x53CB00, &CGeneral::LimitAngle);
+    ReversibleHooks::Install("CGeneral", "LimitRadianAngle", 0x53CB50, &CGeneral::LimitRadianAngle);
+    ReversibleHooks::Install("CGeneral", "GetRadianAngleBetweenPoints", 0x53CBE0, &CGeneral::GetRadianAngleBetweenPoints);
+    ReversibleHooks::Install("CGeneral", "GetRandomNumberInRange_int", 0x407180, (int(*)(int, int))&CGeneral::GetRandomNumberInRange);
+    ReversibleHooks::Install("CGeneral", "GetRandomNumberInRange_float", 0x41BD90, (float(*)(float, float))&CGeneral::GetRandomNumberInRange);
+}
 
 // Converted from cdecl float CGeneral::LimitAngle(float angle) 0x53CB00
 float CGeneral::LimitAngle(float angle) {
-    return ((float(__cdecl *)(float))0x53CB00)(angle);
+    while (angle >= 180.0f)
+        angle -= 360.0f;
+
+    while(angle < -180.0f)
+        angle += 360.0f;
+
+    return angle;
 }
 
 // Converted from cdecl float CGeneral::LimitRadianAngle(float angle) 0x53CB50
 float CGeneral::LimitRadianAngle(float angle) {
-    return ((float(__cdecl *)(float))0x53CB50)(angle);
+    angle = clamp(angle, -25.0F, 25.0F);
+
+    while (angle >= PI)
+        angle -= TWO_PI;
+
+    while (angle < -PI)
+        angle += TWO_PI;
+
+    return angle;
 }
 
 // Converted from cdecl float CGeneral::GetRadianAngleBetweenPoints(float x1,float y1,float x2,float y2) 0x53CBE0
 float CGeneral::GetRadianAngleBetweenPoints(float x1, float y1, float x2, float y2) {
-    return ((float(__cdecl *)(float, float, float, float))0x53CBE0)(x1, y1, x2, y2);
+    const auto xDiff = x2 - x1;
+    auto yDiff = y2 - y1;
+
+    if (yDiff == 0.0F)
+        yDiff = 0.0001F;
+
+    const auto fAtan = atan2(xDiff / yDiff, 1.0F);
+    if (xDiff <= 0.0F)
+    {
+        if (yDiff <= 0.0F)
+            return HALF_PI - fAtan - HALF_PI;
+
+        return -HALF_PI - (fAtan + HALF_PI);
+    }
+
+    if (yDiff <= 0)
+        return HALF_PI - (fAtan + HALF_PI);
+
+    return HALF_PI - fAtan + HALF_PI;
 }
 
 // Converted from cdecl float CGeneral::GetATanOfXY(float x,float y) 0x53CC70
@@ -42,13 +84,15 @@ float CGeneral::GetAngleBetweenPoints(float x1, float y1, float x2, float y2) {
 }
 
 // Converted from cdecl uint CGeneral::GetRandomNumberInRange(int min, int max) 0x407180
-unsigned int CGeneral::GetRandomNumberInRange(int min, int max) {
-    return ((unsigned int(__cdecl *)(int, int))0x407180)(min, max);
+int CGeneral::GetRandomNumberInRange(int min, int max) {
+    const auto fRand = static_cast<float>(rand()) * RAND_MAX_RECIPROCAL;
+    return min + static_cast<std::int32_t>(fRand * static_cast<float>(max - min));
 }
 
 // Converted from cdecl float CGeneral::GetRandomNumberInRange(float min,float max) 0x41BD90
 float CGeneral::GetRandomNumberInRange(float min, float max) {
-    return ((float(__cdecl *)(float, float))0x41BD90)(min, max);
+    const auto fRand = static_cast<float>(rand()) * RAND_MAX_RECIPROCAL;
+    return min + fRand * (max - min);
 }
 
 void CGeneral::CamShakeNoPos(CCamera *camera, float strength)

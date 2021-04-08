@@ -17,6 +17,7 @@ void CFileLoader::InjectHooks()
     ReversibleHooks::Install("CFileLoader", "LoadObjectInstance_inst", 0x538090, static_cast<CEntity*(*)(CFileObjectInstance*, char const*)>(&CFileLoader::LoadObjectInstance));
     ReversibleHooks::Install("CFileLoader", "LoadObjectInstance_file", 0x538690, static_cast<CEntity * (*)(char const*)>(&CFileLoader::LoadObjectInstance));
     ReversibleHooks::Install("CFileLoader", "LoadObject", 0x5B3C60, &CFileLoader::LoadObject);
+    ReversibleHooks::Install("CFileLoader", "LoadOcclusionVolume", 0x5B4C80, &CFileLoader::LoadOcclusionVolume);
 }
 
 bool CFileLoader::LoadAtomicFile(RwStream *stream, unsigned int modelId) {
@@ -303,4 +304,21 @@ CEntity* CFileLoader::LoadObjectInstance(char const* line)
         &objInstance.m_qRotation.real,
         &objInstance.m_nLodInstanceIndex);
     return CFileLoader::LoadObjectInstance(&objInstance, modelName);
+}
+
+void CFileLoader::LoadOcclusionVolume(char const* line, char const* filename)
+{
+    float fRotY = 0.0F, fRotZ = 0.0F;
+    uint32_t nFlags = 0;
+    float fCenterX, fCenterY, fBottomZ, fWidth, fLength, fHeight, fRotX;
+
+    sscanf(line, "%f %f %f %f %f %f %f %f %f %d ", &fCenterX, &fCenterY, &fBottomZ, &fWidth, &fLength, &fHeight, &fRotX, &fRotY, &fRotZ, &nFlags);
+    auto fCenterZ = fHeight * 0.5F + fBottomZ;
+    auto strLen = strlen(filename);
+
+    bool bIsInterior = false;
+    if (filename[strLen - 7] == 'i' && filename[strLen - 6] == 'n' && filename[strLen - 5] == 't')
+        bIsInterior = true;
+
+    COcclusion::AddOne(fCenterX, fCenterY, fCenterZ, fWidth, fLength, fHeight, fRotX, fRotY, fRotZ, nFlags, bIsInterior);
 }

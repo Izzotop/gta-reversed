@@ -22,6 +22,7 @@ void InjectHooksMain(void)
     CDebug::InjectHooks();
     InjectCommonHooks();
     CGame::InjectHooks();
+    CGeneral::InjectHooks();
     CPools::InjectHooks();
     CPad::InjectHooks();
     CRect::InjectHooks();

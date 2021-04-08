@@ -25,6 +25,8 @@ CVector& COcclusion::gCenterOnScreen = *(CVector*)0xC79940;
 void COcclusion::InjectHooks()
 {
     ReversibleHooks::Install("COcclusion", "Init", 0x71DCA0, &COcclusion::Init);
+    ReversibleHooks::Install("COcclusion", "AddOne", 0x71DCD0, &COcclusion::AddOne);
+    ReversibleHooks::Install("COcclusion", "IsPositionOccluded", 0x7200B0, &COcclusion::IsPositionOccluded);
 }
 
 void COcclusion::Init()
@@ -37,10 +39,66 @@ void COcclusion::Init()
     COcclusion::PreviousListWalkThroughFA = -1;
 }
 
-void COcclusion::AddOne(float dirMidX, float dirMidY, float dirMidZ, float widthX, float widthY, float height, float rotX, float rotY, float rotZ, float flags, bool isInterior)
+void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width, float length, float height, float rotX, float rotY, float rotZ, uint32_t flags, bool isInterior)
 {
-    plugin::Call<0x71DCD0, float, float, float, float, float, float, float, float, float, float, bool>
-        (dirMidX, dirMidY, dirMidZ, widthX, widthY, height, rotX, rotY, rotZ, flags, isInterior);
+    int numMissingDimensions = 0;
+
+    auto iWidth = static_cast<int32_t>(fabs(width));
+    auto iLength = static_cast<int32_t>(fabs(length));
+    auto iHeight = static_cast<int32_t>(fabs(height));
+
+    if (!iLength)
+        numMissingDimensions++;
+    if (!iWidth)
+        numMissingDimensions++;
+    if (!iHeight)
+        numMissingDimensions++;
+
+    if (numMissingDimensions > 1)
+        return;
+
+    // Get the angles in [0 : 360] space and convert to radians
+    auto fRotX = DegreesToRadians(CGeneral::LimitAngle(rotX) + 180.0F);
+    auto fRotY = DegreesToRadians(CGeneral::LimitAngle(rotY) + 180.0F);
+    auto fRotZ = DegreesToRadians(CGeneral::LimitAngle(rotZ) + 180.0F);
+    const auto fTwoPiToChar = 256.0F / TWO_PI;
+
+    if (isInterior)
+    {
+        auto& occluder = COcclusion::aInteriorOccluders[COcclusion::NumInteriorOcculdersOnMap];
+        occluder.m_fMidX = centerX * 4.0F;
+        occluder.m_fMidY = centerY * 4.0F;
+        occluder.m_fMidZ = centerZ * 4.0F;
+        occluder.m_fWidth = iWidth * 4.0F;
+        occluder.m_fLength = iLength * 4.0F;
+        occluder.m_fHeight = iHeight * 4.0F;
+        occluder.m_cRotX = rotX * fTwoPiToChar;
+        occluder.m_cRotY = rotY * fTwoPiToChar;
+        occluder.m_cRotZ = rotZ * fTwoPiToChar;
+        ++COcclusion::NumInteriorOcculdersOnMap;
+    }
+    else
+    {
+        auto& occluder = COcclusion::aOccluders[COcclusion::NumOccludersOnMap];
+        occluder.m_fMidX = centerX * 4.0F;
+        occluder.m_fMidY = centerY * 4.0F;
+        occluder.m_fMidZ = centerZ * 4.0F;
+        occluder.m_fWidth = iWidth * 4.0F;
+        occluder.m_fLength = iLength * 4.0F;
+        occluder.m_fHeight = iHeight * 4.0F;
+        occluder.m_cRotX = rotX * fTwoPiToChar;
+        occluder.m_cRotY = rotY * fTwoPiToChar;
+        occluder.m_cRotZ = rotZ * fTwoPiToChar;
+
+        if (flags)
+            occluder.m_bFarAway = true;
+        else
+            occluder.m_bFarAway = false;
+
+        occluder.m_nNextIndex = COcclusion::FarAwayList;
+        COcclusion::FarAwayList = COcclusion::NumOccludersOnMap;
+        ++COcclusion::NumOccludersOnMap;
+    }
 }
 
 bool COcclusion::OccluderHidesBehind(CActiveOccluder* first, CActiveOccluder* second)
@@ -50,7 +108,33 @@ bool COcclusion::OccluderHidesBehind(CActiveOccluder* first, CActiveOccluder* se
 
 bool COcclusion::IsPositionOccluded(CVector vecPos, float fRadius)
 {
-    return plugin::CallAndReturn<bool, 0x71E080, CVector, float>(vecPos, fRadius);
+    //return plugin::CallAndReturn<bool, 0x71E080, CVector, float>(vecPos, fRadius);
+    if (!COcclusion::NumActiveOccluders)
+        return false;
+
+    CVector outPos;
+    float screenX, screenY;
+    if (!CalcScreenCoors(vecPos, &outPos, &screenX, &screenY))
+        return false;
+
+    const auto fLongEdge = std::max(screenX, screenY);
+    auto fScreenRadius = fRadius * fLongEdge;
+    auto fScreenDepth = outPos.z - fRadius;
+
+    for (auto ind = 0; ind < COcclusion::NumActiveOccluders; ++ind)
+    {
+        auto& occluder = COcclusion::aActiveOccluders[ind];
+        if (occluder.m_wDepth >= fScreenDepth
+            || !occluder.IsPointWithinOcclusionArea(outPos.x, outPos.y, fScreenRadius)
+            || !occluder.IsPointBehindOccluder(vecPos, fRadius))
+        {
+            continue;
+        }
+
+        return true;
+    }
+
+    return false;
 }
 
 void COcclusion::ProcessBeforeRendering()
