@@ -322,3 +322,8 @@ void CFileLoader::LoadOcclusionVolume(char const* line, char const* filename)
 
     COcclusion::AddOne(fCenterX, fCenterY, fCenterZ, fWidth, fLength, fHeight, fRotX, fRotY, fRotZ, nFlags, bIsInterior);
 }
+
+// 0x5B9030
+void CFileLoader::LoadLevel(const char* filename) {
+    plugin::CallDynGlobal<char const *>(0x5B9030, filename);
+}

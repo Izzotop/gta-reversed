@@ -26,6 +26,8 @@ private:
     static void InitializeAndStartNewScript();
     static bool StartMission(std::int32_t missionId, bool bDoMissionCleanUp = true);
     static void ProcessMissionTool();
+    static void ProcessRenderTool();
+    static void PostFxTool();
     static void ProcessHooksTool();
     //static void ToggleHook();
 public:

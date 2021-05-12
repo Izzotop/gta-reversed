@@ -1,5 +1,7 @@
 #pragma once
+
 class CVector;
+
 struct CRenPar
 {
     float z;
@@ -15,8 +17,7 @@ struct CWaterVertex
     CRenPar renPar;
 };
 
-class CWaterLevel
-{
+class CWaterLevel {
 public:
     static void InjectHooks();
     /*
@@ -82,7 +83,6 @@ public:
     * WaterLevelInitialise()
     */
     static void SyncWater();
-private:
     /*
     * m_BlocksToBeRenderedOutsideWorldX
     * m_BlocksToBeRenderedOutsideWorldY
@@ -103,8 +103,9 @@ private:
     * m_aTriangles
     */
     static CWaterVertex m_aVertices[1021];
-    /* m_bWaterFog
-    * m_bWaterFogScript
+    static bool& m_bWaterFog;
+    static bool& m_bWaterFogScript;
+    /*
     * m_fWaterFogHeight
     * m_fWaterFogInsideFadeSpeed
     * m_nNumOfWaterQuads
@@ -126,4 +127,5 @@ public:
     /* m_nWaterConfiguration
     * ms_WaterFog
     */
+    static void WaterLevelInitialise();
 };

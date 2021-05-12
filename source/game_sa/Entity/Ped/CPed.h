@@ -6,13 +6,12 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "CPhysical.h"
 #include "CAEPedAudioEntity.h"
 #include "CAEPedSpeechAudioEntity.h"
 #include "CAEWeaponAudioEntity.h"
 #include "CPedIntelligence.h"
-#include "CPlayerData.h"
+#include "CPlayerPedData.h"
 #include "AnimBlendFrameData.h"
 #include "CPedAcquaintance.h"
 #include "CPedIK.h"
@@ -287,7 +286,7 @@ public:
         unsigned int m_nFourthPedFlags;
     };
     CPedIntelligence   *m_pIntelligence;
-    CPlayerData        *m_pPlayerData;
+    CPlayerPedData        *m_pPlayerData;
     unsigned char       m_nCreatedBy; // see ePedCreatedBy
     char                field_485[3];
     AnimBlendFrameData *m_apBones[TOTAL_PED_NODES]; // for Index, see ePedNode
@@ -478,6 +477,9 @@ public:
     void AddWeaponModel(int modelIndex);
     void TakeOffGoggles();
     void GiveWeapon(eWeaponType weaponType, unsigned int ammo, bool likeUnused);
+    void GiveWeaponSet1();
+    void GiveWeaponSet2();
+    void GiveWeaponSet3();
     void SetCurrentWeapon(int slot);
     void SetCurrentWeapon(eWeaponType weaponType);
     void ClearWeapon(eWeaponType weaponType);
@@ -517,7 +519,7 @@ public:
     void KillPedWithCar(CVehicle* car, float fDamageIntensity, bool bPlayDeadAnimation);
     void MakeTyresMuddySectorList(CPtrList& ptrList);
     void DeadPedMakesTyresBloody();
-	void SetModelIndex(unsigned int modelIndex);
+    void SetModelIndex(unsigned int modelIndex);
     bool IsInVehicleThatHasADriver();
 
     inline unsigned char GetCreatedBy() { return m_nCreatedBy; }

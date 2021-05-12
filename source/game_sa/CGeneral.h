@@ -6,10 +6,11 @@
 */
 #pragma once
 
-#include "PluginBase.h"
+#include <cstdlib>
+
 #include "CCamera.h"
 
-class  CGeneral {
+class CGeneral {
 public:
     static void InjectHooks();
 
@@ -25,3 +26,5 @@ public:
     static float GetRandomNumberInRange(float min, float max); // returns random float in range [min;max)
     static void CamShakeNoPos(CCamera *camera, float force);
 };
+
+extern constexpr float RAND_MAX_RECIPROCAL = 1.0f / static_cast<float>(RAND_MAX); // 1.0 / 32767.0 == 0.000030518509

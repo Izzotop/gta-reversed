@@ -20,7 +20,19 @@ CPad* CPad::Pads = (CPad*)0xB73458; // size is 2
 
 void CPad::InjectHooks()
 {
-    HookInstall(0x541DD0, CPad::UpdatePads);
+    HookInstall(0x541DD0, CPad::UpdatePads); // changes logic of the function and shouldn't be toggled on/off
+
+    ReversibleHooks::Install("CPad", "DoCheats", 0x439AF0, &CPad::DoCheats);
+    ReversibleHooks::Install("CPad", "isEnterJustPressed", 0x4D5980, &CPad::isEnterJustPressed);
+    ReversibleHooks::Install("CPad", "isStandardKeyJustPressed", 0x4D59B0, &CPad::isStandardKeyJustPressed);
+    ReversibleHooks::Install("CPad", "isMenuKeyJustPressed", 0x744D50, &CPad::isMenuKeyJustPressed);
+    ReversibleHooks::Install("CPad", "isTabJustPressed", 0x744D90, &CPad::isTabJustPressed);
+    ReversibleHooks::Install("CPad", "Clear", 0x541A70, &CPad::Clear);
+}
+
+// 0x541D90
+void CPad::Initialise() {
+    plugin::Call<0x541D90>();
 }
 
 // Converted from thiscall void CPad::UpdateMouse(void) 0x53F3C0
@@ -313,7 +325,54 @@ bool CPad::GroupControlBackJustDown() {
 
 // Converted from thiscall void CPad::Clear(bool enablePlayerControls, bool resetPhase) 0x541A70
 void CPad::Clear(bool enablePlayerControls, bool resetPhase) {
-    plugin::CallMethod<0x541A70, CPad*, bool, bool>(this, enablePlayerControls, resetPhase);
+    NewState.Clear();
+    OldState.Clear();
+    PCTempKeyState.Clear();
+    PCTempJoyState.Clear();
+    PCTempMouseState.Clear();
+
+    NewKeyState.Clear();
+    OldKeyState.Clear();
+    TempKeyState.Clear();
+
+    NewMouseControllerState.Clear();
+    OldMouseControllerState.Clear();
+    PCTempMouseControllerState.Clear();
+
+    if (resetPhase) {
+        Phase = 0;
+    }
+    ShakeFreq = 0;
+    ShakeDur = 0;
+
+    for (auto& buf: SteeringLeftRightBuffer) {
+        buf = 0;
+    }
+
+    DrunkDrivingBufferUsed = 0;
+    if (enablePlayerControls) {
+        DisablePlayerControls = 0;
+        bDisablePlayerEnterCar = 0;
+        bDisablePlayerDuck = 0;
+        bDisablePlayerFireWeapon = 0;
+        bDisablePlayerFireWeaponWithL1 = 0;
+        bDisablePlayerCycleWeapon = 0;
+        bDisablePlayerJump = 0;
+        bDisablePlayerDisplayVitalStats = 0;
+    }
+    JustOutOfFrontEnd = 0;
+    bApplyBrakes = 0;
+
+    for (auto& history: bHornHistory) {
+        history = 0;
+    }
+
+    iCurrHornHistory = 0;
+    AverageWeapon = 0;
+    AverageEntries = 0;
+    LastTimeTouched = 0;
+    NoShakeBeforeThis = 0;
+    NoShakeFreq = 0;
 }
 
 CPad* GetPad(int padNumber)
@@ -333,14 +392,11 @@ void CPad::Update(int pad)
 
 // Converted from thiscall void CPad::UpdatePads(void) 0x541DD0
 void CPad::UpdatePads() {
-#ifdef USE_DEFAULT_FUNCTIONS
-    ((void(__cdecl*)())0x541DD0)();
-#else
     GetPad(0)->UpdateMouse();
-    CPad::ProcessPad(0);
+    CPad::ProcessPad(false);
     ControlsManager.ClearSimButtonPressCheckers();
 
-    //NOTSA: Don't handle updates if the menu is open, so we don't affect gameplay inputting text
+    // NOTSA: Don't handle updates if the menu is open, so we don't affect gameplay inputting text
     if (!CDebugMenu::Visible())
     {
         ControlsManager.AffectPadFromKeyBoard();
@@ -353,7 +409,6 @@ void CPad::UpdatePads() {
     NewKeyState = TempKeyState;
     CDebugMenu::ImguiInitialise();
     CDebugMenu::ImguiInputUpdate();
-#endif
 }
 
 void CPad::SetTouched()
@@ -419,7 +474,40 @@ bool CPad::IsCtrlPressed()
     return false;
 }
 
-bool CPad::ResetCheats()
-{
-    return plugin::CallAndReturn<bool, 0x438450>();
+// 0x4D5980
+bool CPad::isEnterJustPressed() {
+    return NewKeyState.enter && !OldKeyState.enter || NewKeyState.extenter && !OldKeyState.extenter;
+}
+
+// 0x4D59B0
+bool CPad::isStandardKeyJustPressed(std::uint8_t key) {
+    return NewKeyState.standardKeys[key] && !OldKeyState.standardKeys[key];;
+}
+
+// 0x744D50
+bool CPad::isMenuKeyJustPressed() {
+    return NewKeyState.lmenu && !OldKeyState.lmenu || NewKeyState.rmenu && !OldKeyState.rmenu;
+}
+
+// 0x744D90
+bool CPad::isTabJustPressed() {
+    return NewKeyState.tab && !OldKeyState.tab;
+}
+
+// TODO: Move to CCheats
+// 0x438450
+void CPad::ResetCheats() {
+    memset(&CCheat::m_aCheatsActive, 0, sizeof(CCheat::m_aCheatsActive));
+    CWeather::ReleaseWeather();
+    CTimer::ms_fTimeScale = 1.0f;
+    CCheat::m_CheatString[0] = '\0';
+    CCheat::m_bHasPlayerCheated = false;
+}
+
+// 0x439AF0
+void CPad::DoCheats() {
+    for (short i = 0; i < 256; ++i)
+        if (CPad::NewKeyState.standardKeys[i])
+            if (!CPad::OldKeyState.standardKeys[i])
+                CCheat::AddToCheatString(i);
 }

@@ -11,6 +11,9 @@ RwTexture* CWaterLevel::texSeabd32 = (RwTexture*)0xC228B4;
 RwRaster* CWaterLevel::waterwakeRaster = (RwRaster*)0xC228B8;
 RwTexture* CWaterLevel::texWaterwake = (RwTexture*)0xC228BC;
 
+bool& CWaterLevel::m_bWaterFog = *(bool*)0x8D37D4;
+bool& CWaterLevel::m_bWaterFogScript = *(bool*)0x8D37D5;
+
 void CWaterLevel::InjectHooks()
 {
     ReversibleHooks::Install("CWaterLevel", "GetWaterLevel", 0x6EB690, &CWaterLevel::GetWaterLevel);
@@ -100,4 +103,9 @@ bool CWaterLevel::GetWaterLevelNoWaves(float x, float y, float z, float* pOutWat
 void CWaterLevel::SyncWater()
 {
     CWaterLevel::m_nWaterTimeOffset = CTimer::m_snTimeInMilliseconds;
+}
+
+// 0x6EAE80
+void CWaterLevel::WaterLevelInitialise() {
+    plugin::Call<0x6EAE80>();
 }

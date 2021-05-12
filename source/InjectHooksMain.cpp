@@ -17,13 +17,16 @@
 #include "CAEUserRadioTrackManager.h"
 #include "CDebugMenu.h"
 
-void InjectHooksMain(void)
+void InjectHooksMain()
 {
     CDebug::InjectHooks();
     InjectCommonHooks();
     CGame::InjectHooks();
     CGeneral::InjectHooks();
     CPools::InjectHooks();
+    CControllerState::InjectHooks();
+    CKeyboardState::InjectHooks();
+    CMouseControllerState::InjectHooks();
     CPad::InjectHooks();
     CRect::InjectHooks();
     CVector2D::InjectHooks();
@@ -166,6 +169,7 @@ void InjectHooksMain(void)
     CPedDamageResponseCalculator::InjectHooks();
     CPedScriptedTaskRecord::InjectHooks();
     CPedScriptedTaskRecordData::InjectHooks();
+    CPedClothesDesc::InjectHooks();
     CScriptedBrainTaskStore::InjectHooks();
     CTaskManager::InjectHooks();
     CTaskComplexUseSequence::InjectHooks();
@@ -212,6 +216,7 @@ void InjectHooksMain(void)
     CPlayerPed::InjectHooks();
     CStats::InjectHooks();
     CCarCtrl::InjectHooks();
+    CText::InjectHooks();
     CTheZones::InjectHooks();
     CMenuManager::InjectHooks();
     CSprite2d::InjectHooks();
@@ -224,6 +229,44 @@ void InjectHooksMain(void)
     COcclusion::InjectHooks();
     CGarage::InjectHooks();
     CGarages::InjectHooks();
+    CPostEffects::InjectHooks();
+    CIniFile::InjectHooks();
+    CStencilShadowObject::InjectHooks();
+    CStencilShadowObjects::InjectHooks();
+    CStencilShadows::InjectHooks();
+    CFont::InjectHooks();
+    CGameLogic::InjectHooks();
+    CStuckCarCheck::InjectHooks();
+    CUpsideDownCarCheck::InjectHooks();
+    CCamera::InjectHooks();
+    CMessages::InjectHooks();
+    CGangWars::InjectHooks();
+    CPlayerPedData::InjectHooks();
+    CTimeCycle::InjectHooks();
+    CSkidmarks::InjectHooks();
+    CMovingThings::InjectHooks();
+    CRoadBlocks::InjectHooks();
+    CBridge::InjectHooks();
+    CCranes::InjectHooks();
+    CGridRef::InjectHooks();
+    CShopping::InjectHooks();
+    CInformFriendsEventQueue::InjectHooks();
+    C3dMarkers::InjectHooks();
+    CSpecialFX::InjectHooks();
+    CGlass::InjectHooks();
+    CPedGroups::InjectHooks();
+    CClock::InjectHooks();
+    CClouds::InjectHooks();
+    CCoronas::InjectHooks();
+    CCustomCarPlateMgr::InjectHooks();
+    CDraw::InjectHooks();
+    CEntryExitManager::InjectHooks();
+    CInformGroupEventQueue::InjectHooks();
+    CGangs::InjectHooks();
+    CPlayerInfo::InjectHooks();
+    CReplay::InjectHooks();
+    CDarkel::InjectHooks();
+    CGeneral::InjectHooks();
 
     CAEVehicleAudioEntity::InjectHooks();
     CAESoundManager::InjectHooks();

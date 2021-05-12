@@ -1,4 +1,4 @@
-#include "StdInc.h"/*
+/*
 Plugin-SDK (Grand Theft Auto San Andreas) source file
 Authors: GTA Community. See more here
 https://github.com/DK22Pac/plugin-sdk
@@ -17,6 +17,7 @@ void CGeneral::InjectHooks()
     ReversibleHooks::Install("CGeneral", "GetAngleBetweenPoints", 0x53CEA0, &CGeneral::GetAngleBetweenPoints);
     ReversibleHooks::Install("CGeneral", "CamShakeNoPos", 0x50A970, &CGeneral::CamShakeNoPos);
     ReversibleHooks::Install("CGeneral", "GetNodeHeadingFromVector", 0x53CDC0, &CGeneral::GetNodeHeadingFromVector);
+//    ReversibleHooks::Install("CGeneral", "SolveQuadratic", 0x53CE30, &CGeneral::SolveQuadratic);
 }
 
 // Converted from cdecl float CGeneral::LimitAngle(float angle) 0x53CB00
