@@ -23,5 +23,5 @@ public:
     static float GetAngleBetweenPoints(float x1, float y1, float x2, float y2);
     static int GetRandomNumberInRange(int min, int max); // returns random int in range [min;max)
     static float GetRandomNumberInRange(float min, float max); // returns random float in range [min;max)
-    static void CamShakeNoPos(CCamera *camera, float strength);
+    static void CamShakeNoPos(CCamera *camera, float force);
 };

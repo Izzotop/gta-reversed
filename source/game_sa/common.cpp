@@ -18,6 +18,7 @@ void InjectCommonHooks()
 {
     HookInstall(0x53E230, &Render2dStuff); // This one shouldn't be reversible, it contains imgui debug menu logic, and makes game unplayable without :D
     ReversibleHooks::Install("common", "IsGlassModel", 0x46A760, &IsGlassModel);
+    ReversibleHooks::Install("common", "CalcScreenCoords_1", 0x71DA00, (bool(*)(CVector const&, CVector*, float*, float*))&CalcScreenCoors);
 }
 
 CVector FindPlayerCoors(int playerId)
@@ -640,7 +641,19 @@ void WriteRaster(RwRaster * pRaster, char const * pszPath) {
 
 bool CalcScreenCoors(CVector const& vecPoint, CVector* pVecOutPos, float* pScreenX, float* pScreenY)
 {
-    return plugin::CallAndReturn<bool, 0x71DA00, CVector const&, CVector*, float*, float*>(vecPoint, pVecOutPos, pScreenX, pScreenY);
+    //return plugin::CallAndReturn<bool, 0x71DA00, CVector const&, CVector*, float*, float*>(vecPoint, pVecOutPos, pScreenX, pScreenY);
+    *pVecOutPos = TheCamera.m_mViewMatrix * vecPoint;
+    if (pVecOutPos->z <= 1.0F)
+        return false;
+
+    const auto fRecip = 1.0F / pVecOutPos->z;
+    pVecOutPos->x *= fRecip * RsGlobal.maximumWidth;
+    pVecOutPos->y *= fRecip * RsGlobal.maximumHeight;
+
+    *pScreenX = (fRecip * RsGlobal.maximumWidth) / CDraw::ms_fFOV * 70.0F;
+    *pScreenY = (fRecip * RsGlobal.maximumHeight) / CDraw::ms_fFOV * 70.0F;
+
+    return true;
 }
 
 bool CalcScreenCoors(CVector const& vecPoint, CVector* pVecOutPos)

@@ -14,6 +14,9 @@ void CGeneral::InjectHooks()
     ReversibleHooks::Install("CGeneral", "GetRadianAngleBetweenPoints", 0x53CBE0, &CGeneral::GetRadianAngleBetweenPoints);
     ReversibleHooks::Install("CGeneral", "GetRandomNumberInRange_int", 0x407180, (int(*)(int, int))&CGeneral::GetRandomNumberInRange);
     ReversibleHooks::Install("CGeneral", "GetRandomNumberInRange_float", 0x41BD90, (float(*)(float, float))&CGeneral::GetRandomNumberInRange);
+    ReversibleHooks::Install("CGeneral", "GetAngleBetweenPoints", 0x53CEA0, &CGeneral::GetAngleBetweenPoints);
+    ReversibleHooks::Install("CGeneral", "CamShakeNoPos", 0x50A970, &CGeneral::CamShakeNoPos);
+    ReversibleHooks::Install("CGeneral", "GetNodeHeadingFromVector", 0x53CDC0, &CGeneral::GetNodeHeadingFromVector);
 }
 
 // Converted from cdecl float CGeneral::LimitAngle(float angle) 0x53CB00
@@ -70,7 +73,15 @@ float CGeneral::GetATanOfXY(float x, float y) {
 
 // Converted from cdecl uchar CGeneral::GetNodeHeadingFromVector(float x,float y) 0x53CDC0
 unsigned char CGeneral::GetNodeHeadingFromVector(float x, float y) {
-    return ((unsigned char(__cdecl *)(float, float))0x53CDC0)(x, y);
+    auto fAngle = CGeneral::GetRadianAngleBetweenPoints(x, y, 0.0F, 0.0F);
+    if (fAngle < 0.0F)
+        fAngle += TWO_PI;
+
+    fAngle = TWO_PI - fAngle + (PI / 8.0F);
+    if (fAngle >= TWO_PI)
+        fAngle -= TWO_PI;
+
+    return floor(fAngle * (1.0F / TWO_PI) * 8.0F); // Get it into [0:7] range
 }
 
 // Converted from cdecl bool CGeneral::SolveQuadratic(float a,float b,float c,float &x1,float &x2) 0x53CE30
@@ -80,7 +91,7 @@ bool CGeneral::SolveQuadratic(float a, float b, float c, float& x1, float& x2) {
 
 // Converted from cdecl float CGeneral::GetAngleBetweenPoints(float x1,float y1,float x2,float y2) 0x53CEA0
 float CGeneral::GetAngleBetweenPoints(float x1, float y1, float x2, float y2) {
-    return ((float(__cdecl *)(float, float, float, float))0x53CEA0)(x1, y1, x2, y2);
+    return RadiansToDegrees(CGeneral::GetRadianAngleBetweenPoints(x1, y1, x2, y2));
 }
 
 // Converted from cdecl uint CGeneral::GetRandomNumberInRange(int min, int max) 0x407180
@@ -95,7 +106,14 @@ float CGeneral::GetRandomNumberInRange(float min, float max) {
     return min + fRand * (max - min);
 }
 
-void CGeneral::CamShakeNoPos(CCamera *camera, float strength)
+void CGeneral::CamShakeNoPos(CCamera *camera, float force)
 {
-    ((void(__cdecl *)(CCamera*, float))0x50A970)(camera, strength);
+    auto fCurForce = camera->m_fCamShakeForce - (CTimer::m_snTimeInMilliseconds - camera->m_nCamShakeStart) * 0.001F;
+    fCurForce = clamp(fCurForce, 0.0F, 2.0F);
+
+    if (force > fCurForce)
+    {
+        camera->m_fCamShakeForce = force;
+        camera->m_nCamShakeStart = CTimer::m_snTimeInMilliseconds;
+    }
 }

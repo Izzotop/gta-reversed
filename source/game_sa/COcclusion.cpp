@@ -103,12 +103,35 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
 
 bool COcclusion::OccluderHidesBehind(CActiveOccluder* first, CActiveOccluder* second)
 {
-    return plugin::CallAndReturn<bool, 0x71E080, CActiveOccluder*, CActiveOccluder*>(first, second);
+    //return plugin::CallAndReturn<bool, 0x71E080, CActiveOccluder*, CActiveOccluder*>(first, second);
+    if (!first->m_cLinesCount)
+        return second->m_cLinesCount == 0;
+
+    if (first->m_cLinesCount <= 0)
+        return true;
+
+    auto* pNextLine = first->m_aLines;
+    auto iLineInd = 0;
+    if (second->m_cLinesCount <= 0)
+        return true;
+
+    while (iLineInd < first->m_cLinesCount)
+    {
+        if (second->m_cLinesCount > 0)
+            break;
+
+        ++iLineInd;
+        ++pNextLine;
+    }
+
+    if (iLineInd >= first->m_cLinesCount)
+        return true;
+
+
 }
 
 bool COcclusion::IsPositionOccluded(CVector vecPos, float fRadius)
 {
-    //return plugin::CallAndReturn<bool, 0x71E080, CVector, float>(vecPos, fRadius);
     if (!COcclusion::NumActiveOccluders)
         return false;
 
