@@ -6,8 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
 class CompressedVector {
 public:
     int16_t x;
@@ -15,10 +13,12 @@ public:
     int16_t z;
 };
 
-VALIDATE_SIZE(CompressedVector, 6);
+VALIDATE_SIZE(CompressedVector, 0x6);
 
 CVector UncompressVector(const CompressedVector& compressedVec);
 CompressedVector CompressVector(const CVector& vec);
 float UncompressUnitFloat(int16_t val);
 CVector UncompressUnitVector(const CompressedVector& compressedVec);
 CompressedVector CompressUnitVector(CVector const& vec);
+CVector UncompressLargeVector(const CompressedVector& compressedVec);
+CompressedVector CompressLargeVector(CVector const& vec);

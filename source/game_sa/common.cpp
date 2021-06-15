@@ -44,10 +44,7 @@ unsigned int &ClumpOffset = *(unsigned int *)0xB5F878;
 // used to convert 0-255 to 0.0f-1.0f, also see RwRGBARealFromRwRGBAMacro
 float& flt_859A3C = *(float*)0x859A3C; // 1.0f / 255.0f = 0.0039215689f
 
-float& flt_858B14 = *(float*)0x858B14; // 1.0f / 32768.0f = 0.000030517578f
 
-float& flt_859520 = *(float*)0x859520; // 1.0f / 640.0f = 0.0015625f        1.0f / DEFAULT_SCREEN_WIDTH
-float& flt_859524 = *(float*)0x859524; // 1.0f / 448.0f = 0.002232143f      1.0f / DEFAULT_SCREEN_HEIGHT
 
 void InjectCommonHooks()
 {
@@ -56,11 +53,11 @@ void InjectCommonHooks()
 //    ReversibleHooks::Install("common", "FindPlayerCoors", 0x56E010, &FindPlayerCoors);
 //    ReversibleHooks::Install("common", "FindPlayerSpeed", 0x56E090, &FindPlayerSpeed);
     ReversibleHooks::Install("common", "FindPlayerEntity", 0x56E120, &FindPlayerEntity);
+    ReversibleHooks::Install("common", "FindPlayerTrain", 0x56E160, &FindPlayerTrain);
 //    ReversibleHooks::Install("common", "FindPlayerCentreOfWorld", 0x56E250, &FindPlayerCentreOfWorld);
 //    ReversibleHooks::Install("common", "FindPlayerCentreOfWorld_NoSniperShift", 0x56E320, &FindPlayerCentreOfWorld_NoSniperShift);
 //    ReversibleHooks::Install("common", "FindPlayerCentreOfWorld_NoInteriorShift", 0x56E400, &FindPlayerCentreOfWorld_NoInteriorShift);
 //    ReversibleHooks::Install("common", "FindPlayerHeading", 0x56E450, &FindPlayerHeading);
-    ReversibleHooks::Install("common", "FindPlayerHeight", 0x56E520, &FindPlayerHeight);
     ReversibleHooks::Install("common", "FindPlayerPed", 0x56E210, &FindPlayerPed);
 //    ReversibleHooks::Install("common", "FindPlayerVehicle", 0x56E0D0, &FindPlayerVehicle);
     ReversibleHooks::Install("common", "FindPlayerWanted", 0x56E230, &FindPlayerWanted);
@@ -91,7 +88,6 @@ void InjectCommonHooks()
     ReversibleHooks::Install("common", "WorldReplaceNormalLightsWithScorched", 0x7357E0, &WorldReplaceNormalLightsWithScorched);
 //    ReversibleHooks::Install("common", "AddAnExtraDirectionalLight", 0x735840, &AddAnExtraDirectionalLight);
     ReversibleHooks::Install("common", "RemoveExtraDirectionalLights", 0x7359E0, &RemoveExtraDirectionalLights);
-    ReversibleHooks::Install("common", "SetAmbientAndDirectionalColours", 0x735A20, &SetAmbientAndDirectionalColours);
     ReversibleHooks::Install("common", "SetBrightMarkerColours", 0x735BD0, &SetBrightMarkerColours);
     ReversibleHooks::Install("common", "ReSetAmbientAndDirectionalColours", 0x735C40, &ReSetAmbientAndDirectionalColours);
     ReversibleHooks::Install("common", "DeActivateDirectional", 0x735C70, &DeActivateDirectional);
@@ -129,12 +125,29 @@ CVector& FindPlayerSpeed(int playerId) {
 
 // 0x56E120
 CEntity* FindPlayerEntity(int playerId) {
-    CPlayerPed* ped = FindPlayerPed(playerId);
+    auto player = FindPlayerPed(playerId);
+    if (player->bInVehicle && player->m_pVehicle) 
+        return player->m_pVehicle;
 
-    if ((ped->m_nPedFlags & 0x100) != 0 && ped->m_pVehicle)
-        return ped->m_pVehicle;
+    return player;
+}
 
-    return nullptr;
+CVehicle* FindPlayerVehicle(int playerId)
+{
+    auto pPed = FindPlayerPed(playerId);
+    if (pPed && pPed->bInVehicle)
+        return pPed->m_pVehicle;
+    else
+        return nullptr;
+}
+
+// 0x56E160
+CTrain* FindPlayerTrain(int playerId) {
+    auto vehicle = FindPlayerVehicle(playerId);
+    if (vehicle && vehicle->IsTrain())
+        return vehicle->AsTrain();
+    else
+        return nullptr;
 }
 
 // 0x56E250
@@ -736,11 +749,10 @@ float GetDayNightBalance() {
 }
 
 // 0x7226D0
-void RemoveRefsCB(RpAtomic* atomic, void* _IGNORED_ data) {
-//    return plugin::Call<0x7226D0, RpAtomic*, void*>(atomic, data);
-
+RpAtomic* RemoveRefsCB(RpAtomic* atomic, void* _IGNORED_ data) {
     auto* modelInfo = CVisibilityPlugins::GetAtomicModelInfo(atomic);
     modelInfo->RemoveRef();
+    return atomic;
 }
 
 // unused
@@ -750,8 +762,7 @@ void RemoveRefsForAtomic(RpClump* clump) {
 }
 
 // 0x46A760
-bool IsGlassModel(CEntity* pEntity)
-{
+bool IsGlassModel(CEntity* pEntity) {
     if (!pEntity->IsObject())
         return false;
 

@@ -73,10 +73,11 @@ constexpr float PI = 3.14159265358979323846f;
 constexpr float HALF_PI = PI / 2.0f;
 constexpr float LOG10_2 = 0.30102999566398119802f; // log10(2)
 
-extern float& flt_858B14;
-extern float& flt_858B14;
-extern float& flt_859520;
-extern float& flt_859524;
+extern constexpr float flt_858B14 = 1.0f / 32768.0f;              // 0.000030517578f
+extern constexpr float flt_859520 = 1.0f / DEFAULT_SCREEN_WIDTH;  // 1.0f / 640.0f = 0.0015625f
+extern constexpr float flt_859524 = 1.0f / DEFAULT_SCREEN_HEIGHT; // 1.0f / 448.0f = 0.002232143f
+extern constexpr float flt_858B38 = 0.02f;
+extern constexpr float flt_858C4C = 1000.0f;
 
 void InjectCommonHooks();
 
@@ -86,6 +87,10 @@ CVector FindPlayerCoors(int playerId = -1);
 CVector& FindPlayerSpeed(int playerId = -1);
 // returns player ped or player vehicle if he's driving
 CEntity * FindPlayerEntity(int playerId = -1);
+// returns player vehicle
+CVehicle* FindPlayerVehicle(int playerId = -1);
+// returns player train
+CTrain* FindPlayerTrain(int playerId = -1);
 // gets player coords
 CVector const& FindPlayerCentreOfWorld(int playerId = -1);
 // gets player coords with skipping sniper shift
@@ -223,8 +228,7 @@ void SetLightsForInfraredVisionDefaultObjects();
 void SetLightsForNightVision();
 float GetDayNightBalance();
 
-// 'data' is unused
-void RemoveRefsCB(RpAtomic* atomic, void* _IGNORED_ data);
+RpAtomic* RemoveRefsCB(RpAtomic* atomic, void* _IGNORED_ data);
 void RemoveRefsForAtomic(RpClump* clump);
 
 bool IsGlassModel(CEntity* pEntity);
