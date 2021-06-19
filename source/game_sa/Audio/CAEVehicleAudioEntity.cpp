@@ -25,6 +25,7 @@ void CAEVehicleAudioEntity::InjectHooks()
     ReversibleHooks::Install("CAEVehicleAudioEntity", "GetAircraftNearPosition", 0x4F96A0, &CAEVehicleAudioEntity::GetAircraftNearPosition);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "GetFlyingMetalVolume", 0x4F6150, &CAEVehicleAudioEntity::GetFlyingMetalVolume);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "UpdateVehicleEngineSound", 0x4F56D0, &CAEVehicleAudioEntity::UpdateVehicleEngineSound);
+    ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayRoadNoiseSound", 0x4F84D0, &CAEVehicleAudioEntity::PlayRoadNoiseSound);
 
 // STATIC
     ReversibleHooks::Install("CAEVehicleAudioEntity", "GetVehicleAudioSettings", 0x4F5C10, &CAEVehicleAudioEntity::GetVehicleAudioSettings);
@@ -562,5 +563,49 @@ void CAEVehicleAudioEntity::UpdateVehicleEngineSound(short engineState, float sp
     if (CAESound* pCurrSound = m_aEngineSounds[engineState].m_pSound) {
         pCurrSound->m_fVolume = m_fGeneralVehicleSoundVolume + volumeDelta;
         pCurrSound->m_fSpeed = speed;
+    }
+}
+
+// 0x4F84D0
+void CAEVehicleAudioEntity::PlayRoadNoiseSound(short newRoadNosiseSoundType, float speed, float volumeDelta)
+{
+    const float volume = m_fGeneralVehicleSoundVolume + volumeDelta;
+    if (m_nRoadNoiseSoundType != newRoadNosiseSoundType)
+    {
+        if (m_pRoadNoiseSound)
+        {
+            m_pRoadNoiseSound->SetIndividualEnvironment(4, false);
+            m_pRoadNoiseSound->StopSound();
+            m_pRoadNoiseSound = nullptr;
+        }
+
+        // Create new sound
+        m_nRoadNoiseSoundType = newRoadNosiseSoundType;
+        if (newRoadNosiseSoundType != -1)
+        {
+            CVector pos = m_pEntity->GetPosition();
+            CAESound toRequest;
+            toRequest.Initialise(
+                19,
+                newRoadNosiseSoundType,
+                this,
+                pos,
+                volume,
+                1.0,
+                1.0,
+                1.0,
+                false,
+                4, // IndividualEnvironment 
+                0.0,
+                0
+            );
+            toRequest.m_fSpeed = speed;
+            toRequest.m_fSoundDistance = 3.0f;
+            m_pRoadNoiseSound = AESoundManager.RequestNewSound(&toRequest);
+        }
+    } else if (m_nRoadNoiseSoundType != -1 && m_pRoadNoiseSound) {
+        // Same sound type already initialised, just set speed and volume
+        m_pRoadNoiseSound->m_fSpeed = speed;
+        m_pRoadNoiseSound->m_fVolume = volume;
     }
 }
