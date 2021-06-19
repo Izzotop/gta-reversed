@@ -24,6 +24,7 @@ void CAEVehicleAudioEntity::InjectHooks()
     ReversibleHooks::Install("CAEVehicleAudioEntity", "Terminate", 0x4FB8C0, &CAEVehicleAudioEntity::Terminate);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "GetAircraftNearPosition", 0x4F96A0, &CAEVehicleAudioEntity::GetAircraftNearPosition);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "GetFlyingMetalVolume", 0x4F6150, &CAEVehicleAudioEntity::GetFlyingMetalVolume);
+    ReversibleHooks::Install("CAEVehicleAudioEntity", "UpdateVehicleEngineSound", 0x4F56D0, &CAEVehicleAudioEntity::UpdateVehicleEngineSound);
 
 // STATIC
     ReversibleHooks::Install("CAEVehicleAudioEntity", "GetVehicleAudioSettings", 0x4F5C10, &CAEVehicleAudioEntity::GetVehicleAudioSettings);
@@ -553,4 +554,13 @@ float CAEVehicleAudioEntity::GetFlyingMetalVolume(CPhysical* physical)
 void CAEVehicleAudioEntity::PlayTrainBrakeSound(short soundType, float speed, float volume)
 {
     plugin::CallMethod<0x4FA630, CAEAudioEntity*, short, float, float>(this, soundType, speed, volume);
+}
+
+// 0x4F56D0
+void CAEVehicleAudioEntity::UpdateVehicleEngineSound(short engineState, float speed, float volumeDelta)
+{
+    if (CAESound* pCurrSound = m_aEngineSounds[engineState].m_pSound) {
+        pCurrSound->m_fVolume = m_fGeneralVehicleSoundVolume + volumeDelta;
+        pCurrSound->m_fSpeed = speed;
+    }
 }
