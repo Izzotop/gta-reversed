@@ -1129,5 +1129,44 @@ void CAEVehicleAudioEntity::ProcessVehicle(CPhysical* vehicle) {
 
 // 0x501AB0
 void CAEVehicleAudioEntity::ProcessSpecialVehicle(cVehicleParams& vehParams) {
-    plugin::Call<0x501AB0>();
+    switch (vehParams.m_pVehicle->m_nModelIndex) {
+    case MODEL_ARTICT1:
+    case MODEL_ARTICT2:
+    case MODEL_PETROTR:
+    case MODEL_ARTICT3: {
+        ProcessVehicleRoadNoise(vehParams);
+        ProcessRainOnVehicle(vehParams);
+        break;
+    }
+    case MODEL_RCBANDIT:
+    case MODEL_RCTIGER: {
+        ProcessDummyRCCar(vehParams);
+    }
+    case MODEL_CADDY: {
+        ProcessVehicleRoadNoise(vehParams);
+        ProcessVehicleSkidding(vehParams);
+        ProcessVehicleFlatTyre(vehParams);
+        ProcessVehicleSirenAlarmHorn(vehParams);
+        ProcessDummyGolfCart(vehParams);
+        ProcessRainOnVehicle(vehParams);
+        if (vehParams.m_pVehicle->m_nStatus != STATUS_SIMPLE)
+            ProcessEngineDamage(vehParams);
+        break;
+    }
+    case MODEL_RCBARON: {
+        ProcessDummyRCPlane(vehParams);
+        break;
+    }
+    case MODEL_RCRAIDER:
+    case MODEL_RCGOBLIN: {
+        ProcessDummyRCHeli(vehParams);
+        break;
+    }
+    case MODEL_VORTEX: {
+        ProcessDummyHovercraft(vehParams);
+        ProcessRainOnVehicle(vehParams);
+        ProcessVehicleSirenAlarmHorn(vehParams);
+        break;
+    }
+    }
 }
