@@ -193,108 +193,125 @@ public:
     void UpdateParameters(CAESound* sound, short curPlayPos) override;
 
 // CLASS
-    void AddAudioEvent(eAudioEvents audioEvent, float fVolume);
-    void Service();
     void Initialise(CEntity* entity);
     void Terminate();
+
+    void AddAudioEvent(eAudioEvents audioEvent, float fVolume); // (void(*)(eAudioEvents, float))
+    void AddAudioEvent(int soundId, CVehicle* pVehicle); // (void(*)(int, CVehicle*))
+
+    void Service();
+
     void GetVehicleTypeForAudio();
-    void IsAccInhibited(cVehicleParams&);
-    void IsAccInhibitedBackwards(cVehicleParams&);
-    void IsAccInhibitedForLowSpeed(cVehicleParams&);
-    void IsAccInhibitedForTime();
-    void InhibitAccForTime(uint);
-    void IsCrzInhibitedForTime();
-    void InhibitCrzForTime(uint);
-    void GetAccelAndBrake(cVehicleParams&);
-    float GetVolumeForDummyIdle(float, float);
-    float GetFrequencyForDummyIdle(float, float);
-    float GetVolumeForDummyRev(float, float);
-    float GetFrequencyForDummyRev(float, float);
-    void CancelVehicleEngineSound(short);
-    void RequestNewPlayerCarEngineSound(short, float, float);
-    void UpdateVehicleEngineSound(short, float, float);
-    void StartVehicleEngineSound(short, float, float);
-    void ProcessDummyStateTransition(short, float, cVehicleParams&);
-    void ProcessDummyVehicleEngine(cVehicleParams&);
+
+    void InhibitAccForTime(unsigned int time);
+    bool IsAccInhibited(cVehicleParams& vehicleParams);
+    bool IsAccInhibitedBackwards(cVehicleParams& vehicleParams);
+    bool IsAccInhibitedForLowSpeed(cVehicleParams& vehicleParams);
+    bool IsAccInhibitedForTime();
+    bool IsCrzInhibitedForTime();
+
     void JustGotInVehicleAsDriver();
     void TurnOnRadioForVehicle();
     void TurnOffRadioForVehicle();
     void PlayerAboutToExitVehicleAsDriver();
-    void DisableHelicoptor();
-    void EnableHelicoptor();
-    void CopHeli();
-    float GetFreqForIdle(float);
-    float GetFreqForPlayerEngineSound(cVehicleParams&, short);
-    float GetVolForPlayerEngineSound(cVehicleParams&, short);
-    void JustFinishedAccelerationLoop();
-    void ProcessPlayerVehicleEngine(cVehicleParams&);
+    bool CopHeli();
+    bool JustFinishedAccelerationLoop();
     void PlaySkidSound(short soundType, float speed, float volume);
     void JustWreckedVehicle();
+    CVector GetAircraftNearPosition();
+    float GetFlyingMetalVolume(CPhysical*);
+    void GetSirenState(uchar* playSirenOrAlarm, uchar* playHorn, cVehicleParams& a4);
+    void PlayTrainBrakeSound(short soundType, float speed, float volume);
+    void JustGotOutOfVehicleAsDriver();
+
+    //void InhibitCrzForTime(uint);
+
+    void CancelVehicleEngineSound(short);
+    void RequestNewPlayerCarEngineSound(short vehicleSoundId, float speed, float changeSound);
+
+    void StartVehicleEngineSound(short, float, float);
+
+    void UpdateVehicleEngineSound(short, float, float);
+    static void UpdateGasPedalAudio(CAutomobile* veh, int vehType);
+    void UpdateBoatSound(short engineState, short bankSlotId, short soundId, float speed, float volumeDelta);
+    void UpdateTrainSound(short, short, short, float, float);
+    void UpdateGenericVehicleSound(short soundId, short bankSlotId, short bankId, short sfxId, float speed, float volume, float distance);
+
+    //void DisableHelicoptor();
+    //void EnableHelicoptor();
+
+    double GetVolumeForDummyIdle(float, float);
+    double GetFrequencyForDummyIdle(float, float);
+    double GetVolumeForDummyRev(float, float);
+    double GetFrequencyForDummyRev(float, float);
+    double GetFreqForIdle(float);
+    double GetFreqForPlayerEngineSound(cVehicleParams&, short);
+    double GetVolForPlayerEngineSound(cVehicleParams&, short);
+    double GetVehicleDriveWheelSkidValue(CVehicle* pVeh, int wheelState, float fUnk, cTransmission& transmission, float fVelocity);
+    double GetVehicleNonDriveWheelSkidValue(CVehicle* pVeh, int wheelState, cTransmission& transmission, float fVelocity);
+    double GetBaseVolumeForBicycleTyre(float fGearVelocityProgress);
+    void GetHornState(bool* pbOut, cVehicleParams& vehParams);
+    double GetAccelAndBrake(cVehicleParams& vehicleParams);
+
+    void PlayAircraftSound(short, short, short, float, float);
     void PlayRoadNoiseSound(short soundType, float speed, float volume);
     void PlayFlatTyreSound(short soundType, float speed, float volume);
     void PlayReverseSound(short soundType, float speed, float volume);
-    void UpdateGasPedalAudio(CVehicle* veh, int vehType);
-    void ProcessVehicleFlatTyre(cVehicleParams&);
-    void ProcessVehicleRoadNoise(cVehicleParams&);
-    void ProcessReverseGear(cVehicleParams&);
-    float GetVehicleDriveWheelSkidValue(CVehicle*, int, float, cTransmission*, float);
-    float GetVehicleNonDriveWheelSkidValue(CVehicle*, int, cTransmission*, float);
-    void ProcessVehicleSkidding(cVehicleParams&);
-    void ProcessRainOnVehicle(cVehicleParams&);
-    void PlayAircraftSound(short, short, short, float, float);
-    void ProcessGenericJet(uchar, cVehicleParams&, float, float, float, float, float);
-    void ProcessDummyJet(cVehicleParams&);
-    void ProcessPlayerJet(cVehicleParams&);
-    void ProcessDummySeaPlane(cVehicleParams&);
-    void ProcessPlayerSeaPlane(cVehicleParams&);
-    void ProcessAIHeli(cVehicleParams&);
-    void ProcessDummyHeli(cVehicleParams&);
-    void ProcessPlayerHeli(cVehicleParams&);
-    void ProcessAIProp(cVehicleParams&);
-    void ProcessDummyProp(cVehicleParams&);
-    void ProcessPlayerProp(cVehicleParams&);
-    void ProcessAircraft(cVehicleParams&);
-    CVector GetAircraftNearPosition();
-    void GetBaseVolumeForBicycleTyre(float);
+    void PlayHornOrSiren(bool hornState, char sirenOrAlarm, bool mrWhoopie, cVehicleParams& vehicleParams);
     void PlayBicycleSound(short, short, short, float, float);
-    void ProcessPlayerBicycle(cVehicleParams&);
-    void ProcessDummyBicycle(cVehicleParams&);
-    float GetFlyingMetalVolume(CPhysical*);
-    void AddAudioEvent(int, CEntity*);
-    void GetHornState(uchar*, cVehicleParams&);
-    void GetSirenState(uchar*, uchar*, cVehicleParams&);
-    void PlayHornOrSiren(uchar, uchar, uchar, cVehicleParams&);
-    void ProcessVehicleSirenAlarmHorn(cVehicleParams&);
-    void UpdateBoatSound(short, short, short, float, float);
-    void StopGenericEngineSound(short);
-    void ProcessBoatEngine(cVehicleParams&);
-    void ProcessBoatMovingOverWater(cVehicleParams&);
-    void UpdateTrainSound(short, short, short, float, float);
-    void ProcessDummyTrainEngine(cVehicleParams&);
-    void ProcessTrainTrackSound(cVehicleParams&);
-    void ProcessPlayerTrainEngine(cVehicleParams&);
-    void PlayTrainBrakeSound(short soundType, float speed, float volume);
-    void ProcessPlayerTrainBrakes(cVehicleParams&);
-    void JustGotOutOfVehicleAsDriver();
-    void ProcessDummyRCPlane(cVehicleParams&);
-    void ProcessPlayerRCPlane(cVehicleParams&);
-    void ProcessDummyRCHeli(cVehicleParams&);
-    void ProcessPlayerRCHeli(cVehicleParams&);
-    void ProcessPlayerRCCar(cVehicleParams&);
-    void ProcessPlayerHovercraft(cVehicleParams&);
-    void ProcessPlayerGolfCart(cVehicleParams&);
-    void UpdateGenericVehicleSound(short, short, short, short, float, float, float);
-    void ProcessDummyGolfCart(cVehicleParams&);
-    void ProcessDummyHovercraft(cVehicleParams&);
-    void ProcessDummyRCCar(cVehicleParams&);
-    void ProcessPlayerCombine(cVehicleParams&);
-    void ProcessEngineDamage(cVehicleParams&);
-    void ProcessSpecialVehicle(cVehicleParams&);
-    void ProcessNitro(cVehicleParams&);
-    void ProcessMovingParts(cVehicleParams&);
-    void ProcessVehicle(CPhysical*);
 
-public:
+
+    void ProcessVehicleFlatTyre(cVehicleParams& vehicleParams);
+    void ProcessVehicleRoadNoise(cVehicleParams& vehicleParams);
+    void ProcessReverseGear(cVehicleParams& vehicleParams);
+    void ProcessVehicleSkidding(cVehicleParams& vehicleParams);
+    void ProcessRainOnVehicle(cVehicleParams& vehicleParams);
+    //void ProcessGenericJet(uchar, cVehicleParams&, float, float, float, float, float);
+    void ProcessDummyJet(cVehicleParams& vehicleParams);
+    void ProcessPlayerJet(cVehicleParams& vehicleParams);
+    void ProcessDummySeaPlane(cVehicleParams& vehicleParams);
+    void ProcessPlayerSeaPlane(cVehicleParams& vehicleParams);
+    void ProcessAIHeli(cVehicleParams& vehicleParams);
+    void ProcessDummyHeli(cVehicleParams& vehicleParams);
+    void ProcessPlayerHeli(cVehicleParams& vehicleParams);
+    void ProcessAIProp(cVehicleParams& vehicleParams);
+    void ProcessDummyProp(cVehicleParams& vehicleParams);
+    void ProcessPlayerProp(cVehicleParams& vehicleParams);
+    void ProcessAircraft(cVehicleParams& vehicleParams);
+    void ProcessPlayerBicycle(cVehicleParams& vehicleParams);
+    void ProcessDummyBicycle(cVehicleParams& vehicleParams);
+    void ProcessDummyStateTransition(short, float, cVehicleParams&);
+    void ProcessDummyVehicleEngine(cVehicleParams& vehicleParams);
+    void ProcessPlayerVehicleEngine(cVehicleParams& vehicleParams);
+    void ProcessVehicleSirenAlarmHorn(cVehicleParams& vehicleParams);
+    void ProcessBoatEngine(cVehicleParams& vehicleParams);
+    void ProcessBoatMovingOverWater(cVehicleParams& vehicleParams);
+    void ProcessDummyTrainEngine(cVehicleParams& vehicleParams);
+    void ProcessTrainTrackSound(cVehicleParams& vehicleParams);
+    //void ProcessPlayerTrainEngine(cVehicleParams& vehicleParams);
+    void ProcessPlayerTrainBrakes(cVehicleParams& vehicleParams);
+    void ProcessDummyRCPlane(cVehicleParams& vehicleParams);
+    //void ProcessPlayerRCPlane(cVehicleParams& vehicleParams);
+    void ProcessDummyRCHeli(cVehicleParams& vehicleParams);
+    //void ProcessPlayerRCHeli(cVehicleParams& vehicleParams);
+    //void ProcessPlayerRCCar(cVehicleParams& vehicleParams);
+    //void ProcessPlayerHovercraft(cVehicleParams& vehicleParams);
+    //void ProcessPlayerGolfCart(cVehicleParams& vehicleParams);
+    void ProcessDummyGolfCart(cVehicleParams& vehicleParams);
+    void ProcessDummyHovercraft(cVehicleParams& vehicleParams);
+    void ProcessDummyRCCar(cVehicleParams& vehicleParams);
+    void ProcessPlayerCombine(cVehicleParams& vehicleParams);
+    void ProcessEngineDamage(cVehicleParams& vehicleParams);
+    void ProcessSpecialVehicle(cVehicleParams& vehicleParams);
+    void ProcessNitro(cVehicleParams& vehicleParams);
+    void ProcessMovingParts(cVehicleParams& vehicleParams);
+    void ProcessVehicle(CPhysical* vehicle);
+
+// UNUSED
+    void StopGenericEngineSound(short index);
+
+
+  public:
     static void StaticInitialise();
     static void StaticService() { /* Empty on purpose */ }
     static tVehicleAudioSettings* StaticGetPlayerVehicleAudioSettingsForRadio();
