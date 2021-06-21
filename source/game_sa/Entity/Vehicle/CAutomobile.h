@@ -77,7 +77,7 @@ public:
     float field_804;
     float m_intertiaValue1;
     float m_intertiaValue2;
-    int m_wheelSkidmarkType[4];
+    eSkidMarkType m_wheelSkidmarkType[4];
     bool m_wheelSkidmarkBloodState[4];
     bool m_wheelSkidmarkMuddy[4];
     float m_wheelRotation[4];
