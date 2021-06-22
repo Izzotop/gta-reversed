@@ -5,7 +5,7 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
+
 #include "CVehicle.h"
 
 struct tBikeHandlingData;
@@ -29,9 +29,9 @@ protected:
     CBike(plugin::dummy_func_t) : CVehicle(plugin::dummy), m_mLeanMatrix(plugin::dummy) {}
 public:
     RwFrame* m_aBikeNodes[BIKE_NUM_NODES];
-    bool           m_bLeanMatrixCalculated;
-    char _pad0[3];
-    CMatrix        m_mLeanMatrix;
+    bool     m_bLeanMatrixCalculated;
+    char     _pad0[3];
+    CMatrix  m_mLeanMatrix;
     union {
         struct {
             unsigned char bDamageFlag1 : 1;
@@ -43,7 +43,7 @@ public:
             unsigned char bDamageFlag7 : 1;
             unsigned char bDamageFlag8 : 1;
         } damageFlags;
-        unsigned char ucDamageFlags; 
+        unsigned char ucDamageFlags;
     };
     char field_615[27];
     CVector field_630;
@@ -93,12 +93,18 @@ public:
     float field_808;
     tWheelState   m_anWheelState[2]; // enum tWheelState
 
-    //vtable
+    bool IsDoorReady(eDoors door) override { return true; }            // 0x6B58E0
+    bool IsDoorFullyOpen(eDoors door) override { return false; }       // 0x6B58F0
+    bool IsDoorClosed(eDoors door) override { return false; }          // 0x6B5900
+    bool IsDoorMissing(eDoors door) override { return true; }          // 0x6B5910
+    bool IsDoorReady(unsigned int door) override { return true; }      // 0x6B5920
+    bool IsDoorFullyOpen(unsigned int door) override { return false; } // 0x6B5930
+    bool IsDoorClosed(unsigned int door) override { return false; }    // 0x6B5940
+    bool IsDoorMissing(unsigned int door) override { return true; }    // 0x6B5950
 
     void ProcessAI(unsigned int& arg0);
 
-    static void InjectHooks();
-    //funcs
+    // FUNCS
     CBike(int modelIndex, unsigned char createdBy);
 
     inline bool IsAnyWheelMakingContactWithGround() {
@@ -115,12 +121,10 @@ public:
             || m_fWheelsSuspensionCompression[3] == 1.0F;
     };
 
-
-
     void SetupModelNodes();
-    void dmgDrawCarCollidingParticles(CVector const& position, float power, eWeaponType weaponType); // dummy function
+    void dmgDrawCarCollidingParticles(CVector const& position, float power, eWeaponType weaponType);
     static bool DamageKnockOffRider(CVehicle* arg0, float arg1, unsigned short arg2, CEntity* arg3, CVector& arg4, CVector& arg5);
-    CPed* KnockOffRider(eWeaponType arg0, unsigned char arg1, CPed* arg2, bool arg3); // dummy function
+    CPed* KnockOffRider(eWeaponType arg0, unsigned char arg1, CPed* arg2, bool arg3);
     void SetRemoveAnimFlags(CPed* ped);
     void ReduceHornCounter();
     void ProcessBuoyancy();
@@ -135,6 +139,10 @@ public:
     void FixHandsToBars(CPed* rider);
     void PlaceOnRoadProperly();
     void GetCorrectedWorldDoorPosition(CVector& out, CVector arg1, CVector arg2);
+
+private:
+    void BlowUpCar_Reversed(CEntity* damager, unsigned char bHideExplosion);
+    void Fix_Reversed();
 };
 
 VALIDATE_SIZE(CBike, 0x814);
