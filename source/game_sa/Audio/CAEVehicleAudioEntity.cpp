@@ -78,7 +78,7 @@ void CAEVehicleAudioEntity::InjectHooks()
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleFlatTyre", 0x4F8940, &CAEVehicleAudioEntity::ProcessVehicleFlatTyre);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleRoadNoise", 0x4F8B00, &CAEVehicleAudioEntity::ProcessVehicleRoadNoise);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessReverseGear", 0x4F8DF0, &CAEVehicleAudioEntity::ProcessReverseGear);
-    //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleSkidding", 0x4F8F10, &CAEVehicleAudioEntity::ProcessVehicleSkidding);
+    ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleSkidding", 0x4F8F10, &CAEVehicleAudioEntity::ProcessVehicleSkidding);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessRainOnVehicle", 0x4F92C0, &CAEVehicleAudioEntity::ProcessRainOnVehicle);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayAircraftSound", 0x4F93C0, &CAEVehicleAudioEntity::PlayAircraftSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayBicycleSound", 0x4F9710, &CAEVehicleAudioEntity::PlayBicycleSound);
@@ -1049,7 +1049,124 @@ void CAEVehicleAudioEntity::ProcessReverseGear(cVehicleParams& vehicleParams) {
 
 // 0x4F8F10
 void CAEVehicleAudioEntity::ProcessVehicleSkidding(cVehicleParams& vehicleParams) {
-    plugin::CallMethod<0x4F8F10, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    //plugin::CallMethod<0x4F8F10, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+
+    CVehicle* pVehicle = vehicleParams.m_pVehicle;
+
+
+    tWheelState* wheelStates = nullptr;
+    float* aWheelTimers = nullptr;
+
+    bool bAreRearWheelsNotSkidding = false;
+    float fUnk = 0.0f;
+    auto nWheels = 0;
+
+    switch (vehicleParams.m_vehicleType) {
+    case VEHICLE_AUTOMOBILE: {
+        nWheels = 4;
+
+        auto pAuto = static_cast<CAutomobile*>(pVehicle);
+        fUnk = pAuto->field_964;
+
+        bAreRearWheelsNotSkidding = pAuto->m_aWheelState[CARWHEEL_REAR_LEFT] != WHEEL_STATE_SKIDDING &&
+                                    pAuto->m_aWheelState[CARWHEEL_REAR_RIGHT] != WHEEL_STATE_SKIDDING;
+        aWheelTimers = pAuto->m_aWheelTimer;
+        wheelStates = pAuto->m_aWheelState;
+        break;
+    }
+    case VEHICLE_BIKE: {
+        nWheels = 2;
+
+        auto pBike = static_cast<CBike*>(pVehicle);
+        fUnk = pBike->field_808;
+        bAreRearWheelsNotSkidding = pBike->m_anWheelState[1] != WHEEL_STATE_SKIDDING;
+        wheelStates = pBike->m_anWheelState;
+        aWheelTimers = pBike->m_wheelCollisionState;
+        break;
+    }
+    default:
+        return;
+    }
+
+    // Calcualte skid values sum of all wheels
+    float fTotalSkidValue = 0.0f;
+    for (auto i = 0; i < nWheels; i++) {
+        const bool bIsFrontWheel = i == CARWHEEL_FRONT_LEFT || i == CARWHEEL_FRONT_RIGHT;
+        const tWheelState thisWheelState = wheelStates[i];
+
+        if (thisWheelState == WHEEL_STATE_NORMAL)
+            continue;
+        if (aWheelTimers[i] == 0.0f)
+            continue;
+        if (bAreRearWheelsNotSkidding)
+            if (bIsFrontWheel)
+                if (thisWheelState == WHEEL_STATE_SKIDDING)
+                    continue;
+
+        const auto dt = vehicleParams.m_pTransmission->m_nDriveType;
+        if (dt == '4' ||
+            dt == 'F' && bIsFrontWheel ||
+            dt == 'R' && !bIsFrontWheel
+        ) {
+            fTotalSkidValue += GetVehicleDriveWheelSkidValue(
+                vehicleParams.m_pVehicle, thisWheelState, fUnk, *vehicleParams.m_pTransmission, vehicleParams.m_fVelocity);
+        } else {
+            fTotalSkidValue += GetVehicleNonDriveWheelSkidValue(
+                vehicleParams.m_pVehicle, thisWheelState, *vehicleParams.m_pTransmission, vehicleParams.m_fVelocity);
+        }
+    }
+
+    const auto StopSkidSound = [&] { PlaySkidSound(-1, 0.0f, 0.0f); };
+    if (fTotalSkidValue <= 0.0) {
+        StopSkidSound();
+        return;
+    }
+
+    short soundId = -1;
+    float fBaseVolume = 0.0f, fSpeed = 1.0f;
+
+    if (m_settings.m_nVehicleSoundType == VEHICLE_SOUND_BICYCLE) {
+        soundId = 0;
+        fBaseVolume = FLOAT_AT(0x8CBCF8);
+        fSpeed = FLOAT_AT(0x8CBCEC) + fTotalSkidValue * FLOAT_AT(0x8CBCF0);
+    } else {
+        if (IsSurfaceAudioGrass(pVehicle->m_nContactSurface))
+        {
+            soundId = 6;
+            fBaseVolume = -12.0f;
+            fSpeed = FLOAT_AT(0x8CBCE0) * fTotalSkidValue + FLOAT_AT(0x8CBCDC);
+        }
+        else if (IsSurfaceAudioEitherGravelWaterSand(pVehicle->m_nContactSurface))
+        {
+            soundId = 8;
+            fBaseVolume = -9.0;
+            fSpeed = FLOAT_AT(0x8CBCD8) * fTotalSkidValue + FLOAT_AT(0x8CBCD4);
+        } else {
+            soundId = 24;
+            fSpeed = FLOAT_AT(0x8CBCE8) * fTotalSkidValue + FLOAT_AT(0x8CBCE4);
+
+            if (m_settings.m_nVehicleSoundType == VEHICLE_SOUND_MOTORCYCLE)
+                fSpeed *= 1.2f;
+        }
+
+        switch (m_settings.m_nVehicleSoundType) {
+        case VEHICLE_SOUND_PLANE:
+        case VEHICLE_SOUND_HELI: {
+            fBaseVolume += FLOAT_AT(0x8CBCF4);
+            break;
+        }
+        }
+    } 
+
+    const float fAvgSkidValPerWheel = fTotalSkidValue / (float)nWheels;
+    if (fAvgSkidValPerWheel > 0.00001f) {
+        const float fVolume = FLOAT_AT(0xB6B9E0) + fBaseVolume + CAEAudioUtility::AudioLog10(fAvgSkidValPerWheel) * 20.0f;
+        if (fVolume >= -100.0f) {
+            PlaySkidSound(soundId, fSpeed, fVolume);
+        } else
+            StopSkidSound();
+    } else
+        StopSkidSound();
 }
 
 // 0x4F92C0

@@ -90,8 +90,8 @@ public:
     unsigned char  m_nNumWheelsOnGround;
     char field_806;
     char field_807;
-    int field_808;
-    unsigned int   m_anWheelState[2]; // enum tWheelState
+    float field_808;
+    tWheelState   m_anWheelState[2]; // enum tWheelState
 
     //vtable
 
