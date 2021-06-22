@@ -5,6 +5,8 @@
 #include "CAEAudioUtility.h"
 #include "CAESoundManager.h"
 
+#define FLOAT_AT(adr) (*(float*)(adr))
+
 CPed*& CAEVehicleAudioEntity::s_pPlayerAttachedForRadio = *(CPed**)0xB6B98C;
 CPed*& CAEVehicleAudioEntity::s_pPlayerDriver = *(CPed**)0xB6B990;
 bool& CAEVehicleAudioEntity::s_HelicoptorsDisabled = *(bool*)0xB6B994;
@@ -75,7 +77,7 @@ void CAEVehicleAudioEntity::InjectHooks()
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayReverseSound", 0x4F87D0, &CAEVehicleAudioEntity::PlayReverseSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleFlatTyre", 0x4F8940, &CAEVehicleAudioEntity::ProcessVehicleFlatTyre);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleRoadNoise", 0x4F8B00, &CAEVehicleAudioEntity::ProcessVehicleRoadNoise);
-    //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessReverseGear", 0x4F8DF0, &CAEVehicleAudioEntity::ProcessReverseGear);
+    ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessReverseGear", 0x4F8DF0, &CAEVehicleAudioEntity::ProcessReverseGear);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleSkidding", 0x4F8F10, &CAEVehicleAudioEntity::ProcessVehicleSkidding);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessRainOnVehicle", 0x4F92C0, &CAEVehicleAudioEntity::ProcessRainOnVehicle);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayAircraftSound", 0x4F93C0, &CAEVehicleAudioEntity::PlayAircraftSound);
@@ -1021,7 +1023,28 @@ void CAEVehicleAudioEntity::ProcessVehicleRoadNoise(cVehicleParams& vehicleParam
 
 // 0x4F8DF0
 void CAEVehicleAudioEntity::ProcessReverseGear(cVehicleParams& vehicleParams) {
-    plugin::CallMethod<0x4F8DF0, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    //plugin::CallMethod<0x4F8DF0, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    const auto pAuto = static_cast<CAutomobile*>(vehicleParams.m_pVehicle);
+    if (pAuto->vehicleFlags.bEngineOn && (pAuto->m_fGasPedal < 0.0f || !pAuto->m_nCurrentGear)) { // Check if we are reversing
+
+        float fReverseGearVelocityProgress = 0.0f;
+        if (pAuto->m_nWheelsOnGround) {
+            fReverseGearVelocityProgress = vehicleParams.m_fVelocity / vehicleParams.m_pTransmission->m_maxReverseGearVelocity;
+        } else {
+            if (pAuto->m_wheelsOnGrounPrev)
+                pAuto->field_964 *= 0.4;
+            fReverseGearVelocityProgress = pAuto->field_964;
+        }
+        fReverseGearVelocityProgress = fabs(fReverseGearVelocityProgress);
+
+        PlayReverseSound(
+            pAuto->m_fGasPedal >= 0.0f ? 20 : 19, // soundId
+            FLOAT_AT(0x8CBD24) + fReverseGearVelocityProgress * FLOAT_AT(0x8CBD28), // speed
+            fReverseGearVelocityProgress > 0.0f ? FLOAT_AT(0x8CBD2C) + CAEAudioUtility::AudioLog10(fReverseGearVelocityProgress) * 20.0: -100.0f // volume
+        );
+    } else { // Cancel sound otherwise
+        PlayReverseSound(-1, 0.0f, 0.0f);
+    }
 }
 
 // 0x4F8F10
