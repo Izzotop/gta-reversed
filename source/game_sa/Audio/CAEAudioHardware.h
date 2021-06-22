@@ -9,6 +9,14 @@
 #undef PlaySound
 #endif
 
+// Other values are unknown
+enum eSoundBank
+{
+    BANK_HORNS_AND_SIRENS = 0x4A,
+    BANK_MRWHOOPIE_SOUNDS = 0x4F,
+    BANK_RAIN_SOUNDS = 0x69
+};
+
 union CAEAudioHardwarePlayFlags
 {
     uint16_t m_nFlags;
@@ -95,7 +103,7 @@ public:
     void GetChannelPlayTimes(short channel, short* outArr);
     void SetChannelVolume(short channel, ushort channelSlot, float volume, uchar unused);
     void LoadSoundBank(ushort bankId, short bankSlotId);
-    void IsSoundBankLoaded(ushort, short);
+    bool IsSoundBankLoaded(ushort, short);
     void GetSoundBankLoadingStatus(ushort, short);
     void StopSound(short channel, ushort channelSlot);
     void SetChannelPosition(short channel, ushort channelSlot, CVector* vecPos, uchar unused);

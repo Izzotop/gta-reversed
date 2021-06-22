@@ -15,7 +15,7 @@ private:
     char _pad7D[3];
 public:
 
-
+    static float& m_sfRainVolume;
 };
 
 VALIDATE_SIZE(CAEWeatherAudioEntity, 0x80);

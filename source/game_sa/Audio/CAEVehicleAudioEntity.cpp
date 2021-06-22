@@ -79,7 +79,7 @@ void CAEVehicleAudioEntity::InjectHooks()
     ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleRoadNoise", 0x4F8B00, &CAEVehicleAudioEntity::ProcessVehicleRoadNoise);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessReverseGear", 0x4F8DF0, &CAEVehicleAudioEntity::ProcessReverseGear);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleSkidding", 0x4F8F10, &CAEVehicleAudioEntity::ProcessVehicleSkidding);
-    //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessRainOnVehicle", 0x4F92C0, &CAEVehicleAudioEntity::ProcessRainOnVehicle);
+    ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessRainOnVehicle", 0x4F92C0, &CAEVehicleAudioEntity::ProcessRainOnVehicle);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayAircraftSound", 0x4F93C0, &CAEVehicleAudioEntity::PlayAircraftSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayBicycleSound", 0x4F9710, &CAEVehicleAudioEntity::PlayBicycleSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayHornOrSiren", 0x4F99D0, &CAEVehicleAudioEntity::PlayHornOrSiren);
@@ -1171,7 +1171,31 @@ void CAEVehicleAudioEntity::ProcessVehicleSkidding(cVehicleParams& vehicleParams
 
 // 0x4F92C0
 void CAEVehicleAudioEntity::ProcessRainOnVehicle(cVehicleParams& vehicleParams) {
-    plugin::CallMethod<0x4F92C0, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    //plugin::CallMethod<0x4F92C0, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    if (!AEAudioHardware.IsSoundBankLoaded((ushort)BANK_RAIN_SOUNDS, 6))
+        return;
+    if (CAEWeatherAudioEntity::m_sfRainVolume <= -100.0f)
+        return;
+    if (++m_nRainDropCounter < 3)
+        return;
+    m_nRainDropCounter = 0;
+
+    m_tempSound.Initialise(
+        6,
+        CAEAudioUtility::GetRandomNumberInRange(12, 15),
+        this,
+        m_pEntity->GetPosition(),
+        FLOAT_AT(0xB6B9EC) + CAEWeatherAudioEntity::m_sfRainVolume,
+        0.1f,
+        1.0f,
+        1.0f,
+        0,
+        0,
+        0.0f,
+        0
+    );
+    m_tempSound.m_nEvent = AE_RAIN_COLLISION;
+    AESoundManager.RequestNewSound(&m_tempSound);
 }
 
 // 0x4FA0C0
