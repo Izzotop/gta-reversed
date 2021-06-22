@@ -74,7 +74,7 @@ void CAEVehicleAudioEntity::InjectHooks()
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayFlatTyreSound", 0x4F8650, &CAEVehicleAudioEntity::PlayFlatTyreSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayReverseSound", 0x4F87D0, &CAEVehicleAudioEntity::PlayReverseSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleFlatTyre", 0x4F8940, &CAEVehicleAudioEntity::ProcessVehicleFlatTyre);
-    //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleRoadNoise", 0x4F8B00, &CAEVehicleAudioEntity::ProcessVehicleRoadNoise);
+    ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleRoadNoise", 0x4F8B00, &CAEVehicleAudioEntity::ProcessVehicleRoadNoise);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessReverseGear", 0x4F8DF0, &CAEVehicleAudioEntity::ProcessReverseGear);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleSkidding", 0x4F8F10, &CAEVehicleAudioEntity::ProcessVehicleSkidding);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessRainOnVehicle", 0x4F92C0, &CAEVehicleAudioEntity::ProcessRainOnVehicle);
@@ -943,7 +943,80 @@ bool IsSurfaceAudioEitherGravelWaterSand(char surface) {
 
 // 0x4F8B00
 void CAEVehicleAudioEntity::ProcessVehicleRoadNoise(cVehicleParams& vehicleParams) {
-    plugin::CallMethod<0x4F8B00, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    //plugin::CallMethod<0x4F8B00, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+
+    CVehicle* pVehicle = vehicleParams.m_pVehicle;
+
+    const auto CancelRoadNoise = [=] { PlayRoadNoiseSound(-1, 0.0f, 0.0f); };
+
+    // Check if any wheels touch the ground. (Perhaps vehicleParams.m_nWheelsOnGround could be used?)
+    switch (vehicleParams.m_vehicleType) {
+    case VEHICLE_AUTOMOBILE: {
+        if (!static_cast<CAutomobile*>(pVehicle)->m_nNumContactWheels) {
+            CancelRoadNoise();
+            return;
+        }
+    }
+    case VEHICLE_BIKE: {
+        if (!static_cast<CBike*>(pVehicle)->m_nNumContactWheels) {
+            CancelRoadNoise();
+            return;
+        }
+    }
+    }
+
+    switch (pVehicle->m_nModelIndex) {
+    case MODEL_ARTICT1:
+    case MODEL_ARTICT2:
+    case MODEL_PETROTR:
+    case MODEL_ARTICT3:
+        break; // No transmission check for these models
+    default: {
+        if (!vehicleParams.m_pTransmission) {
+            CancelRoadNoise();
+            return;
+        }
+    }
+    }
+
+    const float fAbsVelocity = fabs(vehicleParams.m_fVelocity);
+    if (fAbsVelocity <= 0.0f) {
+        CancelRoadNoise();
+        return;
+    }
+
+    float fSpeed = 1.0f;
+    {
+        const CVector camPos = TheCamera.GetPosition();
+        const CVector vehAudioPos = m_pEntity->GetPosition();
+
+        const float someDistance = *(float*)0x8CBD10; // 72.0f by default. TODO: Remains to test if value ever changes
+        const float distanceProgress = (vehAudioPos - camPos).Magnitude() / someDistance;
+
+        fSpeed = 0.75 + std::max(1.0f, distanceProgress) / 2.0f;
+    }
+
+    short nRoadNoiseSound = -1;
+    float fVolumeBase = -12.0f;
+    if (IsSurfaceAudioGrass(pVehicle->m_nContactSurface))
+    {
+        fSpeed *= 1.3f;
+        fVolumeBase += *(float*)0xB6B9E4; // TODO: Insert value of var. here
+        nRoadNoiseSound = 21;
+    } else if (IsSurfaceAudioEitherGravelWaterSand(pVehicle->m_nContactSurface))
+    {
+        fVolumeBase += 4.5f; // TODO: Insert value of var. here
+        nRoadNoiseSound = 22;
+    }
+
+    const float logaritmicVolume = std::min(1.0f, 2 * fAbsVelocity);
+    float fVolume = -100.0f;
+    if (logaritmicVolume > 0.0008f) {
+        fVolume = fVolumeBase + CAEAudioUtility::AudioLog10(logaritmicVolume) * 20.0f;
+    }
+
+    // Playing sound with -100.0f volume, in case logaritmicVolume <= 0.0008f, doesn't make much sense..
+    PlayRoadNoiseSound(nRoadNoiseSound, fSpeed, fVolume);
 }
 
 // 0x4F8DF0
