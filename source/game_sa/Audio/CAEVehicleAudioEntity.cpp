@@ -931,6 +931,16 @@ void CAEVehicleAudioEntity::ProcessVehicleFlatTyre(cVehicleParams& vehicleParams
     plugin::CallMethod<0x4F8940, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
 }
 
+bool IsSurfaceAudioGrass(char surface) {
+    return g_surfaceInfos->IsAudioGrass(surface) || g_surfaceInfos->IsAudioLongGrass(surface);
+}
+
+bool IsSurfaceAudioEitherGravelWaterSand(char surface) {
+    return g_surfaceInfos->IsAudioGravel(surface) ||
+        g_surfaceInfos->IsAudioSand(surface) ||
+        g_surfaceInfos->IsAudioWater(surface);
+}
+
 // 0x4F8B00
 void CAEVehicleAudioEntity::ProcessVehicleRoadNoise(cVehicleParams& vehicleParams) {
     plugin::CallMethod<0x4F8B00, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
