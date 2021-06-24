@@ -84,7 +84,7 @@ void CAEVehicleAudioEntity::InjectHooks()
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayBicycleSound", 0x4F9710, &CAEVehicleAudioEntity::PlayBicycleSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayHornOrSiren", 0x4F99D0, &CAEVehicleAudioEntity::PlayHornOrSiren);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "UpdateBoatSound", 0x4F9E90, &CAEVehicleAudioEntity::UpdateBoatSound);
-    //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessBoatMovingOverWater", 0x4FA0C0, &CAEVehicleAudioEntity::ProcessBoatMovingOverWater);
+    ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessBoatMovingOverWater", 0x4FA0C0, &CAEVehicleAudioEntity::ProcessBoatMovingOverWater);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "UpdateTrainSound", 0x4FA1C0, &CAEVehicleAudioEntity::UpdateTrainSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessTrainTrackSound", 0x4FA3F0, &CAEVehicleAudioEntity::ProcessTrainTrackSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayTrainBrakeSound", 0x4FA630, &CAEVehicleAudioEntity::PlayTrainBrakeSound);
@@ -93,7 +93,7 @@ void CAEVehicleAudioEntity::InjectHooks()
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "UpdateGenericVehicleSound", 0x4FAD40, &CAEVehicleAudioEntity::UpdateGenericVehicleSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessEngineDamage", 0x4FAE20, &CAEVehicleAudioEntity::ProcessEngineDamage);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessNitro", 0x4FB070, &CAEVehicleAudioEntity::ProcessNitro);
-    //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessMovingParts", 0x4FB260, &CAEVehicleAudioEntity::ProcessMovingParts);
+    ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessMovingParts", 0x4FB260, &CAEVehicleAudioEntity::ProcessMovingParts);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessPlayerVehicleEngine", 0x4FBB10, &CAEVehicleAudioEntity::ProcessPlayerVehicleEngine);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessDummyStateTransition", 0x4FCA10, &CAEVehicleAudioEntity::ProcessDummyStateTransition);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "JustGotOutOfVehicleAsDriver", 0x4FCF40, &CAEVehicleAudioEntity::JustGotOutOfVehicleAsDriver);
@@ -995,7 +995,7 @@ void CAEVehicleAudioEntity::ProcessVehicleRoadNoise(cVehicleParams& vehicleParam
         const float someDistance = *(float*)0x8CBD10; // 72.0f by default. TODO: Remains to test if value ever changes
         const float distanceProgress = (vehAudioPos - camPos).Magnitude() / someDistance;
 
-        fSpeed = 0.75 + std::max(1.0f, distanceProgress) / 2.0f;
+        fSpeed = 0.75f + std::max(1.0f, distanceProgress) / 2.0f;
     }
 
     short nRoadNoiseSound = -1;
@@ -1200,7 +1200,26 @@ void CAEVehicleAudioEntity::ProcessRainOnVehicle(cVehicleParams& vehicleParams) 
 
 // 0x4FA0C0
 void CAEVehicleAudioEntity::ProcessBoatMovingOverWater(cVehicleParams& vehicleParams) {
-    plugin::CallMethod<0x4FA0C0, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    //plugin::CallMethod<0x4FA0C0, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    auto pBoat = static_cast<CBoat*>(vehicleParams.m_pVehicle);
+
+    // Originally there was a multiply by 1.33, thats the recp. of 0.75, which makes sense
+    // because the abs. velocity is clamped to 0,75
+    const float fVelocityProgress = std::min(0.75f, fabs(vehicleParams.m_fVelocity)) / 0.75f;
+
+    float fVolume = -100.0f;
+    if (pBoat->m_nBoatFlags.bOnWater && fVelocityProgress >= 0.00001f) {
+        fVolume = CAEAudioUtility::AudioLog10(fVelocityProgress) * 20.0f;
+        fVolume += (m_settings.m_nVehicleSoundType == VEHICLE_SOUND_NON_VEH) ? 12.0f : 3.0f;
+    }
+
+    float fSpeed = 0.8f + fVelocityProgress * 0.2f;
+    if (CWeather::UnderWaterness >= 0.5f) {
+        fSpeed *= 0.185f;
+        fVolume += 6.0f;
+    }
+
+    UpdateBoatSound(6, 2, 3, fSpeed, fVolume);
 }
 
 // 0x4FA3F0
@@ -1230,7 +1249,131 @@ void CAEVehicleAudioEntity::ProcessNitro(cVehicleParams& vehicleParams) {
 
 // 0x4FB260
 void CAEVehicleAudioEntity::ProcessMovingParts(cVehicleParams& vehicleParams) {
-    plugin::CallMethod<0x4FB260, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    //plugin::CallMethod<0x4FB260, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    switch (vehicleParams.m_pVehicle->m_nModelIndex) {
+    case MODEL_PACKER:
+    case MODEL_DOZER:
+    case MODEL_DUMPER:
+
+    // Note: Rockstar originally may have wanted it to have sound,
+    // but they've only left it in the first `if` check, it has no `case` in the `switch` below.
+    // case MODEL_CEMENT:
+
+    case MODEL_ANDROM:
+    case MODEL_FORKLIFT:
+        break;
+    default:
+        return;
+    }
+
+    auto pVehicle = static_cast<CAutomobile*>(vehicleParams.m_pVehicle);
+
+    float fComponentMoveProgress = (float)(pVehicle->m_wMiscComponentAngle - pVehicle->m_wMiscComponentAnglePrev) / 30.0f;
+    fComponentMoveProgress = clamp<float>(fabs(fComponentMoveProgress), 0.0f, 1.0f);
+    if (fComponentMoveProgress <= field_238)
+        fComponentMoveProgress = std::max(field_238 - 0.2f, fComponentMoveProgress);
+    else
+        fComponentMoveProgress = std::min(field_238 + 0.2f, fComponentMoveProgress);
+    field_238 = fComponentMoveProgress;
+
+
+    float fSpeed = 1.0f, fVolume = 0.0f;
+    short bankSlot = -1, bank = -1, sfxId = -1;
+
+    switch (pVehicle->m_nModelIndex) {
+    case MODEL_DUMPER: {
+        bankSlot = 19;
+        bank = 138;
+        sfxId = 15;
+        if (fComponentMoveProgress <= 0.0)
+        {
+            fSpeed = 0.9f;
+            fVolume = 14.0f;
+        }
+        else
+        {
+            fSpeed = 1.1f;
+            fVolume = 20.f;
+        }
+        break;
+    }
+    case MODEL_PACKER: {
+        bankSlot = 19;
+        bank = 138;
+        sfxId = 15;
+        if (fComponentMoveProgress <= 0.0)
+        {
+            fSpeed = 0.8f;
+            fVolume = 3.0f;
+        }
+        else
+        {
+            fSpeed = 1.0f;
+            fVolume = 9.0f;
+        }
+        break;
+    }
+    case MODEL_DOZER: {
+        bankSlot = 19;
+        bank = 138;
+        sfxId = 15;
+        if (fComponentMoveProgress <= 0.0)
+        {
+            fSpeed = 0.9f;
+            fVolume = 2.0f;
+        }
+        else
+        {
+            fSpeed = 1.1f;
+            fVolume = 6.0f;
+        }
+        break;
+    }
+    case MODEL_FORKLIFT: {
+        bankSlot = m_nEngineBankSlotId;
+        bank = 57;
+        sfxId = 2;
+        if (fComponentMoveProgress <= 0.0)
+        {
+            fSpeed = 0.8f;
+            fVolume = -18.0f;
+        }
+        else
+        {
+            fSpeed = 1.0f;
+            fVolume = -6.0f;
+        }
+        break;
+    }
+    case MODEL_ANDROM: {
+        bankSlot = 19;
+        bank = 138;
+        sfxId = 15;
+        if (fComponentMoveProgress <= 0.0)
+        {
+            fSpeed = 0.8f;
+            fVolume = 21.0f;
+        }
+        else
+        {
+            fSpeed = 1.0f;
+            fVolume = 24.0f;
+        }
+        break;
+    }
+    }
+
+    fVolume += CAEAudioUtility::AudioLog10(field_238) * 20.0f;
+    if (fVolume <= -100.0f) {
+        if (auto& pSound = m_aEngineSounds[11].m_pSound)
+        {
+            pSound->SetIndividualEnvironment(4, 0);
+            pSound->StopSound();
+            pSound = nullptr;
+        }
+    } else {
+        UpdateGenericVehicleSound(11, bankSlot, bank, sfxId, fSpeed, fVolume, 1.5f);
+    }
 }
 
 // 0x4FBB10
