@@ -1488,12 +1488,12 @@ void CAEVehicleAudioEntity::ProcessDummyVehicleEngine(cVehicleParams& vehiclePar
 
 // 0x501650
 void CAEVehicleAudioEntity::ProcessPlayerJet(cVehicleParams& vehicleParams) {
-    plugin::CallMethod<0x501650, CAEVehicleAudioEntity*>(this, vehicleParams);
+    plugin::CallMethod<0x501650, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
 }
 
 // 0x501960
 void CAEVehicleAudioEntity::ProcessDummyJet(cVehicleParams& vehicleParams) {
-    plugin::CallMethod<0x501960, CAEVehicleAudioEntity*>(this, vehicleParams);
+    plugin::CallMethod<0x501960, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
 }
 
 // 0x501C50
