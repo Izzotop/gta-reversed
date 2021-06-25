@@ -121,7 +121,7 @@ void CAEVehicleAudioEntity::InjectHooks()
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessPlayerJet", 0x501650, &CAEVehicleAudioEntity::ProcessPlayerJet);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessDummyJet", 0x501960, &CAEVehicleAudioEntity::ProcessDummyJet);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessSpecialVehicle", 0x501AB0, &CAEVehicleAudioEntity::ProcessSpecialVehicle);
-    //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessAircraft", 0x501C50, &CAEVehicleAudioEntity::ProcessAircraft);
+    ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessAircraft", 0x501C50, &CAEVehicleAudioEntity::ProcessAircraft);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicle", 0x501E10, &CAEVehicleAudioEntity::ProcessVehicle);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "Service", 0x502280, &CAEVehicleAudioEntity::Service);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "~CAEVehicleAudioEntity", 0x6D0A10, &CAEVehicleAudioEntity::~CAEVehicleAudioEntity);
@@ -1499,16 +1499,56 @@ void CAEVehicleAudioEntity::ProcessDummyJet(cVehicleParams& vehicleParams) {
 // 0x501C50
 void CAEVehicleAudioEntity::ProcessAircraft(cVehicleParams& vehParams) {
     //plugin::CallMethod<0x501C50, CAEVehicleAudioEntity*>(this, vehicleParams);
-    bool isPlane = false;
+    if (m_bSoundsStopped)
+        return;
+
+    if (!AEAudioHardware.IsSoundBankLoaded(138u, 19))
+        return;
+
     auto pVehicle = vehParams.m_pVehicle;
-    switch (pVehicle->m_nModelIndex)
-    {
-    case MODEL_SHAMAL:
-    case MODEL_HYDRA:
-    case MODEL_AT400:
-    case MODEL_ANDROM:
-        isPlane = 1;
+    switch (m_settings.m_nVehicleSoundType) {
+    case VEHICLE_SOUND_HELI: {
+        if (s_HelicoptorsDisabled || m_bDisableHeliEngineSounds)
+            JustWreckedVehicle();
+        else if (m_bPlayerDriver)
+            ProcessPlayerHeli(vehParams);
+        else if (pVehicle->m_nStatus == STATUS_PHYSICS)
+            ProcessAIHeli(vehParams);
+        else
+            ProcessDummyHeli(vehParams);
         break;
+    }
+    case VEHICLE_SOUND_PLANE: {
+        switch (pVehicle->m_nModelIndex)
+        {
+        case MODEL_SHAMAL:
+        case MODEL_HYDRA:
+        case MODEL_AT400:
+        case MODEL_ANDROM: { // Originally there was an `isPlane` variable. I just rearranged stuff, to look nicer
+            if (m_bPlayerDriver)
+                ProcessPlayerJet(vehParams);
+            else
+                ProcessDummyJet(vehParams);
+            break;
+        }
+        default: {
+            if (m_bPlayerDriver)
+                ProcessPlayerProp(vehParams);
+            else if (pVehicle->m_nStatus == STATUS_PHYSICS || pVehicle->m_autoPilot.m_vehicleRecordingId >= 0)
+                ProcessAIProp(vehParams);
+            else
+                ProcessDummyProp(vehParams);
+        }
+        }
+        break;
+    }
+    case VEHICLE_SOUND_NON_VEH: {
+        if (m_bPlayerDriver)
+            ProcessPlayerSeaPlane(vehParams);
+        else
+            ProcessDummySeaPlane(vehParams);
+        break;
+    }
     }
 }
 
