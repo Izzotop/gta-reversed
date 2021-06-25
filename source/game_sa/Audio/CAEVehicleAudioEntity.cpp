@@ -1458,7 +1458,7 @@ void CAEVehicleAudioEntity::ProcessDummyTrainEngine(cVehicleParams& vehicleParam
 
 // 0x500AB0
 void CAEVehicleAudioEntity::ProcessPlayerTrainBrakes(cVehicleParams& vehicleParams) {
-    return plugin::CallMethod<0x500AB0, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
+    plugin::CallMethod<0x500AB0, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
 }
 
 // 0x500CE0
@@ -1478,7 +1478,7 @@ void CAEVehicleAudioEntity::ProcessDummyHovercraft(cVehicleParams& vehicleParams
 
 // 0x501270
 void CAEVehicleAudioEntity::ProcessDummyGolfCart(cVehicleParams& vehicleParams) {
-    plugin::CallMethod<0x501270, CAEVehicleAudioEntity*>(this, vehicleParams);
+    plugin::CallMethod<0x501270, CAEVehicleAudioEntity*, cVehicleParams&>(this, vehicleParams);
 }
 
 // 0x501480
