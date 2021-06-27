@@ -320,6 +320,9 @@ void CAESound::Initialise(short bankSlotId, short sfxId, CAEAudioEntity *baseAud
     unsigned char ignoredServiceCycles, unsigned short environmentFlags, float speedVariability,
     short currPlayPosn)
 {
+    if (bankSlotId < -1 || sfxId < -1)
+        DebugBreak();
+
     CAESound::UnregisterWithPhysicalEntity();
     m_nSoundIdInSlot = sfxId;
     m_nBankSlotId = bankSlotId;

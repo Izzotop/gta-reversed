@@ -73,7 +73,7 @@ void CAEVehicleAudioEntity::InjectHooks()
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "GetFreqForPlayerEngineSound", 0x4F8070, &CAEVehicleAudioEntity::GetFreqForPlayerEngineSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlaySkidSound", 0x4F8360, &CAEVehicleAudioEntity::PlaySkidSound);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayRoadNoiseSound", 0x4F84D0, &CAEVehicleAudioEntity::PlayRoadNoiseSound);
-    //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayFlatTyreSound", 0x4F8650, &CAEVehicleAudioEntity::PlayFlatTyreSound);
+    ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayFlatTyreSound", 0x4F8650, &CAEVehicleAudioEntity::PlayFlatTyreSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "PlayReverseSound", 0x4F87D0, &CAEVehicleAudioEntity::PlayReverseSound);
     //ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleFlatTyre", 0x4F8940, &CAEVehicleAudioEntity::ProcessVehicleFlatTyre);
     ReversibleHooks::Install("CAEVehicleAudioEntity", "ProcessVehicleRoadNoise", 0x4F8B00, &CAEVehicleAudioEntity::ProcessVehicleRoadNoise);
@@ -877,10 +877,48 @@ void CAEVehicleAudioEntity::PlayRoadNoiseSound(short newRoadNosiseSoundType, flo
     }
 }
 
-
 // 0x4F8650
-void CAEVehicleAudioEntity::PlayFlatTyreSound(short soundId, float speed, float volumeDelta) {
-    return plugin::CallMethod<0x4F8650, CAEVehicleAudioEntity*, short, float, float>(this, soundId, speed, volumeDelta);
+void CAEVehicleAudioEntity::PlayFlatTyreSound(short newFlatTyreSoundType, float speed, float volumeDelta) {
+    const float volume = m_fGeneralVehicleSoundVolume + volumeDelta;
+    if (m_nFlatTyreSoundType != newFlatTyreSoundType)
+    {
+        if (m_pFlatTyreSound)
+        {
+            m_pFlatTyreSound->SetIndividualEnvironment(4, false);
+            m_pFlatTyreSound->StopSound();
+            m_pFlatTyreSound = nullptr;
+        }
+
+        // Create new sound
+        m_nFlatTyreSoundType = newFlatTyreSoundType;
+        if (newFlatTyreSoundType != -1)
+        {
+            CVector pos = m_pEntity->GetPosition();
+            CAESound toRequest;
+            toRequest.Initialise(
+                19,
+                newFlatTyreSoundType,
+                this,
+                pos,
+                volume,
+                1.0,
+                1.0,
+                1.0,
+                false,
+                4, // IndividualEnvironment 
+                0.0,
+                0
+            );
+            toRequest.m_fSpeed = speed;
+            toRequest.m_fSoundDistance = 2.0f;
+            m_pFlatTyreSound = AESoundManager.RequestNewSound(&toRequest);
+        }
+    }
+    else if (m_nFlatTyreSoundType != -1 && m_pFlatTyreSound) {
+        // Same sound type already initialised, just set speed and volume
+        m_pFlatTyreSound->m_fSpeed = speed;
+        m_pFlatTyreSound->m_fVolume = volume;
+    }
 }
 
 // 0x4F87D0
