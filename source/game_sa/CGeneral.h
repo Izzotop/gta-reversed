@@ -23,6 +23,9 @@ public:
     static float GetAngleBetweenPoints(float x1, float y1, float x2, float y2);
     static unsigned int GetRandomNumberInRange(int min, int max); // returns random int in range [min;max)
     static float GetRandomNumberInRange(float min, float max);    // returns random float in range [min;max)
+
+    template<typename T, size_t R, size_t C>
+    static auto GetArrayRowsCount(T(&)[R][C]) { return R; }
 };
 
 extern constexpr float RAND_MAX_RECIPROCAL = 1.0f / static_cast<float>(RAND_MAX); // 1.0 / 32767.0 == 0.000030518509

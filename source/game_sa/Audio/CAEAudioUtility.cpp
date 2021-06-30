@@ -41,7 +41,7 @@ bool CAEAudioUtility::ResolveProbability(float p)
     return p >= 1.0f || (rand() * RAND_MAX_RECIPROCAL) < p;
 }
 
-float CAEAudioUtility::GetPiecewiseLinear(float x, short dataCount, float (*data)[2])
+float CAEAudioUtility::GetPiecewiseLinear(float x, short dataCount, float data[][2])
 {
     if (x >= data[dataCount - 1][0])
         return data[dataCount - 1][1];

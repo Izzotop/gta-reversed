@@ -87,7 +87,7 @@ struct  tVehicleAudioSettings {
     char              _pad1;
     float              m_fBassEq;
     float              field_C;
-    char               m_bHornTon;   // sfx id
+    char               m_nHornToneSoundInBank;   // sfx id
     char              _pad2[3];
     float              m_fHornHigh;
     char               m_nDoorSound;
@@ -126,9 +126,9 @@ public:
     bool                    m_bVehicleRadioPaused;
     bool                    m_bSoundsStopped;
     char                    m_nEngineState;
-    char field_AA;
+    char                    m_nGearRelatedStuff;
     char field_AB;
-    int field_AC;
+    float field_AC;
     bool                    m_bInhibitAccForLowSpeed;
     char field_B1;
     short                   m_nRainDropCounter;
@@ -137,11 +137,11 @@ public:
     int field_B8;
     char field_BC;
     bool                    m_bDisableHeliEngineSounds;
-    char field_BE;
+    char                    m_bPlayHornTone;
     bool                    m_bSirenOrAlarmPlaying;
     bool                    m_bHornPlaying;
     char gap_C1[3];
-    float                   m_fSirenVolume;
+    float                   m_fHornVolume;
     bool                    m_bModelWithSiren;
     char gap_C9[3];
     unsigned int            m_nBoatHitWaveLastPlayedTime;
@@ -154,9 +154,9 @@ public:
     short field_E2;
     tVehicleSound           m_aEngineSounds[12];
     int field_144;
-    short m_nSomeCurPlayPos;
-    short m_nSomePrevPlayPos;
-    short field_14C;
+    short m_nEngineSoundPlayPos;
+    short m_nEngineSoundLastPlayedPos;
+    short m_nAcclLoopCounter;
     short field_14E;
     int field_150;
     short field_154;
@@ -176,8 +176,8 @@ public:
     CAESound               *m_pSirenSound;
     CAESound               *m_pPoliceSirenSound;
     CAETwinLoopSoundEntity  m_twinSkidSound;
-    float field_22C;
-    float field_230;
+    float                   m_fPlaneSoundSpeed;
+    float                   m_fPlaneSoundVolume_Probably;
     float field_234;
     float field_238;
     float field_23C;
@@ -220,7 +220,7 @@ public:
     void JustWreckedVehicle();
     CVector GetAircraftNearPosition();
     float GetFlyingMetalVolume(CPhysical*);
-    void GetSirenState(uchar* playSirenOrAlarm, uchar* playHorn, cVehicleParams& a4);
+    void GetSirenState(bool& bSirenOrAlarm, bool& bHorn, cVehicleParams& a4);
     void PlayTrainBrakeSound(short soundType, float speed, float volume);
     void JustGotOutOfVehicleAsDriver();
 
@@ -232,7 +232,7 @@ public:
     void StartVehicleEngineSound(short, float, float);
 
     void UpdateVehicleEngineSound(short, float, float);
-    static void UpdateGasPedalAudio(CAutomobile* veh, int vehType);
+    static void UpdateGasPedalAudio(CVehicle* pVeh, enum eVehicleType vehType);
     void UpdateBoatSound(short engineState, short bankSlotId, short soundId, float speed, float volumeDelta);
     void UpdateTrainSound(short, short, short, float, float);
     void UpdateGenericVehicleSound(short soundId, short bankSlotId, short bankId, short sfxId, float speed, float volume, float distance);
@@ -307,10 +307,18 @@ public:
     void ProcessMovingParts(cVehicleParams& vehicleParams);
     void ProcessVehicle(CPhysical* vehicle);
 
-// UNUSED
+// Seems to be inlined, so whenever you see something similar, replace it with a call
     void StopGenericEngineSound(short index);
 
-
+// Custom (Most likely originally existed, but got inlined):
+    bool UpdateGenericEngineSound(short index, float fVolume = 1.0f, float fSpeed = 1.0f);
+    bool PlayGenericEngineSound(short index, short bank, short slotInBank,
+        float fVolume = 1.0f, float fSpeed = 1.0f, float fSoundDistance = 1.0f,
+        float fTimeScale = 1.0f, short individualEnvironment = eSoundEnvironment::SOUND_REQUEST_UPDATES, short playPos = 0);
+#undef PlaySound
+    CAESound* PlaySound(short bank, short slotInBank,
+        float fVolume = 1.0f, float fSpeed = 1.0f, float fSoundDistance = 1.0f,
+        float fTimeScale = 1.0f, short individualEnvironment = eSoundEnvironment::SOUND_REQUEST_UPDATES, short playPos = 0);
   public:
     static void StaticInitialise();
     static void StaticService() { /* Empty on purpose */ }

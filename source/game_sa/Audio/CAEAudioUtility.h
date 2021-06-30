@@ -9,7 +9,12 @@ public:
     static float GetRandomNumberInRange(float a, float b);
     static bool ResolveProbability(float prob);
     // TODO: CAEAudioUtility::GetBankAndSoundFromScriptSlotAudioEvent(int *,int *,int *,int) @ 0x4D9CC0
-    static float GetPiecewiseLinear(float x, short dataCount, float (*data)[2]);
+    static float GetPiecewiseLinear(float x, short dataCount, float data[][2]);
+
+    // NOTSA: More portable code (to avoid mistakes of forgetting to change dataCount when chaning the size of the inptui array)
+    template<short R>
+    static float GetPiecewiseLinear(float x, float (&data)[R][2]) { return GetPiecewiseLinear(x, R, data); }
+
     // TODO: CAEAudioUtility::FindVehicleOfPlayer(void) @ 0x4D9E10
     static float AudioLog10(float p);
     static std::int64_t CAEAudioUtility::GetCurrentTimeInMilliseconds();

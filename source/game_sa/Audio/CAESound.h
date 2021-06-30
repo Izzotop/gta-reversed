@@ -10,7 +10,7 @@
 #include "CVector.h"
 class CAEAudioEntity;
 
-enum  eSoundEnvironment : unsigned short {
+enum eSoundEnvironment : unsigned short {
     SOUND_FRONT_END                        = 0x1,
     SOUND_UNCANCELLABLE                    = 0x2,
     SOUND_REQUEST_UPDATES                  = 0x4,
@@ -64,7 +64,7 @@ public:
     union {
         unsigned short m_nEnvironmentFlags;
         struct {
-            unsigned short m_bFrontEnd : 1;
+            unsigned short m_bFrontEnd : 1; 
             unsigned short m_bUncancellable : 1;
             unsigned short m_bRequestUpdates : 1;
             unsigned short m_bPlayPhysically : 1;
