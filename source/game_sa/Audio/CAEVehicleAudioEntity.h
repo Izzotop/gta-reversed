@@ -232,7 +232,7 @@ public:
     void StartVehicleEngineSound(short, float, float);
 
     void UpdateVehicleEngineSound(short, float, float);
-    static void UpdateGasPedalAudio(CVehicle* pVeh, enum eVehicleType vehType);
+    static void UpdateGasPedalAudio(CVehicle* pVeh, int vehType);
     void UpdateBoatSound(short engineState, short bankSlotId, short soundId, float speed, float volumeDelta);
     void UpdateTrainSound(short, short, short, float, float);
     void UpdateGenericVehicleSound(short soundId, short bankSlotId, short bankId, short sfxId, float speed, float volume, float distance);

@@ -546,8 +546,8 @@ void CAutomobile::ProcessControl()
         }
 
         if (m_nStatus != STATUS_PLAYER) {
-            if (CanUpdateHornCounter() && m_nHornCounter)
-                m_nHornCounter--;
+            if (CanUpdateHornCounter() && m_nHornTimeEndMs)
+                m_nHornTimeEndMs--;
         }
         else if (handlingFlags.bHydraulicInst || CCheat::m_aCheatsActive[CHEAT_PERFECT_HANDLING] || extraHandlingTaxiBoost)
             ProcessSirenAndHorn(false);
@@ -904,8 +904,8 @@ bool CAutomobile::ProcessAI(unsigned int& extraHandlingFlags)
             m_wheelRotation[i] += wheelRot;
         }
         PlayHornIfNecessary();
-        if (m_nHornCounter)
-            m_nHornCounter--;
+        if (m_nHornTimeEndMs)
+            m_nHornTimeEndMs--;
         vehicleFlags.bAudioChangingGear = false;
         vehicleFlags.bVehicleColProcessed = false;
         return true;
@@ -953,7 +953,7 @@ bool CAutomobile::ProcessAI(unsigned int& extraHandlingFlags)
         m_fSteerAngle = 0.0f;
         m_fGasPedal = 0.0f;
         if (CanUpdateHornCounter())
-            m_nHornCounter = 0;
+            m_nHornTimeEndMs = 0;
         if (!vehicleFlags.bIsBeingCarJacked)
             return false;
         vehicleFlags.bIsHandbrakeOn = true;
@@ -967,7 +967,7 @@ bool CAutomobile::ProcessAI(unsigned int& extraHandlingFlags)
         m_fGasPedal = 0.0f;
         if (!CanUpdateHornCounter())
             return false;
-        m_nHornCounter = 0;
+        m_nHornTimeEndMs = 0;
         return false;
     case STATUS_HELI:
         if (CPad::GetPad(0)->CarGunJustDown() && !CVehicle::bDisableRemoteDetonation) {
@@ -1008,7 +1008,7 @@ bool CAutomobile::ProcessAI(unsigned int& extraHandlingFlags)
         m_fGasPedal = 0.0f;
         if (!CanUpdateHornCounter())
             return false;
-        m_nHornCounter = 0;
+        m_nHornTimeEndMs = 0;
         return false;
     case STATUS_REMOTE_CONTROLLED:
         vehicleFlags.bIsHandbrakeOn = false;

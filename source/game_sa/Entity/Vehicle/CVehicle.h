@@ -348,8 +348,8 @@ public:
     char field_511; // initialised, but not used?
     char field_512; // initialised, but not used?
     char m_nVehicleWeaponInUse; // see enum eCarWeapon
-    unsigned int     m_nHornCounter;
-    char field_518; // random id related to siren
+    unsigned int     m_nHornTimeEndMs;
+    char randomIdRelatedToSiren; // random id related to siren
     char m_nCarHornTimer; // car horn related
     char m_comedyControlState;
     char       m_nHasslePosId;

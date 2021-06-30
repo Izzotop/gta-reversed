@@ -163,7 +163,7 @@ public:
     uint8_t m_nWheelsOnGround;
     uint8_t m_wheelsOnGrounPrev;
     char field_963;
-    float field_964;
+    float m_fSomeGasPedalStuff;
     tWheelState m_aWheelState[4];
     FxSystem_c* m_exhaustNitroFxSystem[2];
     uint8_t m_harvesterParticleCounter;
@@ -310,7 +310,7 @@ public:
     void SetRandomDamage(bool arg0);
     // Make a vehicle fully damaged
     void SetTotalDamage(bool arg0);
-    // if(m_nHornCounter) m_nHornCounter--;
+    // if(m_nHornTimeEndMs) m_nHornTimeEndMs--;
     void ReduceHornCounter();
     // Apply custom car plate texture to vehicle
     void CustomCarPlate_BeforeRenderingStart(CVehicleModelInfo* model);

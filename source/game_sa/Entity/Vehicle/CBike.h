@@ -90,7 +90,7 @@ public:
     unsigned char m_nNumWheelsOnGround;
     char          field_806;
     char          field_807;
-    float           field_808;
+    float           m_fSomeGasPedalStuff;
     tWheelState   m_anWheelState[2];
 
 public:
