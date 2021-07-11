@@ -47,6 +47,7 @@ struct COccluder
 public:
     bool ProcessOneOccluder(CActiveOccluder* pActiveOccluder);
     bool ProcessLineSegment(int iInd1, int iInd2, CActiveOccluder* pActiveOccluder);
+    bool NearCamera();
 };
 VALIDATE_SIZE(COccluder, 0x12);
 

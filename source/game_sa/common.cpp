@@ -111,6 +111,7 @@ void InjectCommonHooks()
     ReversibleHooks::Install("common", "RemoveRefsCB", 0x7226D0, &RemoveRefsCB);
     ReversibleHooks::Install("common", "IsGlassModel", 0x46A760, &IsGlassModel);
     ReversibleHooks::Install("common", "CalcScreenCoords_1", 0x71DA00, (bool(*)(CVector const&, CVector*, float*, float*))&CalcScreenCoors);
+    ReversibleHooks::Install("common", "IsPointInsideLine", 0x71E050, &IsPointInsideLine);
 }
 
 // 0x56E010
@@ -968,6 +969,14 @@ bool CalcScreenCoors(CVector const& vecPoint, CVector* pVecOutPos, float* pScree
 bool CalcScreenCoors(CVector const& vecPoint, CVector* pVecOutPos)
 {
     return plugin::CallAndReturn<bool, 0x71DAB0, CVector const&, CVector*>(vecPoint, pVecOutPos);
+}
+
+bool DoesInfiniteLineTouchScreen(CVector2D const& vecPoint, CVector2D const& vecDir) {
+    return plugin::CallAndReturn<bool, 0x71DB80, CVector2D const&, CVector2D const&>(vecPoint, vecDir);
+}
+
+bool IsPointInsideLine(float fLineX, float fLineY, float fXDir, float fYDir, float fPointX, float fPointY, float fTolerance) {
+    return (fPointX - fLineX) * fYDir - (fPointY - fLineY) * fXDir >= fTolerance;
 }
 
 // 0x541330

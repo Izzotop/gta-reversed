@@ -29,6 +29,8 @@ void COcclusion::InjectHooks()
     ReversibleHooks::Install("COcclusion", "IsPositionOccluded", 0x7200B0, &COcclusion::IsPositionOccluded);
 
     ReversibleHooks::Install("COccluder", "ProcessOneOccluder", 0x71E5D0, &COccluder::ProcessOneOccluder);
+    ReversibleHooks::Install("COccluder", "ProcessLineSegment", 0x71E130, &COccluder::ProcessLineSegment);
+    ReversibleHooks::Install("COccluder", "NearCamera", 0x71F960, &COccluder::NearCamera);
 }
 
 void COcclusion::Init()
@@ -129,7 +131,7 @@ bool COcclusion::OccluderHidesBehind(CActiveOccluder* first, CActiveOccluder* se
     if (iLineInd >= first->m_cLinesCount)
         return true;
 
-
+    //TODO: FINISH THIS
 }
 
 bool COcclusion::IsPositionOccluded(CVector vecPos, float fRadius)
@@ -180,7 +182,7 @@ bool CActiveOccluder::IsPointBehindOccluder(CVector vecPos, float fRadius)
 bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
 {
     pActiveOccluder->m_cLinesCount = 0;
-    auto vecPos = CVector(m_fMidX * 0.25F, m_fMidY * 0.25F, m_fMidZ * 0.25F);
+    auto vecPos = CVector(m_fMidX / 4.0F, m_fMidY / 4.0F, m_fMidZ / 4.0F);
     float temp1, temp2;
 
     if (!CalcScreenCoors(vecPos, &COcclusion::gCenterOnScreen, &temp1, &temp2) || COcclusion::gCenterOnScreen.z < -150.0F || COcclusion::gCenterOnScreen.z > 300.0F)
@@ -272,7 +274,6 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
                     ++pActiveOccluder->m_cUnkn;
                 }
             }
-
             return true;
         }
 
@@ -331,7 +332,83 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
     return false;
 }
 
-bool COccluder::ProcessLineSegment(int iInd1, int iInd2, CActiveOccluder* pActiveOccluder)
+bool COccluder::ProcessLineSegment(int iIndFrom, int iIndTo, CActiveOccluder* pActiveOccluder)
 {
-    return plugin::CallMethodAndReturn<bool, 0x71E130, COccluder*, int, int, CActiveOccluder*>(this, iInd1, iInd2, pActiveOccluder);
+    if (!COcclusion::gOccluderCoorsValid[iIndFrom] && !COcclusion::gOccluderCoorsValid[iIndTo])
+        return true;
+
+    CVector vecScreenFrom, vecScreenTo;
+    if (COcclusion::gOccluderCoorsValid[iIndFrom]) {
+        vecScreenFrom = COcclusion::gOccluderCoorsOnScreen[iIndFrom];
+    }
+    else {
+        auto fFromDepth = fabs((TheCamera.m_mViewMatrix * COcclusion::gOccluderCoors[iIndFrom]).z - 1.1F);
+        auto fToDepth = fabs((TheCamera.m_mViewMatrix * COcclusion::gOccluderCoors[iIndTo]).z - 1.1F);
+
+        auto fProgress = fToDepth / (fFromDepth + fToDepth);
+        vecScreenFrom = (1.0F - fProgress) * COcclusion::gOccluderCoors[iIndTo];
+        vecScreenTo = vecScreenFrom + fProgress * COcclusion::gOccluderCoors[iIndFrom];
+
+        float fTemp1, fTemp2;
+        if (!CalcScreenCoors(vecScreenTo, &vecScreenFrom, &fTemp1, &fTemp2))
+            return true;
+    }
+
+    if (COcclusion::gOccluderCoorsValid[iIndTo]) {
+        vecScreenTo = COcclusion::gOccluderCoorsOnScreen[iIndTo];
+    }
+    else {
+        auto fFromDepth = fabs((TheCamera.m_mViewMatrix * COcclusion::gOccluderCoors[iIndFrom]).z - 1.1F);
+        auto fToDepth = fabs((TheCamera.m_mViewMatrix * COcclusion::gOccluderCoors[iIndTo]).z - 1.1F);
+
+        auto fProgress = fToDepth / (fFromDepth + fToDepth);
+        auto vecFrom = (1.0F - fProgress) * COcclusion::gOccluderCoors[iIndTo];
+        auto vecTo = vecFrom + fProgress * COcclusion::gOccluderCoors[iIndFrom];
+
+        float fTemp1, fTemp2;
+        if (!CalcScreenCoors(vecTo, &vecScreenTo, &fTemp1, &fTemp2))
+            return true;
+    }
+
+    COcclusion::gMinXInOccluder = std::min({ COcclusion::gMinXInOccluder, vecScreenFrom.x, vecScreenTo.x });
+    COcclusion::gMaxXInOccluder = std::max({ COcclusion::gMaxXInOccluder, vecScreenFrom.x, vecScreenTo.x });
+    COcclusion::gMinYInOccluder = std::min({ COcclusion::gMinYInOccluder, vecScreenFrom.y, vecScreenTo.y });
+    COcclusion::gMaxYInOccluder = std::max({ COcclusion::gMaxYInOccluder, vecScreenFrom.y, vecScreenTo.y });
+
+    auto fXSize = vecScreenTo.x - vecScreenFrom.x;
+    auto fYSize = vecScreenTo.y - vecScreenFrom.y;
+    auto fFromX = vecScreenFrom.x;
+    auto fFromY = vecScreenFrom.y;
+
+    if (!IsPointInsideLine(vecScreenFrom.x, vecScreenFrom.y, fXSize, fYSize, COcclusion::gCenterOnScreen.x, COcclusion::gCenterOnScreen.y, 0.0F)) {
+        fFromX = vecScreenFrom.x + fXSize;
+        fFromY = vecScreenFrom.y + fYSize;
+        fXSize = -fXSize;
+        fYSize = -fYSize;
+    }
+
+    auto& pCurLine = pActiveOccluder->m_aLines[pActiveOccluder->m_cLinesCount];
+    pCurLine.m_fLength = CVector2D(fXSize, fYSize).Magnitude();
+
+    auto fRecip = 1.0F / pCurLine.m_fLength;
+    pCurLine.m_vecOrigin.Set(fFromX, fFromY);
+    pCurLine.m_vecDirection.Set(fRecip * fXSize, fRecip * fYSize);
+
+    if (DoesInfiniteLineTouchScreen(pCurLine.m_vecOrigin, pCurLine.m_vecDirection)) {
+        ++pActiveOccluder->m_cLinesCount;
+        return false;
+    }
+
+    return !IsPointInsideLine(fFromX, fFromY, pCurLine.m_vecDirection.x, pCurLine.m_vecDirection.y, RsGlobal.maximumWidth * 0.5F, RsGlobal.maximumHeight * 0.5F, 0.0F);
+}
+
+bool COccluder::NearCamera()
+{
+    //("%3.2f : %3.2f : %3.2f, %3.2f : %3.2f : %3.2f\n", COcclusion::gOccluderCoorsOnScreen[0].x, COcclusion::gOccluderCoorsOnScreen[0].y, COcclusion::gOccluderCoorsOnScreen[0].z, COcclusion::gOccluderCoorsOnScreen[1].x, COcclusion::gOccluderCoorsOnScreen[1].y, COcclusion::gOccluderCoorsOnScreen[1].z);
+    auto fSize = std::max(m_fLength / 4.0F, m_fWidth / 4.0F);
+    const auto& vecCamPos = TheCamera.GetPosition();
+    auto vecPos = CVector(m_fMidX / 4.0F, m_fMidY / 4.0F, m_fMidZ / 4.0F);
+
+    auto fDist = DistanceBetweenPoints(vecPos, vecCamPos);
+    return (fDist - fSize * 0.5F) < 250.0F;
 }

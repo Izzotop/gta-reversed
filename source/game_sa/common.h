@@ -278,6 +278,8 @@ void Render2dStuff();
 void WriteRaster(RwRaster * pRaster, char const * pszPath);
 bool CalcScreenCoors(CVector const& vecPoint, CVector* pVecOutPos, float* pScreenX, float* pScreenY);
 bool CalcScreenCoors(CVector const& vecPoint, CVector* pVecOutPos);
+bool DoesInfiniteLineTouchScreen(CVector2D const& vecPoint, CVector2D const& vecDir);
+bool IsPointInsideLine(float fLineX, float fLineY, float fXDir, float fYDir, float fPointX, float fPointY, float fTolerance);
 
 void LittleTest();
 
