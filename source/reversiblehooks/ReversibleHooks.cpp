@@ -33,7 +33,11 @@ void ReversibleHooks::UnHook(const std::string& className, const char* functionN
 
 void ReversibleHooks::HookInstall(const std::string& sIdentifier, const std::string& sFuncName, unsigned int installAddress, void* addressToJumpTo, int iJmpCodeSize, bool bDisableByDefault)
 {
-    assert(!GetHook(sIdentifier, sFuncName));
+    auto& existingHook = GetHook(sIdentifier, sFuncName);
+    if (existingHook)
+        printf("Duplicate hook: %s:%s\n", sIdentifier.c_str(), sFuncName.c_str());
+    assert(!existingHook);
+
     if (m_HooksMap.find(sIdentifier) == m_HooksMap.end())
         m_HooksMap[sIdentifier] = std::vector<std::shared_ptr<SReversibleHook>>();
 

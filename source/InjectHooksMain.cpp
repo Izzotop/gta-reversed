@@ -31,7 +31,6 @@ void InjectHooksMain()
     CDebug::InjectHooks();
     InjectCommonHooks();
     CGame::InjectHooks();
-    CGeneral::InjectHooks();
     CPools::InjectHooks();
     CControllerState::InjectHooks();
     CKeyboardState::InjectHooks();

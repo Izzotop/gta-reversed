@@ -28,9 +28,9 @@ VALIDATE_SIZE(CActiveOccluder, 0xAC);
 
 struct COccluder
 {
-    unsigned short m_fMidX;
-    unsigned short m_fMidY;
-    unsigned short m_fMidZ;
+    short m_fMidX;
+    short m_fMidY;
+    short m_fMidZ;
     unsigned short m_fLength;
     unsigned short m_fWidth;
     unsigned short m_fHeight;
@@ -45,8 +45,8 @@ struct COccluder
     };
 
 public:
-    void ProcessOneOccluder(CActiveOccluder* pActiveOccluder);
-    void ProcessLineSegment(int iInd1, int iInd2, CActiveOccluder* pActiveOccluder);
+    bool ProcessOneOccluder(CActiveOccluder* pActiveOccluder);
+    bool ProcessLineSegment(int iInd1, int iInd2, CActiveOccluder* pActiveOccluder);
 };
 VALIDATE_SIZE(COccluder, 0x12);
 
