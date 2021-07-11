@@ -1,6 +1,6 @@
 #include "StdInc.h"
 
-
+#include "CSimpleVariablesSaveStructure.h"
 #include "CAEAudioChannel.h"
 #include "CAEAudioEnvironment.h"
 #include "CAEAudioHardware.h"
@@ -17,8 +17,17 @@
 #include "CAEUserRadioTrackManager.h"
 #include "CDebugMenu.h"
 
+void WaitForDebugger() {
+    while (!::IsDebuggerPresent()) {
+        printf("Debugger not present\n");
+        ::Sleep(100);
+    }
+}
+
 void InjectHooksMain()
 {
+    // WaitForDebugger();
+
     CDebug::InjectHooks();
     InjectCommonHooks();
     CGame::InjectHooks();
@@ -216,7 +225,6 @@ void InjectHooksMain()
     CPlayerPed::InjectHooks();
     CStats::InjectHooks();
     CCarCtrl::InjectHooks();
-    CText::InjectHooks();
     CTheZones::InjectHooks();
     CMenuManager::InjectHooks();
     CSprite2d::InjectHooks();
@@ -295,6 +303,21 @@ void InjectHooksMain()
     CTaskSimpleRunAnim::InjectHooks();
     CTaskComplexUseSwatRope::InjectHooks();
     CStuntJumpManager::InjectHooks();
+    CLocalisation::InjectHooks();
+    CSimpleVariablesSaveStructure::InjectHooks();
+    CPedGeometryAnalyser::InjectHooks();
+    CPlane::InjectHooks();
+    CHeli::InjectHooks();
+    CBmx::InjectHooks();
+    CTrailer::InjectHooks();
+    CQuadBike::InjectHooks();
+    NodeNamePlugin::InjectHooks();
+    JPegPlugin::InjectHooks();
+    PipelinePlugin::InjectHooks();
+    CCollisionPlugin::InjectHooks();
+    CIplStore::InjectHooks();
+    cHandlingDataMgr::InjectHooks();
+    CLoadingScreen::InjectHooks();
 
     CAEVehicleAudioEntity::InjectHooks();
     CAESoundManager::InjectHooks();

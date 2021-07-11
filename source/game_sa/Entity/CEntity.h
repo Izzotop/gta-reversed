@@ -10,7 +10,7 @@
 #include "CReference.h"
 #include "CRect.h"
 #include "CColModel.h"
-#include "C2dEffect.h"
+#include "Plugins\TwoDEffectPlugin\C2dEffect.h"
 
 #include "eEntityType.h"
 #include "eEntityStatus.h"
@@ -160,7 +160,7 @@ public:
     void PreRenderForGlassWindow();
     void SetRwObjectAlpha(int alpha);
     CVector* FindTriggerPointCoors(CVector* pOutVec, int triggerIndex);
-    C2dEffect* GetRandom2dEffect(int effectType, unsigned char bCheckForEmptySlot);
+    C2dEffect* GetRandom2dEffect(int effectType, bool bCheckForEmptySlot);
     CVector TransformFromObjectSpace(CVector const& offset);
     CVector* TransformFromObjectSpace(CVector& outPosn, CVector const& offset);
     void CreateEffects();

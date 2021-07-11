@@ -9,6 +9,7 @@ bool &CCamera::bDidWeProcessAnyCinemaCam = *reinterpret_cast<bool *>(0xB6EC2D);
 
 CCamera &TheCamera = *reinterpret_cast<CCamera *>(0xB6F028);
 bool& gbModelViewer = *reinterpret_cast<bool*>(0xBA6728);
+char& gbCineyCamMessageDisplayed = *(char*)0x8CC381; // 2
 
 CCam& CCamera::GetActiveCamera() {
     return TheCamera.m_aCams[TheCamera.m_nActiveCam];
@@ -125,6 +126,8 @@ void CCamera::InjectHooks() {
 //    ReversibleHooks::Install("CCamera", "ProcessFOVLerp", 0x50D510, &CCamera::ProcessFOVLerp);
 //    ReversibleHooks::Install("CCamera", "ProcessFOVLerp", 0x516500, &CCamera::ProcessFOVLerp);
 //    ReversibleHooks::Install("CCamera", "ProcessJiggle", 0x516560, &CCamera::ProcessJiggle);
+
+//    ReversibleHooks::Install("CCamera", "CamShakeNoPos", 0x50A970, &CGeneral::CamShakeNoPos);
 }
 
 // 0x5BC520
@@ -828,4 +831,9 @@ void CCamera::SetCamCollisionVarDataSet(int index) {
 // 0x50CCA0
 void CCamera::SetColVarsVehicle(eVehicleType vehicleType, int camVehicleZoom) {
     plugin::Call<0x50CCA0, eVehicleType, int>(vehicleType, camVehicleZoom);
+}
+
+// 0x50A970
+void CamShakeNoPos(CCamera *camera, float strength) {
+    ((void(__cdecl *)(CCamera*, float))0x50A970)(camera, strength);
 }

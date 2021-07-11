@@ -6,13 +6,15 @@
 */
 #include "StdInc.h"
 #include "CWaterCannons.h"
+#include "CAutomobile.h"
+
 
 bool& CAutomobile::m_sAllTaxiLights = *(bool*)0xC1BFD0;
 CVector& CAutomobile::vecHunterGunPos = *(CVector*)0x8D3394;
 CMatrix* CAutomobile::matW2B = (CMatrix*)0xC1C220;
 CColPoint* aAutomobileColPoints = (CColPoint*)0xC1BFF8;
 
-const CVector PACKER_COL_PIVOT = CVector(0.0, 0.0, 2.0);
+const CVector PACKER_COL_PIVOT = CVector(0.0f, 0.0f, 2.0f);
 const float CAR_BALANCE_MULT = 0.08f;
 
 static const CVector TANK_SHOT_DOOM_POS(0.0f, -1.394f, 2.296f);
@@ -20,7 +22,7 @@ static const CVector TANK_SHOT_DOOM_DEFAULT_TARGET(0.0f, 2.95f, 2.97f);
 static const CVector TANK_SHOT_DOOM_DISTANCE_TO_DEFAULT_TARGET = TANK_SHOT_DOOM_DEFAULT_TARGET - TANK_SHOT_DOOM_POS;
 
 static const uint32_t TIGER_GUNFIRE_RATE = 60;
-static const CVector TIGER_GUN_POS(0.0f, 0.5f, 0.2f);
+static const CVector TIGER_GUN_POS(0.0f, 0.5f, 0.2f); // 0xC1C208
 
 void CAutomobile::InjectHooks()
 {
@@ -43,10 +45,21 @@ void CAutomobile::InjectHooks()
     ReversibleHooks::Install("CAutomobile", "RcbanditCheck1CarWheels", 0x6B3F70, &CAutomobile::RcbanditCheck1CarWheels);
     ReversibleHooks::Install("CAutomobile", "RcbanditCheckHitWheels", 0x6B45E0, &CAutomobile::RcbanditCheckHitWheels);
     ReversibleHooks::Install("CAutomobile", "FireTruckControl", 0x729B60, &CAutomobile::FireTruckControl);
+    ReversibleHooks::Install("CAutomobile", "SetHeliOrientation", 0x6A2450, &CAutomobile::SetHeliOrientation);
+    ReversibleHooks::Install("CAutomobile", "ClearHeliOrientation", 0x6A2460, &CAutomobile::ClearHeliOrientation);
 }
 
 CAutomobile::CAutomobile(int modelIndex, unsigned char createdBy, bool setupSuspensionLines) : CVehicle(plugin::dummy) {
     plugin::CallMethod<0x6B0A90, CAutomobile*, int, unsigned char, bool>(this, modelIndex, createdBy, setupSuspensionLines);
+}
+
+// 0x6B4410
+bool CAutomobile::SetTowLink(CVehicle* targetVehicle, bool arg1) {
+    return SetTowLink_Reversed(targetVehicle, arg1);
+}
+
+bool CAutomobile::SetTowLink_Reversed(CVehicle* targetVehicle, bool arg1) {
+    return plugin::CallMethodAndReturn<bool, 0x6B4410, CAutomobile*, CVehicle*, bool>(this, targetVehicle, arg1);
 }
 
 void CAutomobile::ProcessControl()
@@ -1029,11 +1042,8 @@ bool CAutomobile::ProcessAI(unsigned int& extraHandlingFlags)
         if (playerSlot >= 0)
             ProcessControlInputs(playerSlot);
     }
-    else {
-        ePedType pedType = m_pDriver->m_nPedType;
-        if (pedType == PED_TYPE_PLAYER1 || pedType == PED_TYPE_PLAYER2)
-            ProcessControlInputs(static_cast<uint8_t>(pedType));
-    }
+    else if (m_pDriver->IsPlayer())
+        ProcessControlInputs(static_cast<uint8_t>(m_pDriver->m_nPedType));
 
     if (m_nStatus == STATUS_PLAYER) {
         if (!IsHeli()) {
@@ -1787,16 +1797,16 @@ void CAutomobile::TellHeliToGoToCoors(float x, float y, float z, float altitudeM
     ((void(__thiscall*)(CAutomobile*, float, float, float, float, float))0x6A2390)(this, x, y, z, altitudeMin, altitudeMax);
 }
 
-// Converted from thiscall void CAutomobile::SetHeliOrientation(float angle) 0x6A2450
+// 0x6A2450
 void CAutomobile::SetHeliOrientation(float angle)
 {
-    ((void(__thiscall*)(CAutomobile*, float))0x6A2450)(this, angle);
+    m_fForcedOrientation = angle;
 }
 
-// Converted from thiscall void CAutomobile::ClearHeliOrientation(void) 0x6A2460
+// 0x6A2460
 void CAutomobile::ClearHeliOrientation()
 {
-    ((void(__thiscall*)(CAutomobile*))0x6A2460)(this);
+    m_fForcedOrientation = 0.0f;
 }
 
 // Converted from thiscall void CAutomobile::TellPlaneToGoToCoors(float x, float y, float z, float altitudeMin, float altitudeMax) 0x6A2470
@@ -1805,16 +1815,18 @@ void CAutomobile::TellPlaneToGoToCoors(float x, float y, float z, float altitude
     ((void(__thiscall*)(CAutomobile*, float, float, float, float, float))0x6A2470)(this, x, y, z, altitudeMin, altitudeMax);
 }
 
-// Converted from thiscall void CAutomobile::HideAllComps(void) 0x6A2510
+// unused
+// 0x6A2510
 void CAutomobile::HideAllComps()
 {
-    ((void(__thiscall*)(CAutomobile*))0x6A2510)(this);
+    // NOP
 }
 
-// Converted from thiscall void CAutomobile::ShowAllComps(void) 0x6A2520
+// unused
+// 0x6A2520
 void CAutomobile::ShowAllComps()
 {
-    ((void(__thiscall*)(CAutomobile*))0x6A2520)(this);
+    // NOP
 }
 
 // Converted from thiscall void CAutomobile::SetRandomDamage(bool) 0x6A2530
@@ -3070,6 +3082,15 @@ void CAutomobile::FireTruckControl(CFire* fire)
 bool CAutomobile::HasCarStoppedBecauseOfLight()
 {
     return ((bool(__thiscall*)(CAutomobile*))0x44D520)(this);
+}
+
+// 0x6A3440
+void CAutomobile::Fix() {
+    Fix_Reversed();
+}
+
+void CAutomobile::Fix_Reversed() {
+    plugin::CallMethod<0x6A3440, CAutomobile*>(this);
 }
 
 // Converted from cdecl RwObject* GetCurrentAtomicObjectCB(RwObject *object, void *data) 0x6A0750

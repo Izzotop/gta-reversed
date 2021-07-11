@@ -73,11 +73,6 @@ constexpr float PI = 3.14159265358979323846f;
 constexpr float HALF_PI = PI / 2.0f;
 constexpr float LOG10_2 = 0.30102999566398119802f; // log10(2)
 
-extern constexpr float flt_858B14 = 1.0f / 32768.0f;              // 0.000030517578f
-extern constexpr float flt_859520 = 1.0f / DEFAULT_SCREEN_WIDTH;  // 1.0f / 640.0f = 0.0015625f
-extern constexpr float flt_859524 = 1.0f / DEFAULT_SCREEN_HEIGHT; // 1.0f / 448.0f = 0.002232143f
-extern constexpr float flt_858B38 = 0.02f;
-extern constexpr float flt_858C4C = 1000.0f;
 
 void InjectCommonHooks();
 
@@ -117,6 +112,8 @@ void TransformPoint(RwV3d& point, CSimpleTransform const& placement, RwV3d const
 void TransformVectors(RwV3d* vecsOut, int numVectors, CMatrix const& matrix, RwV3d const* vecsin);
 void TransformVectors(RwV3d* vecsOut, int numVectors, CSimpleTransform const& transform, RwV3d const* vecsin);
 
+// Converts degrees to radians
+// keywords: 0.017453292 flt_8595EC
 constexpr float DegreesToRadians(float angleInDegrees) {
     return angleInDegrees * PI / 180.0F;
 }
@@ -151,6 +148,13 @@ inline bool approxEqual2(float f1, float f2, float epsilon = 0.01F)
     return f1 == f2 || fabs(f1 - f2) < epsilon;
 }
 
+extern constexpr unsigned int make_fourcc4(const char fourcc[4]) {
+    return fourcc[0] << 0 |
+           fourcc[1] << 8 |
+           fourcc[2] << 16 |
+           fourcc[3] << 24;
+}
+
 AnimBlendFrameData *RpAnimBlendClumpFindFrame(RpClump *clump, char *name);
 
 char *MakeUpperCase(char *dest, char *src);
@@ -174,8 +178,6 @@ RwObject* GetFirstObjectCallback(RwObject* object, void* data);
 RwObject* GetFirstObject(RwFrame* frame);
 RwFrame* GetFirstFrameCallback(RwFrame* frame, void* data);
 RwFrame* GetFirstChild(RwFrame* frame);
-RwTexture* GetFirstTextureCallback(RwTexture* texture, void* data);
-RwTexture* GetFirstTexture(RwTexDictionary* txd);
 RpHAnimHierarchy* GetAnimHierarchyFromSkinClump(RpClump* clump);
 RpHAnimHierarchy* GetAnimHierarchyFromFrame(RwFrame* frame);
 RpHAnimHierarchy* GetAnimHierarchyFromClump(RpClump* clump);
@@ -268,8 +270,6 @@ CAnimBlendAssociation* RpAnimBlendGetNextAssociation(CAnimBlendAssociation* asso
 CAnimBlendAssociation* RpAnimBlendGetNextAssociation(CAnimBlendAssociation* association, unsigned int flags);
 void RpAnimBlendKeyFrameInterpolate(void* voidOut, void* voidIn1, void* voidIn2, float time, void* customData);
 bool RpAnimBlendPluginAttach();
-
-void AsciiToGxtChar(char const *src, char *dst);
 
 /**
 * Writes given raster to PNG file using RtPNGImageWrite

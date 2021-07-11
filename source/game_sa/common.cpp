@@ -363,16 +363,6 @@ RwFrame* GetFirstChild(RwFrame* frame) {
     return ((RwFrame* (__cdecl *)(RwFrame*))0x734900)(frame);
 }
 
-// Converted from cdecl RwTexture* GetFirstTextureCallback(RwTexture *texture,void *data) 0x734930
-RwTexture* GetFirstTextureCallback(RwTexture* texture, void* data) {
-    return ((RwTexture* (__cdecl *)(RwTexture*, void*))0x734930)(texture, data);
-}
-
-// Converted from cdecl RwTexture* GetFirstTexture(RwTexDictionary *txd) 0x734940
-RwTexture* GetFirstTexture(RwTexDictionary* txd) {
-    return ((RwTexture* (__cdecl *)(RwTexDictionary*))0x734940)(txd);
-}
-
 // Converted from cdecl RpHAnimHierarchy* GetAnimHierarchyFromSkinClump(RpClump *clump) 0x734A40
 RpHAnimHierarchy* GetAnimHierarchyFromSkinClump(RpClump* clump) {
     return ((RpHAnimHierarchy* (__cdecl *)(RpClump*))0x734A40)(clump);
@@ -946,11 +936,6 @@ void RpAnimBlendKeyFrameInterpolate(void* voidOut, void* voidIn1, void* voidIn2,
 // Converted from cdecl bool RpAnimBlendPluginAttach(void) 0x4D6150
 bool RpAnimBlendPluginAttach() {
     return plugin::CallAndReturn<bool, 0x4D6150>();
-}
-
-// 0x718600
-void AsciiToGxtChar(char const *src, char *dst) {
-    plugin::Call<0x718600, char const *, char *>(src, dst);
 }
 
 // US-1.00 @ 0x005A4150

@@ -9,38 +9,42 @@ float (&CAEAudioUtility::m_sfLogLookup)[50][2] = *reinterpret_cast<float(*)[50][
 
 void CAEAudioUtility::InjectHooks()
 {
-    ReversibleHooks::Install("CAEAudioUtility", "GetRandomNumberInRange_int", 0x4d9c10, (std::int32_t(*)(std::int32_t, std::int32_t)) CAEAudioUtility::GetRandomNumberInRange);
+    ReversibleHooks::Install("CAEAudioUtility", "GetRandomNumberInRange_int", 0x4d9c10, (int(*)(const int, const int)) CAEAudioUtility::GetRandomNumberInRange);
     ReversibleHooks::Install("CAEAudioUtility", "GetRandomNumberInRange_float", 0x4d9c50, (float(*)(float, float)) CAEAudioUtility::GetRandomNumberInRange);
     ReversibleHooks::Install("CAEAudioUtility", "ResolveProbability", 0x4d9c80, &CAEAudioUtility::ResolveProbability);
     ReversibleHooks::Install("CAEAudioUtility", "GetPiecewiseLinear", 0x4d9d90, &CAEAudioUtility::GetPiecewiseLinear);
     ReversibleHooks::Install("CAEAudioUtility", "AudioLog10", 0x4d9e50, &CAEAudioUtility::AudioLog10);
     ReversibleHooks::Install("CAEAudioUtility", "ConvertFromBytesToMS", 0x4d9ef0, &CAEAudioUtility::ConvertFromBytesToMS);
     ReversibleHooks::Install("CAEAudioUtility", "ConvertFromMSToBytes", 0x4d9f40, &CAEAudioUtility::ConvertFromMSToBytes);
+    //ReversibleHooks::Install("CAEAudioUtility", "GetBankAndSoundFromScriptSlotAudioEvent", 0x4D9CC0, GetBankAndSoundFromScriptSlotAudioEvent);
+    //ReversibleHooks::Install("CAEAudioUtility", "FindVehicleOfPlayer", 0x4D9E10, FindVehicleOfPlayer);
 
     // Those 2 change logic of the functions, and shouldn't be toggled on/off
     HookInstall(0x4d9e80, &CAEAudioUtility::GetCurrentTimeInMilliseconds);
     HookInstall(0x5b97f0, &CAEAudioUtility::StaticInitialise);
 }
 
-// Exactly the same as CGeneral::GetRandomNumberInRange
-std::int32_t CAEAudioUtility::GetRandomNumberInRange(std::int32_t a, std::int32_t b)
+// 0x4d9c10
+int CAEAudioUtility::GetRandomNumberInRange(const int min, const int max)
 {
-    // TODO: Use better RNG
-    return a + static_cast<std::int32_t>(rand() * RAND_MAX_RECIPROCAL * (b - a + 1) );
+    // This and CGeneral differs in that this function returns a number [min, max + 1], while
+    // the other [min, max]. To solve this we do `max + 1`
+    return CGeneral::GetRandomNumberInRange(min, max + 1);
 }
 
-// Exactly the same as CGeneral::GetRandomNumberInRange
+// 0x4d9c50
 float CAEAudioUtility::GetRandomNumberInRange(float a, float b)
 {
-    // TODO: Use better RNG
-    return a + (b - a) * rand() * RAND_MAX_RECIPROCAL;
+    return CGeneral::GetRandomNumberInRange(a, b);
 }
 
+// 0x4d9c80
 bool CAEAudioUtility::ResolveProbability(float p)
 {
-    return p >= 1.0f || (rand() * RAND_MAX_RECIPROCAL) < p;
+    return p >= 1.0f || (rand() * RAND_MAX_FLOAT_RECIPROCAL) < p;
 }
 
+// 0x4d9d90
 float CAEAudioUtility::GetPiecewiseLinear(float x, short dataCount, float (*data)[2])
 {
     if (x >= data[dataCount - 1][0])
@@ -60,11 +64,13 @@ float CAEAudioUtility::GetPiecewiseLinear(float x, short dataCount, float (*data
     return t * (data[i][1] - data[i - 1][1]) + data[i - 1][1];
 }
 
+// 0x4d9e50
 float CAEAudioUtility::AudioLog10(float p)
 {
     return 0.00001f <= p ? log10f(p) : -5.0f;
 }
 
+// 0x4d9e80
 std::int64_t CAEAudioUtility::GetCurrentTimeInMilliseconds()
 {
     auto nowMs = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now());
@@ -72,11 +78,13 @@ std::int64_t CAEAudioUtility::GetCurrentTimeInMilliseconds()
     return static_cast<std::int64_t> (value.count());
 }
 
+// 0x4d9ef0
 std::uint32_t CAEAudioUtility::ConvertFromBytesToMS(std::uint32_t a, std::uint32_t frequency, std::uint16_t frequencyMult)
 {
     return static_cast<std::uint32_t>(floorf(a / (frequency * frequencyMult / 500.0f)));
 }
 
+// 0x4d9f40
 std::uint32_t CAEAudioUtility::ConvertFromMSToBytes(std::uint32_t a, std::uint32_t frequency, std::uint16_t frequencyMult)
 {
     const auto value = static_cast<uint32_t>(floorf(a * frequency * frequencyMult / 500.0f));
@@ -100,4 +108,14 @@ void CAEAudioUtility::StaticInitialise()
     }
 
     startTimeMs = GetCurrentTimeInMilliseconds();
+}
+
+// 0x4D9CC0
+bool CAEAudioUtility::GetBankAndSoundFromScriptSlotAudioEvent(int* a1, int* a2, int* a3, int a4) {
+    return plugin::CallAndReturn<bool, 0x4D9CC0, int*, int*, int*, int>(a1, a2, a3, a4);
+}
+
+// 0x4D9E10
+CVehicle* CAEAudioUtility::FindVehicleOfPlayer() {
+    return plugin::CallAndReturn<CVehicle*, 0x4D9E10>();
 }

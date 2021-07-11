@@ -6,11 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "eTaskType.h"
 
-enum eAbortPriority : int
-{
+enum eAbortPriority : int {
     ABORT_PRIORITY_LEISURE = 0,
     ABORT_PRIORITY_URGENT,
     ABORT_PRIORITY_IMMEDIATE
@@ -18,19 +16,20 @@ enum eAbortPriority : int
 
 class CTask {
 public:
-	class CTask *m_pParentTask;
+    class CTask* m_pParentTask;
 
-	void *operator new(unsigned int size);
-	void operator delete(void *object);
+    void* operator new(unsigned int size);
+    void operator delete(void* object);
 
     CTask();
     virtual ~CTask();
-	virtual class CTask *Clone() = 0;
-	virtual class CTask *GetSubTask() = 0;
-	virtual bool IsSimple() = 0;
-	virtual eTaskType GetId() = 0;
-	virtual void StopTimer(class CEvent *_event);
-	virtual bool MakeAbortable(class CPed *ped, eAbortPriority priority, class CEvent *_event) = 0;
+
+    virtual class CTask* Clone() = 0;
+    virtual class CTask* GetSubTask() = 0;
+    virtual bool IsSimple() = 0;
+    virtual eTaskType GetId() = 0;
+    virtual void StopTimer(class CEvent* _event);
+    virtual bool MakeAbortable(class CPed* ped, eAbortPriority priority, class CEvent* _event) = 0;
 
     static bool IsGoToTask(CTask* pTask);
 };
