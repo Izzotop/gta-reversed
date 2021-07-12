@@ -14,11 +14,11 @@ VALIDATE_SIZE(CActiveOccluderLine, 0x14);
 struct CActiveOccluder
 {
     CActiveOccluderLine m_aLines[6];
-    short m_wDepth;
-    char m_cLinesCount;
-    char m_cUnkn;
+    int16_t m_wDepth;
+    uint8_t m_cLinesCount;
+    uint8_t m_cNumVectors;
     CVector m_aVectors[3];
-    float m_fRadiuses[3];
+    float m_afRadiuses[3];
 
 public:
     bool IsPointWithinOcclusionArea(float fX, float fY, float fRadius);
@@ -28,20 +28,20 @@ VALIDATE_SIZE(CActiveOccluder, 0xAC);
 
 struct COccluder
 {
-    short m_fMidX;
-    short m_fMidY;
-    short m_fMidZ;
-    unsigned short m_fLength;
-    unsigned short m_fWidth;
-    unsigned short m_fHeight;
-    char m_cRotX;
-    char m_cRotY;
-    char m_cRotZ;
-    char m_cPad;
+    int16_t m_wMidX;
+    int16_t m_wMidY;
+    int16_t m_wMidZ;
+    int16_t m_wLength;
+    int16_t m_wWidth;
+    int16_t m_wHeight;
+    uint8_t m_cRotX;
+    uint8_t m_cRotY;
+    uint8_t m_cRotZ;
+    uint8_t m_cPad;
     struct
     {
-        unsigned short m_nNextIndex : 15;
-        unsigned short m_bFarAway : 1;
+        uint16_t m_nNextIndex : 15;
+        uint16_t m_bFarAway : 1;
     };
 
 public:

@@ -27,10 +27,14 @@ void COcclusion::InjectHooks()
     ReversibleHooks::Install("COcclusion", "Init", 0x71DCA0, &COcclusion::Init);
     ReversibleHooks::Install("COcclusion", "AddOne", 0x71DCD0, &COcclusion::AddOne);
     ReversibleHooks::Install("COcclusion", "IsPositionOccluded", 0x7200B0, &COcclusion::IsPositionOccluded);
+    ReversibleHooks::Install("COcclusion", "OccluderHidesBehind", 0x71E080 , &COcclusion::OccluderHidesBehind);
 
     ReversibleHooks::Install("COccluder", "ProcessOneOccluder", 0x71E5D0, &COccluder::ProcessOneOccluder);
     ReversibleHooks::Install("COccluder", "ProcessLineSegment", 0x71E130, &COccluder::ProcessLineSegment);
     ReversibleHooks::Install("COccluder", "NearCamera", 0x71F960, &COccluder::NearCamera);
+
+    ReversibleHooks::Install("CActiveOccluder", "IsPointWithinOcclusionArea", 0x71E580, &CActiveOccluder::IsPointWithinOcclusionArea);
+    ReversibleHooks::Install("CActiveOccluder", "IsPointBehindOccluder", 0x71FA40, &CActiveOccluder::IsPointBehindOccluder);
 }
 
 void COcclusion::Init()
@@ -70,12 +74,12 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
     if (isInterior)
     {
         auto& occluder = COcclusion::aInteriorOccluders[COcclusion::NumInteriorOcculdersOnMap];
-        occluder.m_fMidX = centerX * 4.0F;
-        occluder.m_fMidY = centerY * 4.0F;
-        occluder.m_fMidZ = centerZ * 4.0F;
-        occluder.m_fWidth = iWidth * 4.0F;
-        occluder.m_fLength = iLength * 4.0F;
-        occluder.m_fHeight = iHeight * 4.0F;
+        occluder.m_wMidX = centerX * 4.0F;
+        occluder.m_wMidY = centerY * 4.0F;
+        occluder.m_wMidZ = centerZ * 4.0F;
+        occluder.m_wWidth = iWidth * 4.0F;
+        occluder.m_wLength = iLength * 4.0F;
+        occluder.m_wHeight = iHeight * 4.0F;
         occluder.m_cRotX = rotX * fTwoPiToChar;
         occluder.m_cRotY = rotY * fTwoPiToChar;
         occluder.m_cRotZ = rotZ * fTwoPiToChar;
@@ -84,12 +88,12 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
     else
     {
         auto& occluder = COcclusion::aOccluders[COcclusion::NumOccludersOnMap];
-        occluder.m_fMidX = centerX * 4.0F;
-        occluder.m_fMidY = centerY * 4.0F;
-        occluder.m_fMidZ = centerZ * 4.0F;
-        occluder.m_fWidth = iWidth * 4.0F;
-        occluder.m_fLength = iLength * 4.0F;
-        occluder.m_fHeight = iHeight * 4.0F;
+        occluder.m_wMidX = centerX * 4.0F;
+        occluder.m_wMidY = centerY * 4.0F;
+        occluder.m_wMidZ = centerZ * 4.0F;
+        occluder.m_wWidth = iWidth * 4.0F;
+        occluder.m_wLength = iLength * 4.0F;
+        occluder.m_wHeight = iHeight * 4.0F;
         occluder.m_cRotX = rotX * fTwoPiToChar;
         occluder.m_cRotY = rotY * fTwoPiToChar;
         occluder.m_cRotZ = rotZ * fTwoPiToChar;
@@ -107,31 +111,41 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
 
 bool COcclusion::OccluderHidesBehind(CActiveOccluder* first, CActiveOccluder* second)
 {
-    //return plugin::CallAndReturn<bool, 0x71E080, CActiveOccluder*, CActiveOccluder*>(first, second);
     if (!first->m_cLinesCount)
         return second->m_cLinesCount == 0;
 
-    if (first->m_cLinesCount <= 0)
-        return true;
+    for (auto iFirstInd = 0; iFirstInd < first->m_cLinesCount; ++iFirstInd) {
+        auto& firstLine = first->m_aLines[iFirstInd];
+        for (auto iSecondInd = 0; iSecondInd < second->m_cLinesCount; ++iSecondInd) {
+            auto& secondLine = second->m_aLines[iSecondInd];
 
-    auto* pNextLine = first->m_aLines;
-    auto iLineInd = 0;
-    if (second->m_cLinesCount <= 0)
-        return true;
+            if (!IsPointInsideLine(
+                secondLine.m_vecOrigin.x,
+                secondLine.m_vecOrigin.y,
+                secondLine.m_vecDirection.x,
+                secondLine.m_vecDirection.y,
+                firstLine.m_vecOrigin.x,
+                firstLine.m_vecOrigin.y,
+                0.0)) {
 
-    while (iLineInd < first->m_cLinesCount)
-    {
-        if (second->m_cLinesCount > 0)
-            break;
+                return false;
+            }
 
-        ++iLineInd;
-        ++pNextLine;
+            if (!IsPointInsideLine(
+                secondLine.m_vecOrigin.x,
+                secondLine.m_vecOrigin.y,
+                secondLine.m_vecDirection.x,
+                secondLine.m_vecDirection.y,
+                firstLine.m_vecOrigin.x + (firstLine.m_fLength * firstLine.m_vecDirection.x),
+                firstLine.m_vecOrigin.y + (firstLine.m_fLength * firstLine.m_vecDirection.y),
+                0.0)) {
+
+                return false;
+            }
+        }
     }
 
-    if (iLineInd >= first->m_cLinesCount)
-        return true;
-
-    //TODO: FINISH THIS
+    return true;
 }
 
 bool COcclusion::IsPositionOccluded(CVector vecPos, float fRadius)
@@ -171,24 +185,46 @@ void COcclusion::ProcessBeforeRendering()
 
 bool CActiveOccluder::IsPointWithinOcclusionArea(float fX, float fY, float fRadius)
 {
-    return plugin::CallMethodAndReturn<bool, 0x71E580, CActiveOccluder*, float, float, float>(this, fX, fY, fRadius);
+    if (m_cLinesCount <= 0)
+        return true;
+
+    for (auto i = 0; i < m_cLinesCount; ++i) {
+        auto& line = m_aLines[i];
+        if (!IsPointInsideLine(line.m_vecOrigin.x, line.m_vecOrigin.y, line.m_vecDirection.x, line.m_vecDirection.y, fX, fY, fRadius))
+            return false;
+    }
+
+    return true;
 }
 
 bool CActiveOccluder::IsPointBehindOccluder(CVector vecPos, float fRadius)
 {
-    return plugin::CallMethodAndReturn<bool, 0x71FA40, CActiveOccluder*, CVector, float>(this, vecPos, fRadius);
+    if (m_cLinesCount <= 0)
+        return true;
+
+    for (auto i = 0; i < m_cNumVectors; ++i) {
+        const auto& vecCamPos = TheCamera.GetPosition();
+
+        auto fPosDotVec = DotProduct(vecPos, m_aVectors[i]) - m_afRadiuses[i];
+        auto fCamDotVec = DotProduct(vecCamPos, m_aVectors[i]) - m_afRadiuses[i];
+
+        if (fCamDotVec * fPosDotVec >= 0.0F || fabs(fPosDotVec) < fRadius)
+            return false;
+    }
+
+    return true;
 }
 
 bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
 {
     pActiveOccluder->m_cLinesCount = 0;
-    auto vecPos = CVector(m_fMidX / 4.0F, m_fMidY / 4.0F, m_fMidZ / 4.0F);
+    auto vecPos = CVector(m_wMidX / 4.0F, m_wMidY / 4.0F, m_wMidZ / 4.0F);
     float temp1, temp2;
 
     if (!CalcScreenCoors(vecPos, &COcclusion::gCenterOnScreen, &temp1, &temp2) || COcclusion::gCenterOnScreen.z < -150.0F || COcclusion::gCenterOnScreen.z > 300.0F)
         return false;
 
-    auto fMagnitude = CVector(m_fWidth / 4.0F, m_fLength / 4.0F, m_fHeight / 4.0F).Magnitude();
+    auto fMagnitude = CVector(m_wWidth / 4.0F, m_wLength / 4.0F, m_wHeight / 4.0F).Magnitude();
     pActiveOccluder->m_wDepth = COcclusion::gCenterOnScreen.z - fMagnitude;
 
     auto matRotX = CMatrix();
@@ -206,16 +242,16 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
     COcclusion::gMaxXInOccluder = -999999.88F;
     COcclusion::gMaxYInOccluder = -999999.88F;
 
-    if (   m_fLength * 0.25F != 0.0F
-        && m_fWidth  * 0.25F != 0.0F
-        && m_fHeight * 0.25F != 0.0F) {
-        auto vecWidth = CVector(m_fWidth / 8.0F, 0.0F, 0.0F);
+    if (   m_wLength * 0.25F != 0.0F
+        && m_wWidth  * 0.25F != 0.0F
+        && m_wHeight * 0.25F != 0.0F) {
+        auto vecWidth = CVector(m_wWidth / 8.0F, 0.0F, 0.0F);
         auto vecTransWidth = matTransform * vecWidth;
 
-        auto vecLength = CVector(0.0F, m_fLength / 8.0F, 0.0F);
+        auto vecLength = CVector(0.0F, m_wLength / 8.0F, 0.0F);
         auto vecTransLength = matTransform * vecLength;
 
-        auto vecHeight = CVector(0.0F, 0.0F, m_fHeight / 8.0F);
+        auto vecHeight = CVector(0.0F, 0.0F, m_wHeight / 8.0F);
         auto vecTransHeight = matTransform * vecHeight;
 
         CVector aVecArr[6]{
@@ -262,16 +298,16 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
             && RsGlobal.maximumWidth * 0.15F <= COcclusion::gMaxXInOccluder - COcclusion::gMinXInOccluder
             && RsGlobal.maximumHeight * 0.1F <= COcclusion::gMaxYInOccluder - COcclusion::gMinYInOccluder) {
 
-            pActiveOccluder->m_cUnkn = 0;
+            pActiveOccluder->m_cNumVectors = 0;
             for (auto i = 0; i < 6; ++i) {
                 if (abOnScreen[i]) {
                     auto vecNormalised = CVector(aVecArr[i]);
                     vecNormalised.Normalise();
                     auto vecScreenPos = vecPos + aVecArr[i];
 
-                    pActiveOccluder->m_aVectors[pActiveOccluder->m_cUnkn] = vecNormalised;
-                    pActiveOccluder->m_fRadiuses[pActiveOccluder->m_cUnkn] = DotProduct(vecScreenPos, vecNormalised);
-                    ++pActiveOccluder->m_cUnkn;
+                    pActiveOccluder->m_aVectors[pActiveOccluder->m_cNumVectors] = vecNormalised;
+                    pActiveOccluder->m_afRadiuses[pActiveOccluder->m_cNumVectors] = DotProduct(vecScreenPos, vecNormalised);
+                    ++pActiveOccluder->m_cNumVectors;
                 }
             }
             return true;
@@ -281,25 +317,25 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
     }
 
     CVector vec1, vec2;
-    if (m_fLength * 0.25F == 0.0F) {
-        auto vecWidth = CVector(m_fWidth / 8.0F, 0.0F, 0.0F);
+    if (m_wLength * 0.25F == 0.0F) {
+        auto vecWidth = CVector(m_wWidth / 8.0F, 0.0F, 0.0F);
         vec1 = matTransform * vecWidth;
 
-        auto vecHeight = CVector(0.0F, 0.0F, m_fHeight / 8.0F);
+        auto vecHeight = CVector(0.0F, 0.0F, m_wHeight / 8.0F);
         vec2 = matTransform * vecHeight;
     }
-    else if (m_fWidth * 0.25F == 0.0F) {
-        auto vecLength = CVector(0.0F, m_fLength / 8.0F, 0.0F);
+    else if (m_wWidth * 0.25F == 0.0F) {
+        auto vecLength = CVector(0.0F, m_wLength / 8.0F, 0.0F);
         vec1 = matTransform * vecLength;
 
-        auto vecHeight = CVector(0.0F, 0.0F, m_fHeight / 8.0F);
+        auto vecHeight = CVector(0.0F, 0.0F, m_wHeight / 8.0F);
         vec2 = matTransform * vecHeight;
     }
-    else if (m_fHeight * 0.25F == 0.0F) {
-        auto vecLength = CVector(0.0F, m_fLength / 8.0F, 0.0F);
+    else if (m_wHeight * 0.25F == 0.0F) {
+        auto vecLength = CVector(0.0F, m_wLength / 8.0F, 0.0F);
         vec1 = matTransform * vecLength;
 
-        auto vecWidth = CVector(m_fWidth / 8.0F, 0.0F, 0.0F);
+        auto vecWidth = CVector(m_wWidth / 8.0F, 0.0F, 0.0F);
         vec2 = matTransform * vecWidth;
     }
 
@@ -323,8 +359,8 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
         vecCross.Normalise();
 
         pActiveOccluder->m_aVectors[0] = vecCross;
-        pActiveOccluder->m_fRadiuses[0] = DotProduct(vecCross, vecPos);
-        pActiveOccluder->m_cUnkn = 1;
+        pActiveOccluder->m_afRadiuses[0] = DotProduct(vecCross, vecPos);
+        pActiveOccluder->m_cNumVectors = 1;
 
         return true;
     }
@@ -405,9 +441,9 @@ bool COccluder::ProcessLineSegment(int iIndFrom, int iIndTo, CActiveOccluder* pA
 bool COccluder::NearCamera()
 {
     //("%3.2f : %3.2f : %3.2f, %3.2f : %3.2f : %3.2f\n", COcclusion::gOccluderCoorsOnScreen[0].x, COcclusion::gOccluderCoorsOnScreen[0].y, COcclusion::gOccluderCoorsOnScreen[0].z, COcclusion::gOccluderCoorsOnScreen[1].x, COcclusion::gOccluderCoorsOnScreen[1].y, COcclusion::gOccluderCoorsOnScreen[1].z);
-    auto fSize = std::max(m_fLength / 4.0F, m_fWidth / 4.0F);
+    auto fSize = std::max(m_wLength / 4.0F, m_wWidth / 4.0F);
     const auto& vecCamPos = TheCamera.GetPosition();
-    auto vecPos = CVector(m_fMidX / 4.0F, m_fMidY / 4.0F, m_fMidZ / 4.0F);
+    auto vecPos = CVector(m_wMidX / 4.0F, m_wMidY / 4.0F, m_wMidZ / 4.0F);
 
     auto fDist = DistanceBetweenPoints(vecPos, vecCamPos);
     return (fDist - fSize * 0.5F) < 250.0F;
