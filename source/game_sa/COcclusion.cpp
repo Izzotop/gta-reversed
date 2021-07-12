@@ -352,8 +352,8 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
         && !ProcessLineSegment(1, 2, pActiveOccluder)
         && !ProcessLineSegment(2, 3, pActiveOccluder)
         && !ProcessLineSegment(3, 0, pActiveOccluder)
-        && RsGlobal.maximumWidth  * 0.1  <= COcclusion::gMaxXInOccluder - COcclusion::gMinXInOccluder
-        && RsGlobal.maximumHeight * 0.07 <= COcclusion::gMaxYInOccluder - COcclusion::gMinYInOccluder){
+        && RsGlobal.maximumWidth  * 0.1F  <= COcclusion::gMaxXInOccluder - COcclusion::gMinXInOccluder
+        && RsGlobal.maximumHeight * 0.07F <= COcclusion::gMaxYInOccluder - COcclusion::gMinYInOccluder){
 
         auto vecCross = CrossProduct(vec1, vec2);
         vecCross.Normalise();
@@ -430,7 +430,7 @@ bool COccluder::ProcessLineSegment(int iIndFrom, int iIndTo, CActiveOccluder* pA
     pCurLine.m_vecOrigin.Set(fFromX, fFromY);
     pCurLine.m_vecDirection.Set(fRecip * fXSize, fRecip * fYSize);
 
-    if (DoesInfiniteLineTouchScreen(pCurLine.m_vecOrigin, pCurLine.m_vecDirection)) {
+    if (DoesInfiniteLineTouchScreen(fFromX, fFromY, pCurLine.m_vecDirection.x, pCurLine.m_vecDirection.y)) {
         ++pActiveOccluder->m_cLinesCount;
         return false;
     }

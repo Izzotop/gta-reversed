@@ -971,8 +971,8 @@ bool CalcScreenCoors(CVector const& vecPoint, CVector* pVecOutPos)
     return plugin::CallAndReturn<bool, 0x71DAB0, CVector const&, CVector*>(vecPoint, pVecOutPos);
 }
 
-bool DoesInfiniteLineTouchScreen(CVector2D const& vecPoint, CVector2D const& vecDir) {
-    return plugin::CallAndReturn<bool, 0x71DB80, CVector2D const&, CVector2D const&>(vecPoint, vecDir);
+bool DoesInfiniteLineTouchScreen(float fX, float fY, float fXDir, float fYDir) {
+    return plugin::CallAndReturn<bool, 0x71DB80, float, float, float, float>(fX, fY, fXDir, fYDir);
 }
 
 bool IsPointInsideLine(float fLineX, float fLineY, float fXDir, float fYDir, float fPointX, float fPointY, float fTolerance) {
