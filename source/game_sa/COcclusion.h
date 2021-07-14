@@ -57,6 +57,7 @@ public:
     static constexpr int MAX_INTERIOR_OCCLUDERS = 40;
     static constexpr int MAX_MAP_OCCLUDERS = 1000;
     static constexpr int MAX_ACTIVE_OCCLUDERS = 28;
+    static constexpr int NUM_OCCLUDERS_PROCESSED_PER_FRAME = 16;
 
     static COccluder(&aInteriorOccluders)[MAX_INTERIOR_OCCLUDERS];
     static COccluder(&aOccluders)[MAX_MAP_OCCLUDERS];
