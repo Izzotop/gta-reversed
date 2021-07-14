@@ -28,6 +28,7 @@ void COcclusion::InjectHooks()
     ReversibleHooks::Install("COcclusion", "AddOne", 0x71DCD0, &COcclusion::AddOne);
     ReversibleHooks::Install("COcclusion", "IsPositionOccluded", 0x7200B0, &COcclusion::IsPositionOccluded);
     ReversibleHooks::Install("COcclusion", "OccluderHidesBehind", 0x71E080 , &COcclusion::OccluderHidesBehind);
+    ReversibleHooks::Install("COcclusion", "ProcessBeforeRendering", 0x7201C0, &COcclusion::ProcessBeforeRendering);
 
     ReversibleHooks::Install("COccluder", "ProcessOneOccluder", 0x71E5D0, &COccluder::ProcessOneOccluder);
     ReversibleHooks::Install("COccluder", "ProcessLineSegment", 0x71E130, &COccluder::ProcessLineSegment);
@@ -180,7 +181,97 @@ bool COcclusion::IsPositionOccluded(CVector vecPos, float fRadius)
 
 void COcclusion::ProcessBeforeRendering()
 {
-    plugin::Call<0x7201C0>();
+    //plugin::Call<0x7201C0>();
+    COcclusion::NumActiveOccluders = 0;
+    if (!CGame::currArea) {
+        auto listInd = COcclusion::ListWalkThroughFA;
+        auto listFA = COcclusion::ListWalkThroughFA;
+        if (COcclusion::ListWalkThroughFA == -1) {
+            listInd = COcclusion::FarAwayList;
+            COcclusion::PreviousListWalkThroughFA = COcclusion::ListWalkThroughFA;
+            COcclusion::ListWalkThroughFA = COcclusion::FarAwayList;
+            if (COcclusion::FarAwayList == -1)
+                goto CHECK_NEARBY_LIST;
+        }
+        else
+            listFA = COcclusion::PreviousListWalkThroughFA;
+
+        for (auto i = 0; i < 16; ++i) {
+            if (listInd == -1)
+                break;
+
+            if (COcclusion::aOccluders[listInd].NearCamera()) {
+                if (listFA == -1)
+                    COcclusion::FarAwayList = COcclusion::aOccluders[listInd].m_nNextIndex;
+                else
+                    COcclusion::aOccluders[listFA].m_nNextIndex = COcclusion::aOccluders[listInd].m_nNextIndex;
+
+                listInd = COcclusion::aOccluders[listInd].m_nNextIndex;
+                COcclusion::aOccluders[COcclusion::ListWalkThroughFA].m_nNextIndex = COcclusion::NearbyList;
+                COcclusion::NearbyList = COcclusion::ListWalkThroughFA;
+            }
+            else {
+                listFA = listInd;
+                COcclusion::PreviousListWalkThroughFA = listFA;
+                listInd = COcclusion::aOccluders[listInd].m_nNextIndex;
+            }
+
+            COcclusion::ListWalkThroughFA = listInd;
+        }
+
+    CHECK_NEARBY_LIST:
+        auto ind = COcclusion::NearbyList;
+        auto prevInd = -1;
+        while (ind != -1) {
+            if (COcclusion::NumActiveOccluders < MAX_ACTIVE_OCCLUDERS) {
+                auto bActive = aOccluders[ind].ProcessOneOccluder(&aActiveOccluders[COcclusion::NumActiveOccluders]);
+                if (bActive)
+                    ++COcclusion::NumActiveOccluders;
+            }
+
+            if (aOccluders[ind].NearCamera()) {
+                prevInd = ind;
+                ind = aOccluders[ind].m_nNextIndex;
+            }
+            else {
+                if (prevInd == -1)
+                    COcclusion::NearbyList = aOccluders[ind].m_nNextIndex;
+                else
+                    aOccluders[prevInd].m_nNextIndex = aOccluders[ind].m_nNextIndex;
+
+                auto nextInd = aOccluders[ind].m_nNextIndex;
+                aOccluders[ind].m_nNextIndex = COcclusion::FarAwayList;
+                COcclusion::FarAwayList = ind;
+                ind = nextInd;
+            }
+        }
+    }
+    else {
+        for (auto i = 0; i < COcclusion::NumInteriorOcculdersOnMap; ++i) {
+            if (COcclusion::NumActiveOccluders < MAX_ACTIVE_OCCLUDERS) {
+                auto bActive = aInteriorOccluders[i].ProcessOneOccluder(&aActiveOccluders[COcclusion::NumActiveOccluders]);
+                if (bActive)
+                    ++COcclusion::NumActiveOccluders;
+            }
+        } 
+    }
+
+    for (auto i = 0; i < COcclusion::NumActiveOccluders; ++i) {
+        auto* checked = &aActiveOccluders[i];
+        for (auto k = 0; k < COcclusion::NumActiveOccluders; ++k) {
+            if (i != k
+                && aActiveOccluders[k].m_wDepth < checked->m_wDepth
+                && OccluderHidesBehind(checked, &aActiveOccluders[k])) {
+
+                auto prev = COcclusion::NumActiveOccluders - 1;
+                if (i < prev)
+                    *checked = *(checked + 1);
+
+                --COcclusion::NumActiveOccluders;
+                k = COcclusion::NumActiveOccluders;
+            }
+        }
+    }
 }
 
 bool CActiveOccluder::IsPointWithinOcclusionArea(float fX, float fY, float fRadius)

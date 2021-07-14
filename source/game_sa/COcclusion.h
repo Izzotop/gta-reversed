@@ -40,8 +40,8 @@ struct COccluder
     uint8_t m_cPad;
     struct
     {
-        uint16_t m_nNextIndex : 15;
-        uint16_t m_bFarAway : 1;
+        int16_t m_nNextIndex : 15;
+        int16_t m_bFarAway : 1;
     };
 
 public:
