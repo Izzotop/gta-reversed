@@ -329,11 +329,11 @@ CEntity* CFileLoader::LoadObjectInstance(char const* line)
 
 void CFileLoader::LoadOcclusionVolume(char const* line, char const* filename)
 {
-    float fRotY = 0.0F, fRotZ = 0.0F;
+    float fRotY = 0.0F, fRotX = 0.0F;
     uint32_t nFlags = 0;
-    float fCenterX, fCenterY, fBottomZ, fWidth, fLength, fHeight, fRotX;
+    float fCenterX, fCenterY, fBottomZ, fWidth, fLength, fHeight, fRotZ;
 
-    sscanf(line, "%f %f %f %f %f %f %f %f %f %d ", &fCenterX, &fCenterY, &fBottomZ, &fWidth, &fLength, &fHeight, &fRotX, &fRotY, &fRotZ, &nFlags);
+    sscanf(line, "%f %f %f %f %f %f %f %f %f %d ", &fCenterX, &fCenterY, &fBottomZ, &fWidth, &fLength, &fHeight, &fRotZ, &fRotY, &fRotX, &nFlags);
     auto fCenterZ = fHeight * 0.5F + fBottomZ;
     auto strLen = strlen(filename);
 
@@ -341,7 +341,7 @@ void CFileLoader::LoadOcclusionVolume(char const* line, char const* filename)
     if (filename[strLen - 7] == 'i' && filename[strLen - 6] == 'n' && filename[strLen - 5] == 't')
         bIsInterior = true;
 
-    COcclusion::AddOne(fCenterX, fCenterY, fCenterZ, fWidth, fLength, fHeight, fRotX, fRotY, fRotZ, nFlags, bIsInterior);
+    COcclusion::AddOne(fCenterX, fCenterY, fCenterZ, fWidth, fLength, fHeight, fRotZ, fRotY, fRotX, nFlags, bIsInterior);
 }
 
 // 0x5B9030
