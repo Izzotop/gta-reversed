@@ -34,9 +34,9 @@ struct COccluder
     int16_t m_wLength;
     int16_t m_wWidth;
     int16_t m_wHeight;
-    uint8_t m_cRotX;
-    uint8_t m_cRotY;
     uint8_t m_cRotZ;
+    uint8_t m_cRotY;
+    uint8_t m_cRotX;
     uint8_t m_cPad;
     struct
     {
@@ -86,7 +86,7 @@ public:
 
 public:
     static void Init();
-    static void AddOne(float centerX, float centerY, float centerZ, float width, float length, float height, float rotX, float rotY, float rotZ, uint32_t flags, bool isInterior);
+    static void AddOne(float centerX, float centerY, float centerZ, float width, float length, float height, float rotZ, float rotY, float rotX, uint32_t flags, bool isInterior);
     static bool OccluderHidesBehind(CActiveOccluder* first, CActiveOccluder* second);
     static bool IsPositionOccluded(CVector vecPos, float fRadius);
     static void ProcessBeforeRendering();

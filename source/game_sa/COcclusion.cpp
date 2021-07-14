@@ -48,7 +48,7 @@ void COcclusion::Init()
     COcclusion::PreviousListWalkThroughFA = -1;
 }
 
-void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width, float length, float height, float rotX, float rotY, float rotZ, uint32_t flags, bool isInterior)
+void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width, float length, float height, float rotZ, float rotY, float rotX, uint32_t flags, bool isInterior)
 {
     int numMissingDimensions = 0;
 
@@ -67,9 +67,9 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
         return;
 
     // Get the angles in [0 : 360] space and convert to radians
-    auto fRotX = DegreesToRadians(CGeneral::LimitAngle(rotX) + 180.0F);
-    auto fRotY = DegreesToRadians(CGeneral::LimitAngle(rotY) + 180.0F);
     auto fRotZ = DegreesToRadians(CGeneral::LimitAngle(rotZ) + 180.0F);
+    auto fRotY = DegreesToRadians(CGeneral::LimitAngle(rotY) + 180.0F);
+    auto fRotX = DegreesToRadians(CGeneral::LimitAngle(rotX) + 180.0F);
     const auto fTwoPiToChar = 256.0F / TWO_PI;
 
     if (isInterior)
@@ -81,9 +81,9 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
         occluder.m_wWidth = iWidth * 4.0F;
         occluder.m_wLength = iLength * 4.0F;
         occluder.m_wHeight = iHeight * 4.0F;
-        occluder.m_cRotX = rotX * fTwoPiToChar;
-        occluder.m_cRotY = rotY * fTwoPiToChar;
-        occluder.m_cRotZ = rotZ * fTwoPiToChar;
+        occluder.m_cRotZ = fRotZ * fTwoPiToChar;
+        occluder.m_cRotY = fRotY * fTwoPiToChar;
+        occluder.m_cRotX = fRotX * fTwoPiToChar;
         ++COcclusion::NumInteriorOcculdersOnMap;
     }
     else
@@ -95,9 +95,9 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
         occluder.m_wWidth = iWidth * 4.0F;
         occluder.m_wLength = iLength * 4.0F;
         occluder.m_wHeight = iHeight * 4.0F;
-        occluder.m_cRotX = rotX * fTwoPiToChar;
-        occluder.m_cRotY = rotY * fTwoPiToChar;
-        occluder.m_cRotZ = rotZ * fTwoPiToChar;
+        occluder.m_cRotZ = fRotZ * fTwoPiToChar;
+        occluder.m_cRotY = fRotY * fTwoPiToChar;
+        occluder.m_cRotX = fRotX * fTwoPiToChar;
 
         if (flags)
             occluder.m_bFarAway = true;
@@ -324,9 +324,9 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
     auto matRotZ = CMatrix();;
     auto matTransform = CMatrix();
 
-    matRotX.SetRotateX(m_cRotZ / 40.0F); //TODO: Check if the fields in the model aren't in the wrong order
+    matRotX.SetRotateX(m_cRotX / 40.0F);
     matRotY.SetRotateY(m_cRotY / 40.0F);
-    matRotZ.SetRotateZ(m_cRotX / 40.0F);
+    matRotZ.SetRotateZ(m_cRotZ / 40.0F);
     matTransform = (matRotY * matRotX) * matRotZ;
 
     COcclusion::gMinXInOccluder = 999999.88F;
