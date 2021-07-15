@@ -6,6 +6,7 @@
 #include "imgui_stdlib.h"
 #include "imgui_internal.h"
 #include "CDebugMenuToolInput.h"
+#include "DebugModules/COcclusionDebugModule.h"
 
 #include <windows.h>
 #include <sstream>
@@ -786,6 +787,16 @@ void CDebugMenu::ProcessHooksTool() {
     ImGui::EndChild();
 }
 
+void CDebugMenu::ProcessOtherTool() {
+    if (ImGui::BeginTabBar("Modules")) {
+        if (ImGui::BeginTabItem("Occlussion")) {
+            COcclusionDebugModule::ProcessImgui();
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
+    }
+}
+
 void CDebugMenu::ImguiDisplayPlayerInfo() {
     if (CTimer::GetIsPaused()) {
         return;
@@ -825,6 +836,10 @@ void CDebugMenu::ImguiDisplayPlayerInfo() {
             }
             if (ImGui::BeginTabItem("Hooks")) {
                 ProcessHooksTool();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Other")) {
+                ProcessOtherTool();
                 ImGui::EndTabItem();
             }
             ImGui::EndTabBar();

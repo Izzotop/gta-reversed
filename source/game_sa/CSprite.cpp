@@ -14,3 +14,8 @@ bool CSprite::CalcScreenCoors(RwV3d const& posn, RwV3d* out, float* w, float* h,
 {
     return ((bool(__cdecl*)(RwV3d const&, RwV3d *, float*, float*, bool, bool))0x70CE30)(posn, out, w, h, checkMaxVisible, checkMinVisible);
 }
+
+void CSprite::FlushSpriteBuffer()
+{
+    plugin::Call<0x70CF20>();
+}

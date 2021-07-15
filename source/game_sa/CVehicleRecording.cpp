@@ -1,12 +1,35 @@
 #include "StdInc.h"
+#include "COcclusionDebugModule.h"
 
 std::int32_t& CVehicleRecording::NumPlayBackFiles = *(std::int32_t*)0x97F630;
 CPath(&CVehicleRecording::StreamingArray)[TOTAL_RRR_MODEL_IDS] = *(CPath(*)[TOTAL_RRR_MODEL_IDS])0x97D880;
 bool(&CVehicleRecording::bUseCarAI)[TOTAL_VEHICLE_RECORDS] = *(bool(*)[TOTAL_VEHICLE_RECORDS])0x97D6C0;
 
+void CVehicleRecording::InjectHooks() {
+    ReversibleHooks::Install("CVehicleRecording", "Render", 0x459F70, &CVehicleRecording::Render);
+}
+
 void CVehicleRecording::Init()
 {
     plugin::Call<0x459390>();
+}
+
+void CVehicleRecording::Render()
+{
+    //NOTSA: Originally an empty function, called late in rendering pipeline, used for debug stuff
+    if (COcclusionDebugModule::DrawActiveOcclusions
+        && COcclusion::NumActiveOccluders > 0) {
+
+        CSprite::FlushSpriteBuffer();
+        for (int ind = 0; ind < COcclusion::NumActiveOccluders; ++ind) {
+            auto& occl = COcclusion::aActiveOccluders[ind];
+            for (auto i = 0; i < occl.m_cLinesCount; ++i) {
+                auto& line = occl.m_aLines[i];
+                auto vecEnd = line.m_vecOrigin + line.m_vecDirection * line.m_fLength;
+                CLines::ImmediateLine2D(line.m_vecOrigin.x, line.m_vecOrigin.y, vecEnd.x, vecEnd.y, 255, 255, 255, 255, 255, 255, 255, 255);
+            }
+        }
+    }
 }
 
 bool CVehicleRecording::HasRecordingFileBeenLoaded(std::int32_t rrrNumber)

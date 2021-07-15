@@ -57,7 +57,11 @@ public:
     * pPlaybackBuffer
     * pVehicleForPlayback*/
 
+public:
+    static void InjectHooks();
+
     static void Init();
+    static void Render();
     /*
     * ChangeCarPlaybackToUseAI(CVehicle*)
     * FindIndexWithFileNameNumber(int)
@@ -74,7 +78,7 @@ public:
     * PausePlaybackRecordedCar(CVehicle*)
     * RemoveAllRecordingsThatArentUsed()
     * RemoveRecordingFile(int)
-    * Render()
+    * 
     * RenderLineSegment(int&)
     * RequestRecordingFile(int)
     * RestoreInfoForCar(CVehicle*, CVehicleStateEachFrame*, bool)

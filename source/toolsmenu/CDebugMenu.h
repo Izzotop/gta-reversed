@@ -29,6 +29,7 @@ private:
     static void ProcessRenderTool();
     static void PostFxTool();
     static void ProcessHooksTool();
+    static void ProcessOtherTool();
     //static void ToggleHook();
 public:
     static ImGuiIO* io;

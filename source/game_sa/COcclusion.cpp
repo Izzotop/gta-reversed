@@ -324,9 +324,9 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
     auto matRotZ = CMatrix();;
     auto matTransform = CMatrix();
 
-    matRotX.SetRotateX(m_cRotX / 40.0F);
-    matRotY.SetRotateY(m_cRotY / 40.0F);
-    matRotZ.SetRotateZ(m_cRotZ / 40.0F);
+    matRotX.SetRotateX(m_cRotX * PI / 128.0F);
+    matRotY.SetRotateY(m_cRotY * PI / 128.0F);
+    matRotZ.SetRotateZ(m_cRotZ * PI / 128.0F);
     matTransform = (matRotY * matRotX) * matRotZ;
 
     COcclusion::gMinXInOccluder = 999999.88F;
