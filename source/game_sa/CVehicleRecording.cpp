@@ -16,20 +16,10 @@ void CVehicleRecording::Init()
 
 void CVehicleRecording::Render()
 {
+#ifdef EXTRA_DEBUG_FEATURES
     //NOTSA: Originally an empty function, called late in rendering pipeline, used for debug stuff
-    if (COcclusionDebugModule::DrawActiveOcclusions
-        && COcclusion::NumActiveOccluders > 0) {
-
-        CSprite::FlushSpriteBuffer();
-        for (int ind = 0; ind < COcclusion::NumActiveOccluders; ++ind) {
-            auto& occl = COcclusion::aActiveOccluders[ind];
-            for (auto i = 0; i < occl.m_cLinesCount; ++i) {
-                auto& line = occl.m_aLines[i];
-                auto vecEnd = line.m_vecOrigin + line.m_vecDirection * line.m_fLength;
-                CLines::ImmediateLine2D(line.m_vecOrigin.x, line.m_vecOrigin.y, vecEnd.x, vecEnd.y, 255, 255, 255, 255, 255, 255, 255, 255);
-            }
-        }
-    }
+    COcclusionDebugModule::ProcessRender();
+#endif
 }
 
 bool CVehicleRecording::HasRecordingFileBeenLoaded(std::int32_t rrrNumber)

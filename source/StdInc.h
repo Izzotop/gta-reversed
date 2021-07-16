@@ -613,3 +613,7 @@
 #include "game_sa\Tasks\TaskTypes\CTaskSimplePause.h"
 #include "game_sa\Tasks\TaskTypes\CTaskSimpleScratchHead.h"
 #include "game_sa\Tasks\TaskTypes\CTaskSimplePlayHandSignalAnim.h"
+
+#ifdef EXTRA_DEBUG_FEATURES
+#include "toolsmenu\DebugModules\COcclusionDebugModule.h"
+#endif

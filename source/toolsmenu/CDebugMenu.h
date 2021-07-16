@@ -17,6 +17,7 @@ private:
     static CSprite2d m_mouseSprite;
 
     static void ImguiDisplayFramePerSecond();
+    static void ImguiDisplayExtraDebugFeatures();
     static void ImguiDisplayPlayerInfo();
     static void ProcessCheatTool();
     static void SpawnPed(std::int32_t modelID, CVector position);

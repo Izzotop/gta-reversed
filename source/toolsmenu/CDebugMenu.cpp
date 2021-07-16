@@ -164,6 +164,20 @@ void CDebugMenu::ImguiDisplayFramePerSecond() {
     ImGui::End();
 }
 
+void CDebugMenu::ImguiDisplayExtraDebugFeatures() {
+    // Top-left framerate display overlay window.
+#ifdef EXTRA_DEBUG_FEATURES
+    ImGui::SetNextWindowPos(ImVec2(150, 10));
+    bool open = false;
+    ImGui::SetNextWindowCollapsed(true, ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(484, 420), ImGuiCond_FirstUseEver);
+    ImGui::Begin("Extra debug", nullptr, ImGuiWindowFlags_NoResize);
+
+        ProcessOtherTool();
+    ImGui::End();
+#endif
+}
+
 void CDebugMenu::ImGuiDrawMouse() {
     if (!m_showMenu || !m_mouseSprite.m_pTexture)
         return;
@@ -838,10 +852,7 @@ void CDebugMenu::ImguiDisplayPlayerInfo() {
                 ProcessHooksTool();
                 ImGui::EndTabItem();
             }
-            if (ImGui::BeginTabItem("Other")) {
-                ProcessOtherTool();
-                ImGui::EndTabItem();
-            }
+
             ImGui::EndTabBar();
         }
         ImGui::End();
@@ -895,14 +906,15 @@ void CDebugMenu::ImguiDrawLoop() {
 
     DebugCode();
 
-    if (!m_showMenu)
-        return;
+    //if (!m_showMenu)
+    //    return;
 
     io->DeltaTime = CTimer::ms_fTimeStep * 0.02f;
 
     ImGui_ImplRW_NewFrame();
     ImGui::NewFrame();
 
+    CDebugMenu::ImguiDisplayExtraDebugFeatures();
     ImguiDisplayPlayerInfo();
     ImguiDisplayFramePerSecond();
 
