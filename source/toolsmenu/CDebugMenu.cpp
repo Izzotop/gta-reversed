@@ -6,7 +6,6 @@
 #include "imgui_stdlib.h"
 #include "imgui_internal.h"
 #include "CDebugMenuToolInput.h"
-#include "DebugModules/COcclusionDebugModule.h"
 
 #include <windows.h>
 #include <sstream>
@@ -811,6 +810,7 @@ void CDebugMenu::ProcessExtraDebugFeatures() {
             COcclusionDebugModule::ProcessImgui();
             ImGui::EndTabItem();
         }
+
         ImGui::EndTabBar();
     }
 }
