@@ -1,5 +1,4 @@
 #include "StdInc.h"
-#include "COcclusionDebugModule.h"
 
 std::int32_t& CVehicleRecording::NumPlayBackFiles = *(std::int32_t*)0x97F630;
 CPath(&CVehicleRecording::StreamingArray)[TOTAL_RRR_MODEL_IDS] = *(CPath(*)[TOTAL_RRR_MODEL_IDS])0x97D880;

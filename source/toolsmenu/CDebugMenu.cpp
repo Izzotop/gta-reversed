@@ -6,7 +6,6 @@
 #include "imgui_stdlib.h"
 #include "imgui_internal.h"
 #include "CDebugMenuToolInput.h"
-#include "DebugModules/COcclusionDebugModule.h"
 
 #include <windows.h>
 #include <sstream>
@@ -807,10 +806,13 @@ void CDebugMenu::ProcessHooksTool() {
 #ifdef EXTRA_DEBUG_FEATURES
 void CDebugMenu::ProcessExtraDebugFeatures() {
     if (ImGui::BeginTabBar("Modules")) {
+        #ifdef EXTRA_DEBUG_FEATURES
         if (ImGui::BeginTabItem("Occlussion")) {
             COcclusionDebugModule::ProcessImgui();
             ImGui::EndTabItem();
         }
+        #endif
+
         ImGui::EndTabBar();
     }
 }
