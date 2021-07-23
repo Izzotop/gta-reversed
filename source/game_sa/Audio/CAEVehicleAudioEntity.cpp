@@ -1140,8 +1140,28 @@ double CAEVehicleAudioEntity::GetFreqForPlayerEngineSound(cVehicleParams& vehPar
 }
 
 // 0x4F8360
-void CAEVehicleAudioEntity::PlaySkidSound(short newSkidSoundType, float speed, float volume) {
-    plugin::CallMethod<0x4F8360, CAEVehicleAudioEntity*, short, float, float>(this, newSkidSoundType, speed, volume);
+void CAEVehicleAudioEntity::PlaySkidSound(short newSkidSoundType, float speed, float volumeDelta) {
+    plugin::CallMethod<0x4F8360, CAEVehicleAudioEntity*, short, float, float>(this, newSkidSoundType, speed, volumeDelta);
+
+    /*
+    const float volume = m_fGeneralVehicleSoundVolume + volumeDelta;
+    if (m_nSkidSoundType == newSkidSoundType) {
+        if (m_nSkidSoundType != -1) {
+            auto posn = m_pEntity->GetPosition();
+            m_twinSkidSound.UpdateTwinLoopSound(posn, volume, speed);
+        }
+    } else {
+        if (m_twinSkidSound.m_bIsInitialised)
+            m_twinSkidSound.StopSoundAndForget();
+
+        m_nSkidSoundType = newSkidSoundType;
+        if (newSkidSoundType != -1) {
+            m_twinSkidSound.Initialise(19, newSkidSoundType, newSkidSoundType + 1, this, 200, 1000, -1, -1);
+            auto posn = m_pEntity->GetPosition();
+            m_twinSkidSound.PlayTwinLoopSound(posn, volume, speed, 2.5f, 1.0f, (eSoundEnvironment)0);
+        }
+    }
+    */
 }
 
 // 0x4F84D0

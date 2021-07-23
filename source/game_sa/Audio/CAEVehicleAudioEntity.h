@@ -216,7 +216,7 @@ public:
     void PlayerAboutToExitVehicleAsDriver();
     bool CopHeli();
     bool JustFinishedAccelerationLoop();
-    void PlaySkidSound(short soundType, float speed, float volume);
+    void PlaySkidSound(short soundType, float speed, float volumeDelta);
     void JustWreckedVehicle();
     CVector GetAircraftNearPosition();
     float GetFlyingMetalVolume(CPhysical*);
