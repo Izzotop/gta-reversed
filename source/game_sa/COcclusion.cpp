@@ -40,12 +40,12 @@ void COcclusion::InjectHooks()
 
 void COcclusion::Init()
 {
-    COcclusion::NumOccludersOnMap = 0;
-    COcclusion::NumInteriorOcculdersOnMap = 0;
-    COcclusion::FarAwayList = -1;
-    COcclusion::NearbyList = -1;
-    COcclusion::ListWalkThroughFA = -1;
-    COcclusion::PreviousListWalkThroughFA = -1;
+    NumOccludersOnMap = 0;
+    NumInteriorOcculdersOnMap = 0;
+    FarAwayList = -1;
+    NearbyList = -1;
+    ListWalkThroughFA = -1;
+    PreviousListWalkThroughFA = -1;
 }
 
 void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width, float length, float height, float rotZ, float rotY, float rotX, uint32_t flags, bool isInterior)
@@ -74,7 +74,7 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
 
     if (isInterior)
     {
-        auto& occluder = COcclusion::aInteriorOccluders[COcclusion::NumInteriorOcculdersOnMap];
+        auto& occluder = aInteriorOccluders[NumInteriorOcculdersOnMap];
         occluder.m_wMidX = centerX * 4.0F;
         occluder.m_wMidY = centerY * 4.0F;
         occluder.m_wMidZ = centerZ * 4.0F;
@@ -84,11 +84,11 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
         occluder.m_cRotZ = fRotZ * fTwoPiToChar;
         occluder.m_cRotY = fRotY * fTwoPiToChar;
         occluder.m_cRotX = fRotX * fTwoPiToChar;
-        ++COcclusion::NumInteriorOcculdersOnMap;
+        ++NumInteriorOcculdersOnMap;
     }
     else
     {
-        auto& occluder = COcclusion::aOccluders[COcclusion::NumOccludersOnMap];
+        auto& occluder = aOccluders[NumOccludersOnMap];
         occluder.m_wMidX = centerX * 4.0F;
         occluder.m_wMidY = centerY * 4.0F;
         occluder.m_wMidZ = centerZ * 4.0F;
@@ -104,9 +104,9 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
         else
             occluder.m_bFarAway = false;
 
-        occluder.m_nNextIndex = COcclusion::FarAwayList;
-        COcclusion::FarAwayList = COcclusion::NumOccludersOnMap;
-        ++COcclusion::NumOccludersOnMap;
+        occluder.m_nNextIndex = FarAwayList;
+        FarAwayList = NumOccludersOnMap;
+        ++NumOccludersOnMap;
     }
 }
 
@@ -151,7 +151,7 @@ bool COcclusion::OccluderHidesBehind(CActiveOccluder* first, CActiveOccluder* se
 
 bool COcclusion::IsPositionOccluded(CVector vecPos, float fRadius)
 {
-    if (!COcclusion::NumActiveOccluders)
+    if (!NumActiveOccluders)
         return false;
 
     CVector outPos;
@@ -163,9 +163,9 @@ bool COcclusion::IsPositionOccluded(CVector vecPos, float fRadius)
     auto fScreenRadius = fRadius * fLongEdge;
     auto fScreenDepth = outPos.z - fRadius;
 
-    for (auto ind = 0; ind < COcclusion::NumActiveOccluders; ++ind)
+    for (auto ind = 0; ind < NumActiveOccluders; ++ind)
     {
-        auto& occluder = COcclusion::aActiveOccluders[ind];
+        auto& occluder = aActiveOccluders[ind];
         if (occluder.m_wDepth >= fScreenDepth
             || !occluder.IsPointWithinOcclusionArea(outPos.x, outPos.y, fScreenRadius)
             || !occluder.IsPointBehindOccluder(vecPos, fRadius))
@@ -181,53 +181,53 @@ bool COcclusion::IsPositionOccluded(CVector vecPos, float fRadius)
 
 void COcclusion::ProcessBeforeRendering()
 {
-    COcclusion::NumActiveOccluders = 0;
+    NumActiveOccluders = 0;
     if (!CGame::currArea) {
-        auto listCur = COcclusion::ListWalkThroughFA;
-        auto listPrev = COcclusion::ListWalkThroughFA;
+        auto listCur = ListWalkThroughFA;
+        auto listPrev = ListWalkThroughFA;
         bool skipProcessing = false;
-        if (COcclusion::ListWalkThroughFA == -1) {
-            listCur = COcclusion::FarAwayList;
-            COcclusion::PreviousListWalkThroughFA = COcclusion::ListWalkThroughFA;
-            COcclusion::ListWalkThroughFA = COcclusion::FarAwayList;
-            if (COcclusion::FarAwayList == -1)
+        if (ListWalkThroughFA == -1) {
+            listCur = FarAwayList;
+            PreviousListWalkThroughFA = ListWalkThroughFA;
+            ListWalkThroughFA = FarAwayList;
+            if (FarAwayList == -1)
                 skipProcessing = true;
         }
         else
-            listPrev = COcclusion::PreviousListWalkThroughFA;
+            listPrev = PreviousListWalkThroughFA;
 
         if (!skipProcessing) {
             for (auto i = 0; i < NUM_OCCLUDERS_PROCESSED_PER_FRAME; ++i) {
                 if (listCur == -1)
                     break;
 
-                if (COcclusion::aOccluders[listCur].NearCamera()) {
+                if (aOccluders[listCur].NearCamera()) {
                     if (listPrev == -1)
-                        COcclusion::FarAwayList = COcclusion::aOccluders[listCur].m_nNextIndex;
+                        FarAwayList = aOccluders[listCur].m_nNextIndex;
                     else
-                        COcclusion::aOccluders[listPrev].m_nNextIndex = COcclusion::aOccluders[listCur].m_nNextIndex;
+                        aOccluders[listPrev].m_nNextIndex = aOccluders[listCur].m_nNextIndex;
 
-                    listCur = COcclusion::aOccluders[listCur].m_nNextIndex;
-                    COcclusion::aOccluders[COcclusion::ListWalkThroughFA].m_nNextIndex = COcclusion::NearbyList;
-                    COcclusion::NearbyList = COcclusion::ListWalkThroughFA;
+                    listCur = aOccluders[listCur].m_nNextIndex;
+                    aOccluders[ListWalkThroughFA].m_nNextIndex = NearbyList;
+                    NearbyList = ListWalkThroughFA;
                 }
                 else {
                     listPrev = listCur;
-                    COcclusion::PreviousListWalkThroughFA = listPrev;
-                    listCur = COcclusion::aOccluders[listCur].m_nNextIndex;
+                    PreviousListWalkThroughFA = listPrev;
+                    listCur = aOccluders[listCur].m_nNextIndex;
                 }
 
-                COcclusion::ListWalkThroughFA = listCur;
+                ListWalkThroughFA = listCur;
             }
         }
 
-        auto curInd = COcclusion::NearbyList;
+        auto curInd = NearbyList;
         auto prevInd = -1;
         while (curInd != -1) {
-            if (COcclusion::NumActiveOccluders < MAX_ACTIVE_OCCLUDERS) {
-                auto bActive = aOccluders[curInd].ProcessOneOccluder(&aActiveOccluders[COcclusion::NumActiveOccluders]);
+            if (NumActiveOccluders < MAX_ACTIVE_OCCLUDERS) {
+                auto bActive = aOccluders[curInd].ProcessOneOccluder(&aActiveOccluders[NumActiveOccluders]);
                 if (bActive)
-                    ++COcclusion::NumActiveOccluders;
+                    ++NumActiveOccluders;
             }
 
             if (aOccluders[curInd].NearCamera()) {
@@ -236,40 +236,40 @@ void COcclusion::ProcessBeforeRendering()
             }
             else {
                 if (prevInd == -1)
-                    COcclusion::NearbyList = aOccluders[curInd].m_nNextIndex;
+                    NearbyList = aOccluders[curInd].m_nNextIndex;
                 else
                     aOccluders[prevInd].m_nNextIndex = aOccluders[curInd].m_nNextIndex;
 
                 auto nextInd = aOccluders[curInd].m_nNextIndex;
-                aOccluders[curInd].m_nNextIndex = COcclusion::FarAwayList;
-                COcclusion::FarAwayList = curInd;
+                aOccluders[curInd].m_nNextIndex = FarAwayList;
+                FarAwayList = curInd;
                 curInd = nextInd;
             }
         }
     }
     else {
-        for (auto i = 0; i < COcclusion::NumInteriorOcculdersOnMap; ++i) {
-            if (COcclusion::NumActiveOccluders < MAX_ACTIVE_OCCLUDERS) {
-                auto bActive = aInteriorOccluders[i].ProcessOneOccluder(&aActiveOccluders[COcclusion::NumActiveOccluders]);
+        for (auto i = 0; i < NumInteriorOcculdersOnMap; ++i) {
+            if (NumActiveOccluders < MAX_ACTIVE_OCCLUDERS) {
+                auto bActive = aInteriorOccluders[i].ProcessOneOccluder(&aActiveOccluders[NumActiveOccluders]);
                 if (bActive)
-                    ++COcclusion::NumActiveOccluders;
+                    ++NumActiveOccluders;
             }
         } 
     }
 
-    for (auto i = 0; i < COcclusion::NumActiveOccluders; ++i) {
+    for (auto i = 0; i < NumActiveOccluders; ++i) {
         auto* checked = &aActiveOccluders[i];
-        for (auto k = 0; k < COcclusion::NumActiveOccluders; ++k) {
+        for (auto k = 0; k < NumActiveOccluders; ++k) {
             if (i != k
                 && aActiveOccluders[k].m_wDepth < checked->m_wDepth
                 && OccluderHidesBehind(checked, &aActiveOccluders[k])) {
 
-                auto prev = COcclusion::NumActiveOccluders - 1;
+                auto prev = NumActiveOccluders - 1;
                 if (i < prev)
                     *checked = *(checked + 1);
 
-                --COcclusion::NumActiveOccluders;
-                k = COcclusion::NumActiveOccluders;
+                --NumActiveOccluders;
+                k = NumActiveOccluders;
             }
         }
     }
@@ -387,8 +387,8 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
             && (abOnScreen[3] == abOnScreen[4] || !ProcessLineSegment(2, 3, pActiveOccluder))
             && (abOnScreen[3] == abOnScreen[5] || !ProcessLineSegment(6, 7, pActiveOccluder))
             && (abOnScreen[2] == abOnScreen[5] || !ProcessLineSegment(4, 5, pActiveOccluder))
-            && RsGlobal.maximumWidth * 0.15F <= COcclusion::gMaxXInOccluder - COcclusion::gMinXInOccluder
-            && RsGlobal.maximumHeight * 0.1F <= COcclusion::gMaxYInOccluder - COcclusion::gMinYInOccluder) {
+            && SCREEN_WIDTH * 0.15F <= COcclusion::gMaxXInOccluder - COcclusion::gMinXInOccluder
+            && SCREEN_HEIGHT * 0.1F <= COcclusion::gMaxYInOccluder - COcclusion::gMinYInOccluder) {
 
             pActiveOccluder->m_cNumVectors = 0;
             for (auto i = 0; i < 6; ++i) {
@@ -444,8 +444,8 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
         && !ProcessLineSegment(1, 2, pActiveOccluder)
         && !ProcessLineSegment(2, 3, pActiveOccluder)
         && !ProcessLineSegment(3, 0, pActiveOccluder)
-        && RsGlobal.maximumWidth  * 0.1F  <= COcclusion::gMaxXInOccluder - COcclusion::gMinXInOccluder
-        && RsGlobal.maximumHeight * 0.07F <= COcclusion::gMaxYInOccluder - COcclusion::gMinYInOccluder){
+        && SCREEN_WIDTH  * 0.1F  <= COcclusion::gMaxXInOccluder - COcclusion::gMinXInOccluder
+        && SCREEN_HEIGHT * 0.07F <= COcclusion::gMaxYInOccluder - COcclusion::gMinYInOccluder){
 
         auto vecCross = CrossProduct(vec1, vec2);
         vecCross.Normalise();
@@ -527,12 +527,12 @@ bool COccluder::ProcessLineSegment(int iIndFrom, int iIndTo, CActiveOccluder* pA
         return false;
     }
 
-    return !IsPointInsideLine(fFromX, fFromY, pCurLine.m_vecDirection.x, pCurLine.m_vecDirection.y, RsGlobal.maximumWidth * 0.5F, RsGlobal.maximumHeight * 0.5F, 0.0F);
+    return !IsPointInsideLine(fFromX, fFromY, pCurLine.m_vecDirection.x, pCurLine.m_vecDirection.y, SCREEN_WIDTH * 0.5F, SCREEN_HEIGHT * 0.5F, 0.0F);
 }
 
 bool COccluder::NearCamera()
 {
-    //("%3.2f : %3.2f : %3.2f, %3.2f : %3.2f : %3.2f\n", COcclusion::gOccluderCoorsOnScreen[0].x, COcclusion::gOccluderCoorsOnScreen[0].y, COcclusion::gOccluderCoorsOnScreen[0].z, COcclusion::gOccluderCoorsOnScreen[1].x, COcclusion::gOccluderCoorsOnScreen[1].y, COcclusion::gOccluderCoorsOnScreen[1].z);
+    //("%3.2f : %3.2f : %3.2f, %3.2f : %3.2f : %3.2f\n", gOccluderCoorsOnScreen[0].x, gOccluderCoorsOnScreen[0].y, gOccluderCoorsOnScreen[0].z, gOccluderCoorsOnScreen[1].x, gOccluderCoorsOnScreen[1].y, gOccluderCoorsOnScreen[1].z);
     auto fSize = std::max(m_wLength / 4.0F, m_wWidth / 4.0F);
     const auto& vecCamPos = TheCamera.GetPosition();
     auto vecPos = CVector(m_wMidX / 4.0F, m_wMidY / 4.0F, m_wMidZ / 4.0F);
