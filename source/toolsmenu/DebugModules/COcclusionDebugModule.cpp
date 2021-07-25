@@ -9,10 +9,9 @@ bool COcclusionDebugModule::DrawActiveOcclusions = false;
 int COcclusionDebugModule::NumEntitiesSkipped = 0;
 
 void COcclusionDebugModule::ProcessImgui() {
-    ImGui::PushItemWidth(300.0f);
-    ImGui::InputInt("NumInteriorOcculdersOnMap", &COcclusion::NumInteriorOcculdersOnMap, 1, 100, ImGuiInputTextFlags_ReadOnly);
-    ImGui::InputInt("NumOccludersOnMap", &COcclusion::NumOccludersOnMap, 1, 100, ImGuiInputTextFlags_ReadOnly);
-    ImGui::InputInt("NumActiveOccluders", &COcclusion::NumActiveOccluders, 1, 100, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputScalar("NumInteriorOcculdersOnMap", ImGuiDataType_::ImGuiDataType_S32, &COcclusion::NumInteriorOcculdersOnMap, nullptr, nullptr, nullptr, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputScalar("NumOccludersOnMap", ImGuiDataType_::ImGuiDataType_S32, &COcclusion::NumOccludersOnMap, nullptr, nullptr, nullptr, ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputScalar("NumActiveOccluders", ImGuiDataType_::ImGuiDataType_S32, &COcclusion::NumActiveOccluders, nullptr, nullptr, nullptr, ImGuiInputTextFlags_ReadOnly);
 
     ImGui::NewLine();
     ImGui::InputScalar("FarAwayList", ImGuiDataType_::ImGuiDataType_S16, &COcclusion::FarAwayList, nullptr, nullptr, nullptr, ImGuiInputTextFlags_ReadOnly);

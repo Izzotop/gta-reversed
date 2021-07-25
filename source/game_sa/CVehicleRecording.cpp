@@ -16,8 +16,8 @@ void CVehicleRecording::Init()
 
 void CVehicleRecording::Render()
 {
+//NOTSA: Originally an empty function, called late in rendering pipeline, used for debug stuff
 #ifdef EXTRA_DEBUG_FEATURES
-    //NOTSA: Originally an empty function, called late in rendering pipeline, used for debug stuff
     COcclusionDebugModule::ProcessRender();
 #endif
 }

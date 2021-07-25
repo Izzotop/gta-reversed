@@ -14,6 +14,8 @@ private:
     static std::int32_t m_missionToStartId;
     static bool m_imguiInitialised;
     static bool m_showMenu;
+    static bool m_showFPS;
+    static bool m_showExtraDebugFeatures;
     static CSprite2d m_mouseSprite;
 
     static void ImguiDisplayFramePerSecond();
@@ -30,7 +32,9 @@ private:
     static void ProcessRenderTool();
     static void PostFxTool();
     static void ProcessHooksTool();
-    static void ProcessOtherTool();
+#ifdef EXTRA_DEBUG_FEATURES
+    static void ProcessExtraDebugFeatures();
+#endif
     //static void ToggleHook();
 public:
     static ImGuiIO* io;
