@@ -38,6 +38,7 @@ void COcclusion::InjectHooks()
     ReversibleHooks::Install("CActiveOccluder", "IsPointBehindOccluder", 0x71FA40, &CActiveOccluder::IsPointBehindOccluder);
 }
 
+// 0x71DCA0
 void COcclusion::Init()
 {
     NumOccludersOnMap = 0;
@@ -48,6 +49,7 @@ void COcclusion::Init()
     PreviousListWalkThroughFA = -1;
 }
 
+// 0x71DCD0
 void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width, float length, float height, float rotZ, float rotY, float rotX, uint32_t flags, bool isInterior)
 {
     int numMissingDimensions = 0;
@@ -110,6 +112,7 @@ void COcclusion::AddOne(float centerX, float centerY, float centerZ, float width
     }
 }
 
+// 0x71E080
 bool COcclusion::OccluderHidesBehind(CActiveOccluder* first, CActiveOccluder* second)
 {
     if (!first->m_cLinesCount)
@@ -149,6 +152,7 @@ bool COcclusion::OccluderHidesBehind(CActiveOccluder* first, CActiveOccluder* se
     return true;
 }
 
+// 0x7200B0
 bool COcclusion::IsPositionOccluded(CVector vecPos, float fRadius)
 {
     if (!NumActiveOccluders)
@@ -179,6 +183,7 @@ bool COcclusion::IsPositionOccluded(CVector vecPos, float fRadius)
     return false;
 }
 
+// 0x7201C0
 void COcclusion::ProcessBeforeRendering()
 {
     NumActiveOccluders = 0;
@@ -307,6 +312,7 @@ bool CActiveOccluder::IsPointBehindOccluder(CVector vecPos, float fRadius)
     return true;
 }
 
+// 0x71E5D0
 bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
 {
     pActiveOccluder->m_cLinesCount = 0;
@@ -463,6 +469,7 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
     return false;
 }
 
+// 0x71E130
 bool COccluder::ProcessLineSegment(int iIndFrom, int iIndTo, CActiveOccluder* pActiveOccluder)
 {
     if (!COcclusion::gOccluderCoorsValid[iIndFrom] && !COcclusion::gOccluderCoorsValid[iIndTo])
@@ -533,6 +540,7 @@ bool COccluder::ProcessLineSegment(int iIndFrom, int iIndTo, CActiveOccluder* pA
     return !IsPointInsideLine(fFromX, fFromY, pCurLine.m_vecDirection.x, pCurLine.m_vecDirection.y, SCREEN_WIDTH * 0.5F, SCREEN_HEIGHT * 0.5F, 0.0F);
 }
 
+// 0x71F960
 bool COccluder::NearCamera()
 {
     auto fSize = std::max(m_wLength / 4.0F, m_wWidth / 4.0F);
