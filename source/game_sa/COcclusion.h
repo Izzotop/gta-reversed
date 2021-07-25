@@ -1,5 +1,5 @@
 #pragma once
-#include "PluginBase.h"
+
 #include "CVector2D.h"
 #include "CVector.h"
 
