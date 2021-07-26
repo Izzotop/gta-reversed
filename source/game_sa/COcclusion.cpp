@@ -291,7 +291,7 @@ bool CActiveOccluder::IsPointWithinOcclusionArea(float fX, float fY, float fRadi
 
 bool CActiveOccluder::IsPointBehindOccluder(CVector vecPos, float fRadius)
 {
-    if (m_cLinesCount <= 0)
+    if (m_cNumVectors <= 0)
         return true;
 
     for (auto i = 0; i < m_cNumVectors; ++i) {
@@ -352,6 +352,7 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
             vecTransHeight, -vecTransHeight
         };
 
+        // Figure out if we see the front or back of a face
         const auto& vecCamPos = TheCamera.GetPosition();
         bool abOnScreen[6]{
             DotProduct((vecPos + aVecArr[0] - vecCamPos), aVecArr[0]) < 0.0F,
@@ -362,6 +363,7 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
             DotProduct((vecPos + aVecArr[5] - vecCamPos), aVecArr[5]) < 0.0F
         };
 
+	// Calculating vertices of a box
         COcclusion::gOccluderCoors[0] = vecPos + aVecArr[0] + aVecArr[2] + aVecArr[4];
         COcclusion::gOccluderCoors[1] = vecPos + aVecArr[1] + aVecArr[2] + aVecArr[4];
         COcclusion::gOccluderCoors[2] = vecPos + aVecArr[0] + aVecArr[3] + aVecArr[4];
@@ -375,6 +377,7 @@ bool COccluder::ProcessOneOccluder(CActiveOccluder* pActiveOccluder)
             COcclusion::gOccluderCoorsValid[i] = CalcScreenCoors(COcclusion::gOccluderCoors[i], &COcclusion::gOccluderCoorsOnScreen[i], &temp1, &temp2);
         }
 
+        // Between two differently facing sides we see an edge, so process those
         if (   (abOnScreen[0] == abOnScreen[2] || !ProcessLineSegment(0, 4, pActiveOccluder))
             && (abOnScreen[0] == abOnScreen[3] || !ProcessLineSegment(2, 6, pActiveOccluder))
             && (abOnScreen[0] == abOnScreen[4] || !ProcessLineSegment(0, 2, pActiveOccluder))
@@ -532,11 +535,10 @@ bool COccluder::ProcessLineSegment(int iIndFrom, int iIndTo, CActiveOccluder* pA
 
 bool COccluder::NearCamera()
 {
-    //("%3.2f : %3.2f : %3.2f, %3.2f : %3.2f : %3.2f\n", COcclusion::gOccluderCoorsOnScreen[0].x, COcclusion::gOccluderCoorsOnScreen[0].y, COcclusion::gOccluderCoorsOnScreen[0].z, COcclusion::gOccluderCoorsOnScreen[1].x, COcclusion::gOccluderCoorsOnScreen[1].y, COcclusion::gOccluderCoorsOnScreen[1].z);
     auto fSize = std::max(m_wLength / 4.0F, m_wWidth / 4.0F);
     const auto& vecCamPos = TheCamera.GetPosition();
-    auto vecPos = CVector(m_wMidX / 4.0F, m_wMidY / 4.0F, m_wMidZ / 4.0F);
+    auto vecPos = CVector(m_wMidX, m_wMidY, m_wMidZ) / 4.0F;
 
     auto fDist = DistanceBetweenPoints(vecPos, vecCamPos);
-    return (fDist - fSize * 0.5F) < 250.0F;
+    return (fDist - fSize / 2.0F) < 250.0F;
 }

@@ -1,5 +1,6 @@
-#include "CLines.h"
 #include "StdInc.h"
+
+#include "CLines.h"
 
 void CLines::InjectHooks() {
     //ReversibleHooks::Install("CLines", "RenderLineNoClipping")
