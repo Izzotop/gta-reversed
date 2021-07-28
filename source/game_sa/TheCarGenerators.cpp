@@ -1,6 +1,6 @@
 #include "StdInc.h"
 
-#include "CTheCarGenerators.h"
+#include "TheCarGenerators.h"
 
 unsigned char& CTheCarGenerators::GenerateEvenIfPlayerIsCloseCounter = *reinterpret_cast<unsigned char*>(0xC279D0);
 unsigned char& CTheCarGenerators::ProcessCounter = *reinterpret_cast<unsigned char*>(0xC279D1);

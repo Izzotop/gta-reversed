@@ -1,21 +1,19 @@
 #pragma once
-#include "PluginBase.h"
-#include "CMatrix.h"
+
+#include "Matrix.h"
 
 class CEntity;
 class CPhysical;
 class CVehicle;
 
-enum class eBuoyancyPointState : int32_t
-{
+enum class eBuoyancyPointState : int32_t {
     COMPLETELY_ABOVE_WATER = 0x0,
     COLLIDING_WITH_WATER = 0x1,
     COMPLETELY_UNDER_WATER = 0x2,
 };
 
 #pragma pack(push, 8)
-struct CBuoyancyCalcStruct
-{
+struct CBuoyancyCalcStruct {
     float fCurrentAverageContribution;
     float fNewPointContribution;
     CVector vecCurOffsetTurnPoint;
@@ -26,8 +24,7 @@ struct CBuoyancyCalcStruct
 #pragma pack(pop)
 VALIDATE_SIZE(CBuoyancyCalcStruct, 0x1C);
 
-class cBuoyancy
-{
+class cBuoyancy {
 public:
     CVector             m_vecPos;                   // Position of the entity which buoyancy is being calculated
     CMatrix             m_EntityMatrix;             // Matrix of the entity which buoyancy is being calculated

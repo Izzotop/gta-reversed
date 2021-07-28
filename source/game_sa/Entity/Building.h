@@ -5,8 +5,8 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CEntity.h"
+
+#include "Entity.h"
 
 class CBuilding : public CEntity {
 public:

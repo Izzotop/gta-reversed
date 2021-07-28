@@ -7,9 +7,8 @@
 #pragma once
 
 #include "AnimSequenceFrames.h"
-#include "PluginBase.h"
 
-class  CAnimBlendSequence {
+class CAnimBlendSequence {
 public:
     CAnimBlendSequence();
     ~CAnimBlendSequence();

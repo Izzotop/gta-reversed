@@ -5,11 +5,11 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
+
 #include "List_c.h"
 #include "RenderWare.h"
-#include "CVector.h"
-#include "CAEFireAudioEntity.h"
+#include "Vector.h"
+#include "AEFireAudioEntity.h"
 #include "FxPrtMult_c.h"
 #include "FxSphere_c.h"
 #include "FxBox_c.h"
@@ -31,8 +31,8 @@ class Particle_c;
 class FxSystem_c : public ListItem_c {
 public:
     // ListItem_c m_link;
-    void *m_pBlueprint;
-    RwMatrix *m_pParentMatrix;
+    void* m_pBlueprint;
+    RwMatrix* m_pParentMatrix;
     RwMatrix m_localMatrix;
     unsigned char m_nPlayStatus; // see eFxSystemPlayStatus
     unsigned char m_nKillStatus; // see eFxSystemKillStatus
@@ -44,7 +44,7 @@ public:
     unsigned short m_nRateMult;
     unsigned short m_nTimeMult;
     struct {
-        unsigned char bOwnedParentMatrix: 1;
+        unsigned char bOwnedParentMatrix : 1;
         unsigned char bLocalParticles : 1;
         unsigned char bZTestEnabled : 1;
         unsigned char bUnknown4 : 1;
@@ -54,8 +54,8 @@ public:
     char field_63;
     float fUnkRandom;
     CVector m_vecVelAdd;
-    void *m_pBounding;
-    void **m_pPrimsPtrList;
+    void* m_pBounding;
+    void** m_pPrimsPtrList;
     char m_fireAudio[0x88]; // CAEFireAudioEntity
 
     CAEFireAudioEntity *GetFireAudio() { return reinterpret_cast<CAEFireAudioEntity *>(m_fireAudio); }

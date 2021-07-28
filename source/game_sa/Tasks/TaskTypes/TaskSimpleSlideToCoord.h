@@ -1,9 +1,9 @@
 #pragma once
 
-#include "CTaskSimpleRunNamedAnim.h"
-#include "CVector.h"
+#include "TaskSimpleRunNamedAnim.h"
+#include "Vector.h"
 
-class  CTaskSimpleSlideToCoord : public CTaskSimpleRunNamedAnim {
+class CTaskSimpleSlideToCoord : public CTaskSimpleRunNamedAnim {
 public:
     CTaskSimpleSlideToCoord(CVector const&, float, float);
     CTaskSimpleSlideToCoord(int, char, char, float, char, char);

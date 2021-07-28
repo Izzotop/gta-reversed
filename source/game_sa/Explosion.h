@@ -6,9 +6,8 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
-#include "CAEExplosionAudioEntity.h"
+#include "Vector.h"
+#include "AEExplosionAudioEntity.h"
 
 enum eExplosionType {
     EXPLOSION_GRENADE,
@@ -28,7 +27,7 @@ enum eExplosionType {
 
 class CEntity;
 
-class  CExplosion {
+class CExplosion {
 public:
     unsigned int   m_nType; // see eExplosionType
     CVector        m_vecPosition;

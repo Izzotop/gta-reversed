@@ -5,15 +5,15 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CCutsceneObject.h"
-#include "CDirectory.h"
+
+#include "CutsceneObject.h"
+#include "Directory.h"
 #include "FxSystem_c.h"
-#include "CAnimBlendAssocGroup.h"
+#include "AnimBlendAssocGroup.h"
 
 struct tCutsceneParticleEffect {
     char        m_szEffectName[32];
-    FxSystem_c *m_pFxSystem;
+    FxSystem_c* m_pFxSystem;
     int         m_nStartTime;
     int         m_nEndTime;
     int         m_nObjectId;
@@ -22,9 +22,7 @@ struct tCutsceneParticleEffect {
     CVector     m_vecDirection;
     bool        m_bPlaying;
     bool        m_bStopped;
-private:
-    char _pad6A[2];
-public:
+    char        _pad6A[2];
 };
 
 struct tCutsceneAttachment {
@@ -43,7 +41,7 @@ extern unsigned int MAX_NUM_CUTSCENE_PARTICLE_EFFECTS; // default: 8
 extern unsigned int MAX_NUM_CUTSCENE_ITEMS_TO_HIDE; // default: 50
 extern unsigned int MAX_NUM_CUTSCENE_ATTACHMENTS; // default: 50
 
-class  CCutsceneMgr {
+class CCutsceneMgr {
 public:
     static bool &ms_useCutsceneShadows; // always 'true', doesn't change anything
     static unsigned int &numPlayerWeaponsToRestore;

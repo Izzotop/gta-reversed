@@ -5,12 +5,12 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CLoadedCarGroup.h"
-#include "CPed.h"
-#include "CDummy.h"
-#include "CDummyObject.h"
-#include "CZone.h"
+
+#include "LoadedCarGroup.h"
+#include "Ped.h"
+#include "Dummy.h"
+#include "DummyObject.h"
+#include "Zone.h"
 
 enum ePedRace {
     RACE_DEFAULT = 0,
@@ -28,7 +28,7 @@ enum eUpdatePedCounterState {
 // for the most part, pedGroupIds[0] is used, but in some cases
 // it's used like this: pedGroupIds[CPopulation::CurrentWorldZone]
 struct tPedGroupTranslationData {
-   std::int32_t pedGroupIds[3]; // see ePopcyclePedGroup
+   int32_t pedGroupIds[3]; // see ePopcyclePedGroup
 };
 
 VALIDATE_SIZE(tPedGroupTranslationData, 0xC);
@@ -68,7 +68,7 @@ public:
     static unsigned short            * m_nNumPedsInGroup;
     // static short m_CarGroups[POPCYCLE_TOTAL_NUM_CARGROUPS][23] (34)
     static short                     (* m_CarGroups )[23];
-    static const std::uint16_t       m_defaultCarGroupModelId = 2000; // means not loaded
+    static const uint16_t       m_defaultCarGroupModelId = 2000; // means not loaded
     // static short m_PedGroups[POPCYCLE_TOTAL_NUM_PEDGROUPS][21] (57)
     static short                     (* m_PedGroups )[21]; // see ePopcyclePedGroup
     static bool                      & m_bDontCreateRandomGangMembers;
@@ -176,9 +176,9 @@ public:
     static void ConvertAllObjectsToDummyObjects();
     static void PopulateInterior(int numPeds, CVector posn);
     static void Update(bool generatePeds);
-    static bool DoesCarGroupHaveModelId(std::int32_t carGroupId, std::int32_t modelId);
-    static ePopcyclePedGroup GetPedGroupId(ePopcycleGroup popcycleGroup, std::int32_t worldZone) { return static_cast<ePopcyclePedGroup>(m_TranslationArray[popcycleGroup].pedGroupIds[worldZone]); }
-    static std::int32_t GetNumPedsInGroup(ePopcycleGroup popcycleGroup, std::int32_t worldZone) { return m_nNumPedsInGroup[GetPedGroupId(popcycleGroup, worldZone)]; }
-    static std::int32_t GetNumPedsInGroup(ePopcyclePedGroup pedGroup) { return m_nNumPedsInGroup[pedGroup]; }
-    static std::int32_t GetPedGroupModelId(ePopcyclePedGroup pedGroup, std::int32_t slot) { return m_PedGroups[pedGroup][slot]; }
+    static bool DoesCarGroupHaveModelId(int32_t carGroupId, int32_t modelId);
+    static ePopcyclePedGroup GetPedGroupId(ePopcycleGroup popcycleGroup, int32_t worldZone) { return static_cast<ePopcyclePedGroup>(m_TranslationArray[popcycleGroup].pedGroupIds[worldZone]); }
+    static int32_t GetNumPedsInGroup(ePopcycleGroup popcycleGroup, int32_t worldZone) { return m_nNumPedsInGroup[GetPedGroupId(popcycleGroup, worldZone)]; }
+    static int32_t GetNumPedsInGroup(ePopcyclePedGroup pedGroup) { return m_nNumPedsInGroup[pedGroup]; }
+    static int32_t GetPedGroupModelId(ePopcyclePedGroup pedGroup, int32_t slot) { return m_PedGroups[pedGroup][slot]; }
 };

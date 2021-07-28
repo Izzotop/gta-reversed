@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CSphere.h"
+#include "Sphere.h"
 
 class CColSphere : public CSphere {
 public:

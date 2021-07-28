@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "FxPlane_c.h"
 
 class FxSphere_c {

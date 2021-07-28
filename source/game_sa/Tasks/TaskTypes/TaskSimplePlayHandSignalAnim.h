@@ -1,10 +1,9 @@
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimpleAnim.h"
-#include "CHandObject.h"
+#include "TaskSimpleAnim.h"
+#include "HandObject.h"
 
-class  CTaskSimplePlayHandSignalAnim : public CTaskSimpleAnim {
+class CTaskSimplePlayHandSignalAnim : public CTaskSimpleAnim {
     CTaskSimplePlayHandSignalAnim(int animationId, float fBlendFactor, bool bFatHands, bool bHoldLastFrame);
     ~CTaskSimplePlayHandSignalAnim();
 public:

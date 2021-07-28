@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 
-class  CRideAnimData {
+class CRideAnimData {
 public:
     unsigned int m_nAnimGroup;
     float        m_fSteerAngle;

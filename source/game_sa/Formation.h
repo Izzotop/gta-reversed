@@ -6,15 +6,14 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CPed.h"
-#include "CVector.h"
-#include "CPointList.h"
-#include "CMatrix.h"
-#include "CPedList.h"
-#include "CVehicle.h"
+#include "Ped.h"
+#include "Vector.h"
+#include "PointList.h"
+#include "Matrix.h"
+#include "PedList.h"
+#include "Vehicle.h"
 
-class  CFormation {
+class CFormation {
 public:
      static int(&m_aFinalPedLinkToDestinations)[8]; // static int m_aFinalPedLinkToDestinations[8]
      static int(&m_aPedLinkToDestinations)[8]; // static int m_aPedLinkToDestinations[8]
@@ -33,5 +32,3 @@ public:
      static bool ReturnDestinationForPed(CPed *ped, CVector *pos);
      static int ReturnTargetPedForPed(CPed *ped, CPed **pOutTargetPed);
 };
-
-//#include "meta/meta.CFormation.h"

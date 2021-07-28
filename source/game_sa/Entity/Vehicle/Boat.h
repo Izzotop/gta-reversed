@@ -5,9 +5,9 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CVehicle.h"
-#include "CDoor.h"
+
+#include "Vehicle.h"
+#include "Door.h"
 #include "tBoatHandlingData.h"
 
 enum eBoatNodes {
@@ -42,17 +42,17 @@ public:
 private:
     char _pad5AD[3];
 public:
-    RwFrame           *m_aBoatNodes[BOAT_NUM_NODES];
+    RwFrame*           m_aBoatNodes[BOAT_NUM_NODES];
     CDoor              m_boatFlap; // for marquis model
-    tBoatHandlingData *m_pBoatHandling;
+    tBoatHandlingData* m_pBoatHandling;
     float              m_fAnchoredAngle; // radians, initialised with -9999.99
     uint32_t           m_nAttackPlayerTime;
     int field_604; // initialised with 0, not used
     float              m_fBurningTimer; // starts when vehicle health is lower than 250.0, boat blows up when it hits 5000.0
-    CEntity           *m_pWhoDestroyedMe;
+    CEntity*           m_pWhoDestroyedMe;
     CVector            m_vecBoatMoveForce; // m_vecBoatMoveForce = m_vecMoveForce + m_vecFrictionMoveForce
     CVector            m_vecBoatTurnForce; // m_vecBoatTurnForce = m_vecTurnForce + m_vecFrictionTurnForce
-    FxSystem_c        *m_apPropSplashFx[2];
+    FxSystem_c*        m_apPropSplashFx[2];
     CVector            m_vecWaterDamping; // { 0.0f, 0.0f, DampingPower }
     char field_63C; // initialised with 0, maybe boat handling type (@CBoat::DebugCode), possibly a leftover
     unsigned char      m_nPadNumber; // 0 - 3
@@ -70,12 +70,12 @@ public:
 
     static constexpr int32_t NUM_WAKE_GEN_BOATS = 4;
     static CBoat*(&apFrameWakeGeneratingBoats)[NUM_WAKE_GEN_BOATS]; // static CBoat *apFrameWakeGeneratingBoats[4]
-    static float& MAX_WAKE_LENGTH; // 50.0
-    static float& MIN_WAKE_INTERVAL; // 2.0
-    static float& WAKE_LIFETIME; // 150.0
-    static float& fShapeLength; // 0.4
-    static float& fShapeTime; // 0.05
-    static float& fRangeMult; // 0.6
+    static float& MAX_WAKE_LENGTH;                                   // 50.0
+    static float& MIN_WAKE_INTERVAL;                                 // 2.0
+    static float& WAKE_LIFETIME;                                     // 150.0
+    static float& fShapeLength;                                      // 0.4
+    static float& fShapeTime;                                        // 0.05
+    static float& fRangeMult;                                        // 0.6
 
     static short* waUnknArr;  // static CBoat::waUnknArr[4]
     static short* waUnknArr2; // static CBoat::waUnknArr2[4]

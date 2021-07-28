@@ -6,18 +6,16 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CEntity.h"
-#include "CVector.h"
-#include "CColTriangle.h"
-#include "CCoverPoint.h"
-#include "CBuilding.h"
-#include "CPtrListDoubleLink.h"
+#include "Entity.h"
+#include "Vector.h"
+#include "ColTriangle.h"
+#include "CoverPoint.h"
+#include "Building.h"
+#include "PtrListDoubleLink.h"
 
 class CPed;
 
-class CCover
-{
+class CCover {
 public:
     static unsigned int& m_NumPoints;
     static CCoverPoint (&m_aPoints)[100]; // static CCoverPoint m_aPoints[100]
@@ -26,11 +24,9 @@ public:
 public:
     static void InjectHooks();
 
-    static void AddCoverPoint(int maxPeds, CEntity* coverEntity, CVector* position, char coverType,
-                              unsigned char direction);
+    static void AddCoverPoint(int maxPeds, CEntity* coverEntity, CVector* position, char coverType, unsigned char direction);
     static float CalculateHorizontalSize(CColTriangle* triangle, CVector* vertPositions);
-    static char DoLineCheckWithinObject(CColTriangle* triangle, int a2, CVector* a3, CVector* a4, CVector a5,
-                                        CVector a6);
+    static char DoLineCheckWithinObject(CColTriangle* triangle, int a2, CVector* a3, CVector* a4, CVector a5, CVector a6);
     static bool DoesCoverPointStillProvideCover(CCoverPoint* point, CVector position);
     static void Find2HighestPoints(CColTriangle* triangle, CVector* vertPositions, int& outPoint1, int& outPoint2);
     static CCoverPoint* FindAndReserveCoverPoint(CPed* ped, CVector& position, bool a3);

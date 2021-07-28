@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskTimer.h"
-#include "CAttractorScanner.h"
+#include "TaskTimer.h"
+#include "AttractorScanner.h"
 
 class CPed;
 
@@ -22,26 +21,22 @@ public:
     bool m_bScanAllowedScriptedTask;
 };
 
-class CVehiclePotentialCollisionScanner
-{
+class CVehiclePotentialCollisionScanner {
 public:
     CTaskTimer m_timer;
 };
 
-class CObjectPotentialCollisionScanner
-{
+class CObjectPotentialCollisionScanner {
 public:
     CTaskTimer m_timer;
 };
 
-class CSexyPedScanner
-{
+class CSexyPedScanner {
 public:
     CTaskTimer m_timer;
 };
 
-class CNearbyFireScanner
-{
+class CNearbyFireScanner {
 public:
     CTaskTimer m_timer;
 };
@@ -54,7 +49,7 @@ VALIDATE_SIZE(CNearbyFireScanner, 0xC);
 
 class CEventScanner {
 public:
-    std::uint32_t m_nNextScanTime;
+    uint32_t m_nNextScanTime;
     CVehiclePotentialCollisionScanner m_vehiclePotentialCollisionScanner;
     CObjectPotentialCollisionScanner m_objectPotentialCollisionScanner;
     CAttractorScanner m_attractorScanner;

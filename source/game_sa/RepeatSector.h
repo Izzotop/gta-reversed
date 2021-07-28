@@ -5,8 +5,8 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CPtrListDoubleLink.h"
+
+#include "PtrListDoubleLink.h"
 
 enum eRepeatSectorList {
     REPEATSECTOR_VEHICLES = 0,
@@ -14,7 +14,7 @@ enum eRepeatSectorList {
     REPEATSECTOR_OBJECTS = 2
 };
 
-class  CRepeatSector {
+class CRepeatSector {
 public:
     CPtrListDoubleLink m_lists[3];
 };

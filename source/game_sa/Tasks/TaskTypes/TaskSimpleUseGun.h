@@ -1,51 +1,48 @@
-    /*
-    Plugin-SDK (Grand Theft Auto San Andreas) header file
-    Authors: GTA Community. See more here
-    https://github.com/DK22Pac/plugin-sdk
-    Do not delete this comment block. Respect others' work!
+/*
+Plugin-SDK (Grand Theft Auto San Andreas) header file
+Authors: GTA Community. See more here
+https://github.com/DK22Pac/plugin-sdk
+Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CVector.h"
-#include "CVector2D.h"
-#include "CWeaponInfo.h"
-#include "CAnimBlendAssociation.h"
-#include "CEntity.h"
+#include "TaskSimple.h"
+#include "Vector.h"
+#include "Vector2D.h"
+#include "WeaponInfo.h"
+#include "AnimBlendAssociation.h"
+#include "Entity.h"
 
-class CTaskSimpleUseGun : public CTaskSimple
-{
+class CTaskSimpleUseGun : public CTaskSimple {
 public:
     bool m_bIsFinished;
     bool m_bIsInControl;
     bool m_bMoveControl;
     bool m_bFiredGun;
     bool m_bBlockedLOS;
-    union
-    {
+    union {
         unsigned char m_nFireGunThisFrame;
-        struct
-        {
-                unsigned char bRightHand : 1;
-                unsigned char bLefttHand : 1;
+        struct {
+            unsigned char bRightHand : 1;
+            unsigned char bLeftHand : 1;
         };
     };
     bool m_bSkipAim;
 
-    unsigned char m_nNextCommand;   // 0x1 reloading - 0x2 firing
-    unsigned char m_nLastCommand;	// active command - 0x1 reloading - 0x2 firing
+    unsigned char m_nNextCommand; // 0x1 reloading - 0x2 firing
+    unsigned char m_nLastCommand; // active command - 0x1 reloading - 0x2 firing
 private:
     char _pad[3];
+
 public:
     CVector2D m_vecMoveCommand;
 
-    CEntity *m_pTarget;
+    CEntity* m_pTarget;
     CVector m_vecTarget;
 
-    CAnimBlendAssociation *m_pAnim;
+    CAnimBlendAssociation* m_pAnim;
 
-    CWeaponInfo *m_pWeaponInfo;
+    CWeaponInfo* m_pWeaponInfo;
     unsigned short m_nBurstLength;
     unsigned short m_nBurstShots;
 
@@ -54,7 +51,7 @@ public:
     bool m_LookIKInUse;
     bool m_bAimImmediate;
 
-    CTaskSimpleUseGun* Constructor(CEntity *pTargetEntity, CVector vecTarget, unsigned char nCommand, unsigned short nBurstLength = 1, bool bAimImmediate = false);
+    CTaskSimpleUseGun* Constructor(CEntity* pTargetEntity, CVector vecTarget, unsigned char nCommand, unsigned short nBurstLength = 1, bool bAimImmediate = false);
     bool ControlGunMove(CVector2D* moveSpeed);
     bool PlayerPassiveControlGun();
     static bool RequirePistolWhip(CPed* pPed, CEntity* pTargetEntity);
@@ -64,4 +61,3 @@ public:
 };
 
 VALIDATE_SIZE(CTaskSimpleUseGun, 0x3C);
-

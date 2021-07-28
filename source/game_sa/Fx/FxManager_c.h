@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "RenderWare.h"
 #include "List_c.h"
 #include "FxFrustumInfo_c.h"
@@ -18,21 +17,22 @@ class FxEmitterPrt_c;
 
 class FxManager_c {
 public:
-	TList_c<FxSystemBP_c>   m_fxSystemBPList;
-	TList_c<FxSystem_c>     m_fxSystemList;
-	FxEmitterPrt_c *        m_pFxEmitters;
-	TList_c<FxEmitterPrt_c> m_fxEmitterPrtList;
-	int                     m_nFxTxdIndex;
-	RwV3d *                 m_pWindDir;
-	float *                 m_pfWindSpeed;
-	FxFrustumInfo_c         m_frustum;
-	unsigned int            m_nCurrentMatrix;
-	RwMatrix *              m_apMatrices[8];
-	FxMemoryPool_c          m_pool;
+    TList_c<FxSystemBP_c>   m_fxSystemBPList;
+    TList_c<FxSystem_c>     m_fxSystemList;
+    FxEmitterPrt_c*         m_pFxEmitters;
+    TList_c<FxEmitterPrt_c> m_fxEmitterPrtList;
+    int                     m_nFxTxdIndex;
+    RwV3d*                  m_pWindDir;
+    float*                  m_pfWindSpeed;
+    FxFrustumInfo_c         m_frustum;
+    unsigned int            m_nCurrentMatrix;
+    RwMatrix*               m_apMatrices[8];
+    FxMemoryPool_c          m_pool;
 
 public:
-	FxManager_c();
+    FxManager_c();
     ~FxManager_c();
+
     FxFrustumInfo_c* GetFrustumInfo();
     void CalcFrustumInfo(RwCamera* camera);
     void Render(RwCamera* camera, unsigned char arg1);

@@ -1,13 +1,10 @@
 #pragma once
 
-#include "PluginBase.h"
-
 class CPed;
 class CEntity;
 struct RwV3d;
 
-class IKChainManager_c
-{
+class IKChainManager_c {
 public:
     bool IsLooking(CPed* pPed);
     CEntity* GetLookAtEntity(CPed* pPed);

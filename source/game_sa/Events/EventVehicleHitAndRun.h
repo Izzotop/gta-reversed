@@ -1,7 +1,7 @@
 #pragma once
-#include "CEvent.h"
-#include "CPed.h"
-#include "CVehicle.h"
+#include "Event.h"
+#include "Ped.h"
+#include "Vehicle.h"
 class CVehicle;
 
 class CEventVehicleHitAndRun : public CEvent

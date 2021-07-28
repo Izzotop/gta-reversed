@@ -6,8 +6,6 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-
 class CColourSet {
 public:
     float          m_fAmbientRed;
@@ -64,8 +62,9 @@ public:
     float          m_fIllumination;
     float          m_fLodDistMult;
 
-    //funcs
+public:
     CColourSet(int weatherId, int timeId);
+
     void Interpolate(CColourSet* a, CColourSet* b, float factor_a, float factor_b, bool bIgnoreSky);
 };
 

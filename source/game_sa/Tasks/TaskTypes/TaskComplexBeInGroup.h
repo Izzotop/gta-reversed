@@ -1,4 +1,4 @@
-#include "CTaskComplex.h"
+#include "TaskComplex.h"
 
 class CTaskComplexBeInGroup : public CTaskComplex
 {

@@ -6,10 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CAEAudioEntity.h"
+#include "AEAudioEntity.h"
 #include "cTransmission.h"
-#include "CAETwinLoopSoundEntity.h"
+#include "AETwinLoopSoundEntity.h"
 #include "eAudioEvents.h"
 #include "eRadioID.h"
 
@@ -37,7 +36,7 @@ enum eRadioType : char
     RADIO_DISABLED = -1,
 };
 
-struct  tEngineDummySlot {
+struct tEngineDummySlot {
     short m_nBankId;
     short m_nUsageCount;
 };
@@ -72,13 +71,13 @@ public:
 };
 VALIDATE_SIZE(cVehicleParams, 0x4C);
 
-struct  tVehicleSound {
+struct tVehicleSound {
     unsigned int  m_nIndex;
     CAESound     *m_pSound;
 };
 VALIDATE_SIZE(tVehicleSound, 0x8);
 
-struct  tVehicleAudioSettings {
+struct tVehicleAudioSettings {
     eVehicleSoundType  m_nVehicleSoundType;
     char              _pad;
     short              m_nEngineOnSoundBankId;

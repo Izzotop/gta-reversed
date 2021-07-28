@@ -6,31 +6,30 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CPlayerInfo.h"
-#include "CColPoint.h"
-#include "CStoredCollPoly.h"
-#include "CSector.h"
-#include "CRepeatSector.h"
-#include "CPtrListSingleLink.h"
-#include "CPed.h"
-#include "CVehicle.h"
+#include "PlayerInfo.h"
+#include "ColPoint.h"
+#include "StoredCollPoly.h"
+#include "Sector.h"
+#include "RepeatSector.h"
+#include "PtrListSingleLink.h"
+#include "Ped.h"
+#include "Vehicle.h"
 
-extern const std::int32_t MAX_PLAYERS = 2;
-extern const std::int32_t MAX_WORLD_UNITS = 6000;
-extern const std::int32_t MAX_SECTORS_X = 120;
-extern const std::int32_t MAX_SECTORS_Y = 120;
-extern const std::int32_t MAX_SECTORS = MAX_SECTORS_X * MAX_SECTORS_Y;
-extern const std::int32_t MAX_REPEAT_SECTORS_X = 16;
-extern const std::int32_t MAX_REPEAT_SECTORS_Y = 16;
-extern const std::int32_t MAX_REPEAT_SECTORS = MAX_REPEAT_SECTORS_X * MAX_REPEAT_SECTORS_Y;
-extern const std::int32_t MAX_LOD_PTR_LISTS_X = 30; 
-extern const std::int32_t MAX_LOD_PTR_LISTS_Y = 30;
-extern const std::int32_t MAX_LOD_PTR_LISTS = MAX_LOD_PTR_LISTS_X * MAX_LOD_PTR_LISTS_Y;
+extern const int32_t MAX_PLAYERS = 2;
+extern const int32_t MAX_WORLD_UNITS = 6000;
+extern const int32_t MAX_SECTORS_X = 120;
+extern const int32_t MAX_SECTORS_Y = 120;
+extern const int32_t MAX_SECTORS = MAX_SECTORS_X * MAX_SECTORS_Y;
+extern const int32_t MAX_REPEAT_SECTORS_X = 16;
+extern const int32_t MAX_REPEAT_SECTORS_Y = 16;
+extern const int32_t MAX_REPEAT_SECTORS = MAX_REPEAT_SECTORS_X * MAX_REPEAT_SECTORS_Y;
+extern const int32_t MAX_LOD_PTR_LISTS_X = 30; 
+extern const int32_t MAX_LOD_PTR_LISTS_Y = 30;
+extern const int32_t MAX_LOD_PTR_LISTS = MAX_LOD_PTR_LISTS_X * MAX_LOD_PTR_LISTS_Y;
 
 class CWorld {
 public:
-    static std::int32_t TOTAL_PLAYERS;
+    static int32_t TOTAL_PLAYERS;
     static int &ms_iProcessLineNumCrossings;
     static float &fWeaponSpreadRate;
     // entity to ignore
@@ -150,7 +149,7 @@ public:
     static void RepositionCertainDynamicObjects();
     static bool ProcessLineOfSight(CVector const& origin, CVector const& target, CColPoint& outColPoint, CEntity*& outEntity, bool buildings, bool vehicles, bool peds, bool objects, bool dummies, bool doSeeThroughCheck, bool doCameraIgnoreCheck, bool doShootThroughCheck);
     static void IncrementCurrentScanCode();
-    static CPtrListSingleLink& GetLodPtrList(std::int32_t x, std::int32_t y);
+    static CPtrListSingleLink& GetLodPtrList(int32_t x, int32_t y);
 
     static CPlayerInfo& GetFocusedPlayerInfo() { return Players[PlayerInFocus]; }
 
@@ -160,17 +159,17 @@ public:
     static float GetSectorfX(float x) { return GetHalfMapSectorX(x) + (MAX_SECTORS_X / 2); }
     static float GetSectorfY(float y) { return GetHalfMapSectorY(y) + (MAX_SECTORS_Y / 2); }
     // returns sector index in range 0 to 120 (covers full map) 
-    static std::int32_t GetSectorX(float x) { return static_cast<std::int32_t>(std::floor(GetSectorfX(x))); }
-    static std::int32_t GetSectorY(float y) { return static_cast<std::int32_t>(std::floor(GetSectorfY(y))); }
-    static float GetSectorPosX(std::int32_t sector)
+    static int32_t GetSectorX(float x) { return static_cast<int32_t>(floor(GetSectorfX(x))); }
+    static int32_t GetSectorY(float y) { return static_cast<int32_t>(floor(GetSectorfY(y))); }
+    static float GetSectorPosX(int32_t sector)
     {
-        const std::int32_t HalfOfTotalSectorsX = MAX_SECTORS_Y / 2;
+        const int32_t HalfOfTotalSectorsX = MAX_SECTORS_Y / 2;
         const float fTotalMapUnitsX = MAX_WORLD_UNITS / MAX_SECTORS_Y;
         return (sector - HalfOfTotalSectorsX) * fTotalMapUnitsX + (fTotalMapUnitsX / 2);
     }
-    static float GetSectorPosY(std::int32_t sector)
+    static float GetSectorPosY(int32_t sector)
     {
-        const std::int32_t HalfOfTotalSectorsY = MAX_SECTORS_Y / 2;
+        const int32_t HalfOfTotalSectorsY = MAX_SECTORS_Y / 2;
         const float fTotalMapUnitsY = MAX_WORLD_UNITS / MAX_SECTORS_Y;
         return (sector - HalfOfTotalSectorsY) * fTotalMapUnitsY + (fTotalMapUnitsY / 2);
     }
@@ -181,17 +180,17 @@ public:
     static float GetLodSectorfX(float fSector) { return GetHalfMapLodSectorX(fSector) + (MAX_LOD_PTR_LISTS_X / 2); }
     static float GetLodSectorfY(float fSector) { return GetHalfMapLodSectorY(fSector) + (MAX_LOD_PTR_LISTS_Y / 2); }
     // returns sector index in range 0 to 30 (covers full map) 
-    static std::int32_t GetLodSectorX(float fSector) { return static_cast<std::int32_t>(std::floor(GetLodSectorfX(fSector))); }
-    static std::int32_t GetLodSectorY(float fSector) { return static_cast<std::int32_t>(std::floor(GetLodSectorfY(fSector)));  }
-    static float GetLodSectorPosX(std::int32_t sector)
+    static int32_t GetLodSectorX(float fSector) { return static_cast<int32_t>(floor(GetLodSectorfX(fSector))); }
+    static int32_t GetLodSectorY(float fSector) { return static_cast<int32_t>(floor(GetLodSectorfY(fSector)));  }
+    static float GetLodSectorPosX(int32_t sector)
     {
-        const std::int32_t HalfOfTotalSectorsX = MAX_LOD_PTR_LISTS_X / 2;
+        const int32_t HalfOfTotalSectorsX = MAX_LOD_PTR_LISTS_X / 2;
         const float fTotalMapUnitsX = MAX_WORLD_UNITS / MAX_LOD_PTR_LISTS_X;
         return (sector - HalfOfTotalSectorsX) * fTotalMapUnitsX + (fTotalMapUnitsX / 2);
     }
-    static float GetLodSectorPosY(std::int32_t sector)
+    static float GetLodSectorPosY(int32_t sector)
     {
-        const std::int32_t HalfOfTotalSectorsY = MAX_LOD_PTR_LISTS_Y / 2;
+        const int32_t HalfOfTotalSectorsY = MAX_LOD_PTR_LISTS_Y / 2;
         const float fTotalMapUnitsY = MAX_WORLD_UNITS / MAX_LOD_PTR_LISTS_Y;
         return (sector - HalfOfTotalSectorsY) * fTotalMapUnitsY + (fTotalMapUnitsY / 2);
     }

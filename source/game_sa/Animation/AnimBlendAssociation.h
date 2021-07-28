@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "AnimAssociationData.h"
 #include "eAnimBlendCallbackType.h"
 #include "RenderWare.h"
@@ -15,8 +14,7 @@ class CAnimBlendNode;
 class CAnimBlendHierarchy;
 class CAnimBlendStaticAssociation;
 
-enum eAnimationFlags
-{
+enum eAnimationFlags {
     ANIM_FLAG_STARTED = 0x1,
     ANIM_FLAG_LOOPED = 0x2,
     ANIM_FLAG_FREEZE_LAST_FRAME = 0x4,
@@ -42,12 +40,11 @@ public:
     }
 };
 
-struct SClumpAnimAssoc
-{
+struct SClumpAnimAssoc {
     SClumpAnimAssoc* m_pNext;
     SClumpAnimAssoc* m_pPrevious;
-    std::uint16_t m_nNumBlendNodes;
-    std::int16_t m_nAnimGroup;
+    uint16_t m_nNumBlendNodes;
+    int16_t m_nAnimGroup;
     CAnimBlendNode* m_pNodeArray;
     CAnimBlendHierarchy* m_pHierarchy;
     float m_fBlendAmount;
@@ -55,12 +52,11 @@ struct SClumpAnimAssoc
     float m_fCurrentTime;
     float m_fSpeed;
     float m_fTimeStep;
-    std::int16_t m_nAnimId;
-    std::uint16_t m_nFlags;
+    int16_t m_nAnimId;
+    uint16_t m_nFlags;
 };
 
-class CAnimBlendAssociation : public SClumpAnimAssoc
-{
+class CAnimBlendAssociation : public SClumpAnimAssoc {
 public:
     eAnimBlendCallbackType m_nCallbackType;
 
@@ -97,5 +93,3 @@ public:
 
 //VTABLE_DESC(CAnimBlendAssociation, 0x85C6D0, 1);
 VALIDATE_SIZE(CAnimBlendAssociation, 0x3C);
-
-//#include "meta/meta.CAnimBlendAssociation.h"

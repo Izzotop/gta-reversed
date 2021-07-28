@@ -5,10 +5,10 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CRGBA.h"
-#include "CVector.h"
-#include "CMatrix.h"
+
+#include "RGBA.h"
+#include "Vector.h"
+#include "Matrix.h"
 
 enum e3dMarkerType {
     MARKER3D_ARROW = 0,
@@ -21,7 +21,7 @@ enum e3dMarkerType {
     MARKER3D_NA = 257
 };
 
-class  C3dMarker {
+class C3dMarker {
 public:
     CMatrix         m_mat;
     RpAtomic       *m_pAtomic;
@@ -47,6 +47,7 @@ public:
     CVector         m_vecLastPosition;
     int             m_nOnScreenTestTime;
 
+public:
     bool AddMarker(unsigned int id, unsigned short type, float size, unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha, unsigned short pulsePeriod, float pulseFraction, short rotateRate);
     void DeleteMarkerObject();
     bool IsZCoordinateUpToDate();

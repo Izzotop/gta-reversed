@@ -1,5 +1,5 @@
-#include "CEventEditableResponse.h"
-#include "CVehicle.h"
+#include "EventEditableResponse.h"
+#include "Vehicle.h"
 
 class CEventGotKnockedOverByCar : public CEventEditableResponse
 {

@@ -6,13 +6,12 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "RenderWare.h"
 
 class CAnimBlendSequence;
 class CAnimBlendHierarchy;
 
-class  CAnimBlendStaticAssociation {
+class CAnimBlendStaticAssociation {
     PLUGIN_NO_DEFAULT_CONSTRUCTION_VIRTUALBASE(CAnimBlendStaticAssociation)
 
 public:
@@ -32,5 +31,3 @@ public:
 
 VTABLE_DESC(CAnimBlendStaticAssociation, 0x85C6CC, 1);
 VALIDATE_SIZE(CAnimBlendStaticAssociation, 0x14);
-
-//#include "meta/meta.CAnimBlendStaticAssociation.h"

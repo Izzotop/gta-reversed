@@ -5,9 +5,9 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
 
-class  CPtrNode {
+
+class CPtrNode {
 public:
     void *pItem;
     CPtrNode *pNext;

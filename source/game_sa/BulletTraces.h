@@ -5,13 +5,13 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CBulletTrace.h"
-#include "CEntity.h"
+
+#include "BulletTrace.h"
+#include "Entity.h"
 
 extern unsigned int MAX_NUM_BULLETTRACES; // default 16
 
-class  CBulletTraces {
+class CBulletTraces {
 public:
 	static CBulletTrace *aTraces; // static CBulletTrace aTraces[16]
 	

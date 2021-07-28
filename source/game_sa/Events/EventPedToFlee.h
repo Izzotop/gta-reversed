@@ -1,6 +1,6 @@
 #pragma once
-#include "CEvent.h"
-#include "CPed.h"
+#include "Event.h"
+#include "Ped.h"
 
 class CEventPedToFlee : public CEvent
 {

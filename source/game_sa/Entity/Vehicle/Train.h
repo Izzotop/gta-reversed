@@ -5,10 +5,10 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CVehicle.h"
-#include "CDoor.h"
-#include "CTrainNode.h"
+
+#include "Vehicle.h"
+#include "Door.h"
+#include "TrainNode.h"
 
 enum eTrainNodes {
     TRAIN_NODE_NONE = 0,
@@ -52,25 +52,24 @@ public:
     float             m_fLength;
     float             m_fTrainGas; // gas pedal pressed: 255.0, moving forward: 0.0, moving back: -255.0
     float             m_fTrainBrake; // 255.0 - braking
-    union
-    {
-        struct 
-        {
-             unsigned short b01 : 1; // initialised with 1
-             unsigned short bStoppedAtStation : 1;
-             unsigned short bPassengersCanEnterAndLeave : 1;
-             unsigned short bIsFrontCarriage : 1;
-             unsigned short bIsLastCarriage : 1;
-             unsigned short bMissionTrain : 1;
-             unsigned short bClockwiseDirection : 1;
-             unsigned short bStopsAtStations : 1;
+    union {
+        struct {
+            unsigned short b01 : 1; // initialised with 1
+            unsigned short bStoppedAtStation : 1;
+            unsigned short bPassengersCanEnterAndLeave : 1;
+            unsigned short bIsFrontCarriage : 1;
+            unsigned short bIsLastCarriage : 1;
+            unsigned short bMissionTrain : 1;
+            unsigned short bClockwiseDirection : 1;
+            unsigned short bStopsAtStations : 1;
 
-             unsigned short bNotOnARailRoad : 1;
-             unsigned short bForceSlowDown : 1;
-             unsigned short bIsStreakModel : 1;
+            unsigned short bNotOnARailRoad : 1;
+            unsigned short bForceSlowDown : 1;
+            unsigned short bIsStreakModel : 1;
         } trainFlags;
         unsigned short m_nTrainFlags;
     };
+
 private:
     char _pad5BA[2];
 public:

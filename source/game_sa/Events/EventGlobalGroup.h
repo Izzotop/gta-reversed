@@ -1,4 +1,4 @@
-#include "CEventGroup.h"
+#include "EventGroup.h"
 
 class CEntity;
 class CPed;

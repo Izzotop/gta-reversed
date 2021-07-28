@@ -6,8 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
 template<typename T>
 class CLink {
 public:

@@ -1,4 +1,4 @@
-#include "CEventVehicleDamage.h"
+#include "EventVehicleDamage.h"
 
 class CEventVehicleDamageCollision : public CEventVehicleDamage
 {

@@ -1,8 +1,8 @@
 #pragma once
+
 #include "CompressedBox.h"
 
-struct tAudioZoneSphere
-{
+struct tAudioZoneSphere {
     char     m_szName[8];
     uint16_t m_nAudioZone;
     uint16_t m_nFlags;
@@ -11,8 +11,7 @@ struct tAudioZoneSphere
 };
 VALIDATE_SIZE(tAudioZoneSphere, 0x1C);
 
-struct tAudioZoneBox
-{
+struct tAudioZoneBox {
     char          m_Name[8];
     uint16_t      m_nAudioZone;
     uint16_t      m_Flags;
@@ -20,8 +19,7 @@ struct tAudioZoneBox
 };
 VALIDATE_SIZE(tAudioZoneBox, 0x18);
 
-class CAudioZones
-{
+class CAudioZones {
 public:
     static int(&m_aActiveBoxes)[10];
     static int(&m_aActiveSpheres)[10];

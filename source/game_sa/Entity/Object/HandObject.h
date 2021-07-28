@@ -6,17 +6,17 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CObject.h"
+#include "Object.h"
 
-class  CHandObject : public CObject {
+class CHandObject : public CObject {
 public:
     CHandObject(int handModelIndex, CPed* pPed, bool bLeftHand);
     ~CHandObject() = default;
+
 public:
-    class CPed  *m_pPed;
+    class CPed*  m_pPed;
     unsigned int m_nBoneIndex;
-    RwTexture   *m_pTexture;
+    RwTexture*   m_pTexture;
     bool         m_bUpdatedMatricesArray;
     char _pad[3];
 

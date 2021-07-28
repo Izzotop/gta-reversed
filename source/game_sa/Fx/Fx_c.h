@@ -6,20 +6,17 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "RenderWare.h"
 #include "FxManager_c.h"
 
-enum FxQuality_e : unsigned int
-{
-	FXQUALITY_LOW,
-	FXQUALITY_MEDIUM,
-	FXQUALITY_HIGH,
-	FXQUALITY_VERY_HIGH
+enum FxQuality_e : unsigned int {
+    FXQUALITY_LOW,
+    FXQUALITY_MEDIUM,
+    FXQUALITY_HIGH,
+    FXQUALITY_VERY_HIGH
 };
 
-enum eSparkType
-{
+enum eSparkType {
     SPARK_PARTICLE_SPARK2 = 0,
     SPARK_PARTICLE_SPARK = 1
 };
@@ -28,32 +25,32 @@ class CVehicle;
 
 class Fx_c {
 public:
-	FxSystem_c *m_pPrtBlood;
-	FxSystem_c *m_pPrtBoatsplash;
-	FxSystem_c *m_pPrtBubble;
-	FxSystem_c *m_pPrtCardebris;
-	FxSystem_c *m_pPrtCollisionsmoke;
-	FxSystem_c *m_pPrtGunshell;
-	FxSystem_c *m_pPrtSand;
-	FxSystem_c *m_pPrtSand2;
-	FxSystem_c *m_pPrtSmoke_huge;
-	FxSystem_c *m_pPrtSmokeII3expand;
-	FxSystem_c *m_pPrtSpark;
-	FxSystem_c *m_pPrtSpark2;
-	FxSystem_c *m_pPrtSplash;
-	FxSystem_c *m_pPrtWake;
-	FxSystem_c *m_pPrtWatersplash;
-	FxSystem_c *m_pPrtWheeldirt;
-	FxSystem_c *m_pPrtGlass;
-	TList_c<ListItem_c> m_entityFxList;
-	unsigned int m_nBloodPoolsCount;
-	FxQuality_e m_fxQuality;
-	unsigned int m_nVerticesCount2;
-	unsigned int m_nVerticesCount;
-	unsigned int m_nTransformRenderFlags;
-	RwRaster *m_pRasterToRender;
-	RwMatrix *m_pTransformLTM;
-	void *m_pVerts;
+    FxSystem_c*         m_pPrtBlood;
+    FxSystem_c*         m_pPrtBoatsplash;
+    FxSystem_c*         m_pPrtBubble;
+    FxSystem_c*         m_pPrtCardebris;
+    FxSystem_c*         m_pPrtCollisionsmoke;
+    FxSystem_c*         m_pPrtGunshell;
+    FxSystem_c*         m_pPrtSand;
+    FxSystem_c*         m_pPrtSand2;
+    FxSystem_c*         m_pPrtSmoke_huge;
+    FxSystem_c*         m_pPrtSmokeII3expand;
+    FxSystem_c*         m_pPrtSpark;
+    FxSystem_c*         m_pPrtSpark2;
+    FxSystem_c*         m_pPrtSplash;
+    FxSystem_c*         m_pPrtWake;
+    FxSystem_c*         m_pPrtWatersplash;
+    FxSystem_c*         m_pPrtWheeldirt;
+    FxSystem_c*         m_pPrtGlass;
+    TList_c<ListItem_c> m_entityFxList;
+    unsigned int        m_nBloodPoolsCount;
+    FxQuality_e         m_fxQuality;
+    unsigned int        m_nVerticesCount2;
+    unsigned int        m_nVerticesCount;
+    unsigned int        m_nTransformRenderFlags;
+    RwRaster*           m_pRasterToRender;
+    RwMatrix*           m_pTransformLTM;
+    void*               m_pVerts;
 
     Fx_c();
     ~Fx_c();
@@ -102,4 +99,4 @@ void RenderEnd();
 void RotateVecIntoVec(RwV3d* vectorsOut, RwV3d* vectorsIn, RwV3d* dir);
 void RotateVecAboutVec(RwV3d* out, RwV3d* arg1, RwV3d* arg2, float angle);
 
-extern Fx_c &g_fx;
+extern Fx_c& g_fx;

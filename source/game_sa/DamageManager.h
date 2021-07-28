@@ -6,11 +6,10 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 
 class CAutomobile;
 
-enum  eDamageState {
+enum eDamageState {
     DAMSTATE_OK = 0,
     DAMSTATE_OPENED = 1,
     DAMSTATE_DAMAGED = 2,
@@ -18,7 +17,7 @@ enum  eDamageState {
     DAMSTATE_NOTPRESENT = 4
 };
 
-enum  tComponent {
+enum tComponent {
     COMPONENT_WHEEL_LF = 1,
     COMPONENT_WHEEL_RF = 2,
     COMPONENT_WHEEL_LR = 3,
@@ -38,7 +37,7 @@ enum  tComponent {
     COMPONENT_BUMP_REAR = 17
 };
 
-enum  tComponentGroup {
+enum tComponentGroup {
     COMPGROUP_PANEL = 0,
     COMPGROUP_WHEEL = 1,
     COMPGROUP_DOOR = 2,
@@ -56,7 +55,7 @@ enum eWheelStatus {
     WHEEL_STATUS_4
 };
 
-enum  ePanels {
+enum ePanels {
     WING_FRONT_LEFT = 0,
     WING_FRONT_RIGHT = 1,
     WINDSCREEN = 4,
@@ -73,14 +72,14 @@ enum eDoors {
     DOOR_RIGHT_REAR,
 };
 
-enum  eLights {
+enum eLights {
     LIGHT_FRONT_LEFT = 0,
     LIGHT_FRONT_RIGHT = 1,
     LIGHT_REAR_RIGHT = 2,
     LIGHT_REAR_LEFT = 3
 };
 
-class  CDamageManager {
+class CDamageManager {
 public:
     float m_fWheelDamageEffect;
     unsigned char m_nEngineStatus;

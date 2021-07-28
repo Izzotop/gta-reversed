@@ -1,13 +1,13 @@
 #pragma once
-#include "PluginBase.h"
-#include "CTaskSimple.h"
+
+#include "TaskSimple.h"
 
 class CVehicle;
 class CTaskUtilityLineUpPedWithCar;
 
-class CTaskSimpleCarDrive : public CTaskSimple
-{
+class CTaskSimpleCarDrive : public CTaskSimple {
     CTaskSimpleCarDrive() = delete;
+
 public:
     CVehicle* m_pVehicle;
     CAnimBlendAssociation* m_pAnimCloseDoorRolling;
@@ -20,7 +20,7 @@ public:
     int m_nBoppingStartTime;
     int field_24;
     int m_nBoppingEndTime;
-    float m_fBoppingProgress;// 0.0 to 1.0
+    float m_fBoppingProgress; // 0.0 to 1.0
     int m_nBoppingCompletedTimes;
     int m_nHeadBoppingStartTime;
     int m_nHeadBoppingDirection;
@@ -32,15 +32,17 @@ public:
     CTaskTimer m_copCarStolenTimer;
     union {
         struct {
-            std::uint8_t m_b01 : 1;
-            std::uint8_t m_b02 : 1;
-            std::uint8_t m_bUpdateCurrentVehicle : 1; // updates m_pVehicle pointer to the current occupied vehicle by ped
-            std::uint8_t m_b04 : 1;
+            uint8_t m_b01 : 1;
+            uint8_t m_b02 : 1;
+            uint8_t m_bUpdateCurrentVehicle : 1; // updates m_pVehicle pointer to the current occupied vehicle by ped
+            uint8_t m_b04 : 1;
         };
-        std::uint8_t m_nFlags;
+        uint8_t m_nFlags;
     };
+
 private:
     char padding[3];
+
 public:
     CTaskSimpleCarDrive* Constructor(CVehicle* pVehicle, CTaskUtilityLineUpPedWithCar* pUtilityTask, bool bUpdateCurrentVehicle);
     CTaskSimpleCarDrive(CVehicle* pVehicle, CTaskUtilityLineUpPedWithCar* pUtilityTask, bool bUpdateCurrentVehicle);
@@ -49,7 +51,6 @@ public:
     CTask* Clone() override;
     eTaskType GetId() override { return TASK_SIMPLE_CAR_DRIVE; }
     bool MakeAbortable(class CPed* ped, eAbortPriority priority, class CEvent* _event) override;
-
 };
 
 VALIDATE_SIZE(CTaskSimpleCarDrive, 0x60);

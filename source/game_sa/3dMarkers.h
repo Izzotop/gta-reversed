@@ -5,14 +5,12 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "C3dMarker.h"
+
+#include "3dMarker.h"
 
 struct tUser3dMarker {
     bool         m_bIsUsed;
-private:
-    char _pad1[3];
-public:
+    char         _pad1[3];
     CVector      m_vecPosition;
     unsigned int m_nRed;
     unsigned int m_nGreen;
@@ -23,9 +21,7 @@ VALIDATE_SIZE(tUser3dMarker, 0x1C);
 
 struct tDirectionArrow {
     bool         m_bIsUsed;
-private:
-    char _pad1[3];
-public:
+    char         _pad1[3];
     CVector      m_vecPosition;
     float        m_fSize;
     CVector      m_vecDirection;

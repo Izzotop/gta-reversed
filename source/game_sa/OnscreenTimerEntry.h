@@ -6,9 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
-class  COnscreenTimerEntry {
+class COnscreenTimerEntry {
 public:
     unsigned int  m_nVarId;
     char          m_szDescriptionTextKey[10];
@@ -17,9 +15,8 @@ public:
     unsigned char m_nTimerDirection;
     unsigned int  m_nClockBeepCountdownSecs;
 
-     void Process();
+    void Process();
     //! unused
-     void ProcessForDisplayClock();
+    void ProcessForDisplayClock();
 };
 VALIDATE_SIZE(COnscreenTimerEntry, 0x40);
-//#include "meta/meta.COnscreenTimerEntry.h"

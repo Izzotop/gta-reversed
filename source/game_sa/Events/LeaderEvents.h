@@ -1,6 +1,6 @@
 #pragma once
-#include "CEventEditableResponse.h"
-#include "CPedGroup.h"
+#include "EventEditableResponse.h"
+#include "PedGroup.h"
 
 class CEventLeaderEnteredCarAsDriver : public CEventEditableResponse {
 public:

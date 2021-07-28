@@ -5,9 +5,8 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
 
-class  CDecisionSimple {
+class CDecisionSimple {
 public:
     int m_anTasks[6]; // task types, see eTaskType
     float m_afChances[6];

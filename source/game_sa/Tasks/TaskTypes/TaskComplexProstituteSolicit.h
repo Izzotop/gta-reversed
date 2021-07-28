@@ -6,18 +6,17 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskComplex.h"
-#include "CPed.h"
+#include "TaskComplex.h"
+#include "Ped.h"
 
 class CTaskComplexProstituteSolicit : public CTaskComplex {
 public:
-    CPed *m_pClient; // player only
+    CPed* m_pClient; // player only
     CVector m_vecVehiclePosn;
     int m_nLastSavedTime;
     int m_nNextTimeToCheckForSecludedPlace; // when we will scan nearby peds again
-    int m_nLastPaymentTime; // when CJ will pay $2 again
-    short m_nVehicleMovementTimer; // wait some time and push vehicle again
+    int m_nLastPaymentTime;                 // when CJ will pay $2 again
+    short m_nVehicleMovementTimer;          // wait some time and push vehicle again
     short m_nCurrentTimer;
     struct {
         unsigned short bSearchingForSecludedPlace : 1;
@@ -34,8 +33,8 @@ public:
         unsigned short bVehicleShifted : 1;
         unsigned short bSecludedPlaceMessageShown : 1;
     } m_nFlags;
-private:
     unsigned short _pad2E;
+
 public:
     CTaskComplexProstituteSolicit(CPed* pClient);
     CTask* CreateSubTask(int taskId, CPed* pProstitute);

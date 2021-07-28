@@ -1,6 +1,6 @@
-#include "CTaskComplex.h"
-#include "CTaskTimer.h"
-#include "CVector.h"
+#include "TaskComplex.h"
+#include "TaskTimer.h"
+#include "Vector.h"
 
 class CColSphere;
 

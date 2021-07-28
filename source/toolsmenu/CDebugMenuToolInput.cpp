@@ -1,6 +1,8 @@
 #include "StdInc.h"
-#include <sstream>
+
 #include "CDebugMenuToolInput.h"
+
+#include <sstream>
 
 void CDebugMenuToolInput::Initialise(std::int32_t inputBufferCapacity, ToolMap* OriginalMap)
 {

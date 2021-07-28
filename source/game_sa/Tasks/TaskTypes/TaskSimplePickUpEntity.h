@@ -1,5 +1,5 @@
 #pragma once
-#include "CTaskSimpleHoldEntity.h"
+#include "TaskSimpleHoldEntity.h"
 
 class CTaskSimplePickUpEntity : public CTaskSimpleHoldEntity
 {

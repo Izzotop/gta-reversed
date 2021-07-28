@@ -6,8 +6,7 @@
 */
 #pragma once
 
-
-class  CLocalisation {
+class CLocalisation {
 public:
     static bool &nastyGame;
     static bool &germanGame;

@@ -5,8 +5,8 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CBuilding.h"
+
+#include "Building.h"
 
 class CAnimatedBuilding : public CBuilding {
 public:

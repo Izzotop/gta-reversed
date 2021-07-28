@@ -6,13 +6,12 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CAESound.h"
+#include "AESound.h"
 #include "eAudioEvents.h"
 
 class CEntity;
 
-class  CAEAudioEntity {
+class CAEAudioEntity {
 protected:
     CAEAudioEntity();
     ~CAEAudioEntity() = default;

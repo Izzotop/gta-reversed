@@ -6,10 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CBoundingBox.h"
-#include "CColSphere.h"
-#include "CCollisionData.h"
+#include "BoundingBox.h"
+#include "ColSphere.h"
+#include "CollisionData.h"
 
 class CColModel {
 public:

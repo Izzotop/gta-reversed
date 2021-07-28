@@ -1,6 +1,6 @@
 #pragma once
-#include "CTaskComplex.h"
-#include "CVector.h"
+#include "TaskComplex.h"
+#include "Vector.h"
 
 class CTaskSimpleGoToPoint;
 

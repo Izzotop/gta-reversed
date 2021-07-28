@@ -1,5 +1,5 @@
 #pragma once
-#include "PluginBase.h"
+
 
 struct tTagDesc {
     CEntity* m_pEntity;

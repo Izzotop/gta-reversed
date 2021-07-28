@@ -5,8 +5,7 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 
 enum eBrightLightColor {
     BRIGHTLIGHT_GREEN_BIG = 1,
@@ -33,7 +32,7 @@ VALIDATE_SIZE(tBrightLight, 0x38);
 
 extern unsigned int MAX_NUM_BRIGHTLIGHTS; // default 32
 
-class  CBrightLights {
+class CBrightLights {
 public:
     static tBrightLight *aBrightLights; // static tBrightLight aBrightLights[32]
     static unsigned int &NumBrightLights;

@@ -1,6 +1,6 @@
 #pragma once
-#include "CTaskSimple.h"
-#include "CAccident.h"
+#include "TaskSimple.h"
+#include "Accident.h"
 
 class CTaskSimpleGiveCPR : public CTaskSimple
 {

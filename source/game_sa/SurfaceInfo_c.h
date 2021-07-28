@@ -1,8 +1,6 @@
 #pragma once
-#include "PluginBase.h"
 
-enum eAdhesionGroup
-{
+enum eAdhesionGroup {
     ADHESION_GROUP_RUBBER = 0,
     ADHESION_GROUP_HARD,
     ADHESION_GROUP_ROAD,
@@ -11,8 +9,7 @@ enum eAdhesionGroup
     ADHESION_GROUP_WET,
 };
 
-enum eFrictionEffect
-{
+enum eFrictionEffect {
     FRICTION_EFFECT_NONE = 0,
     FRICTION_EFFECT_SPARKS,
     FRICTION_EFFECT_MORE // not sure what this is, but it's probably not used

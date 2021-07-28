@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include "CRGBA.h"
+#include "RGBA.h"
 
 enum eHudColours : unsigned char {
     HUD_COLOUR_RED,

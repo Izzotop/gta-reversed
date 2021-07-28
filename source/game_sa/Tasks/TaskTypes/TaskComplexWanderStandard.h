@@ -6,11 +6,10 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskComplexWander.h"
-#include "CTaskTimer.h"
+#include "TaskComplexWander.h"
+#include "TaskTimer.h"
 
-class  CTaskComplexWanderStandard : public CTaskComplexWander {
+class CTaskComplexWanderStandard : public CTaskComplexWander {
 public:
     CTaskTimer m_TaskTimer;
     int m_nMinNextScanTime;

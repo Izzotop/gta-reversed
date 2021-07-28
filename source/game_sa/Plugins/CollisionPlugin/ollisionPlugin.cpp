@@ -1,6 +1,6 @@
 #include "StdInc.h"
 
-#include "CollisionPlugin.h"
+#include "ollisionPlugin.h"
 
 CClumpModelInfo*& CCollisionPlugin::ms_currentModel = *(CClumpModelInfo**)0x9689E0;
 

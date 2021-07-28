@@ -6,7 +6,5 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
-enum  AnimationId : unsigned int {
+enum AnimationId : unsigned int {
 };

@@ -1,7 +1,8 @@
 #pragma once
+
 #include "dsound.h"
-#include "PluginBase.h"
-#include "CVector.h"
+
+#include "Vector.h"
 
 #pragma pack(push, 1)
 class CAEAudioChannel

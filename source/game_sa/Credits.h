@@ -6,8 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
 class CCredits {
 public:
     static int &m_nCreditsStartTime;

@@ -5,10 +5,10 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CPtrNode.h"
 
-class  CPtrList {
+#include "PtrNode.h"
+
+class CPtrList {
 public:
     CPtrNode* pNode;
     inline CPtrNode *GetNode() {

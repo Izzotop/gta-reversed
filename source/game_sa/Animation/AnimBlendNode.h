@@ -6,10 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CQuaternion.h"
+#include "Quaternion.h"
 
-class  CAnimBlendNode {
+class CAnimBlendNode {
 public:
     //by Github.com / jte
     float m_theta0; // angle between two quaternions
@@ -20,8 +19,7 @@ public:
     CAnimBlendSequence* m_pAnimSequence;
     CAnimBlendAssociation*m_pAnimBlendAssociation;
 
-    //funcs
-
+public:
     void CalcDeltas();
     void CalcDeltasCompressed();
     bool FindKeyFrame(float arg1);

@@ -6,10 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CRect.h"
-#include "CPtrListSingleLink.h"
-#include "CPool.h"
+#include "Rect.h"
+#include "PtrListSingleLink.h"
+#include "Pool.h"
 
 /*
 node level 2
@@ -33,7 +32,7 @@ node level 2
 typedef void(*CQuadTreeNodeRectCallBack) (CRect const& rect, void* item);
 typedef void(*CQuadTreeNodeVec2DCallBack) (CVector2D const& rect, void* item);
 
-class  CQuadTreeNode {
+class CQuadTreeNode {
 public:
     CRect               m_Rect;
     CPtrListSingleLink  m_ItemList;

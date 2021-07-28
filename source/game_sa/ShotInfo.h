@@ -6,13 +6,12 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 #include "eWeaponType.h"
 
 class CEntity;
 
-class  CShotInfo {
+class CShotInfo {
 public:
     int      m_nWeaponType;
     CVector  m_vecOrigin;

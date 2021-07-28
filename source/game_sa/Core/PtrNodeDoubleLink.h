@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 
-class  CPtrNodeDoubleLink {
+class CPtrNodeDoubleLink {
 public:
     void *pItem;
     CPtrNodeDoubleLink *pNext;

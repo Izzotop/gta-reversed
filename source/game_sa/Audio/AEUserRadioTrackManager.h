@@ -13,7 +13,7 @@
 #include <mfidl.h>
 #include <mfreadwrite.h>
 
-#include "CAEStreamingDecoder.h"
+#include "AEStreamingDecoder.h"
 
 #include "eUserTrackPlayMode.h"
 #include "eUserTrackScanState.h"

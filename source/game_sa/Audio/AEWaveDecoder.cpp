@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstdio>
 
-#include "CAEWaveDecoder.h"
+#include "AEWaveDecoder.h"
 
 CAEWaveDecoder::CAEWaveDecoder(CAEDataStream* dataStream)
 : CAEStreamingDecoder(dataStream)

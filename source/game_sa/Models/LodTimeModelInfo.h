@@ -1,8 +1,8 @@
 #pragma once
-#include "PluginBase.h"
-#include "CAtomicModelInfo.h"
 
-class  CLodTimeModelInfo : public CLodAtomicModelInfo {
+#include "AtomicModelInfo.h"
+
+class CLodTimeModelInfo : public CLodAtomicModelInfo {
 public:
     CLodTimeModelInfo();
 public:

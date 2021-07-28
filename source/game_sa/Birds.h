@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 #include "eBirdsBiome.h"
 
 /*
@@ -51,7 +50,7 @@ enum class eBirdMode : unsigned char
 };
 
 #pragma pack(push, 1)
-class  CBird {
+class CBird {
 public:
     CVector         m_vecPosn;            // Bird position
     CVector         m_vecCurrentVelocity; // Velocity in the current frame
@@ -75,7 +74,7 @@ public:
 
 VALIDATE_SIZE(CBird, 0x44);
 
-class  CBirds {
+class CBirds {
 public:
     static bool &bHasBirdBeenShot;
     static unsigned int &uiNumberOfBirds;

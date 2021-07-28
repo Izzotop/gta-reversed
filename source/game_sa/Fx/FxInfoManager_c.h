@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 
 class FxInfoManager_c {
 public:

@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CEventHandlerHistory.h"
+#include "EventHandlerHistory.h"
 
 class CTask;
 class CEvent;

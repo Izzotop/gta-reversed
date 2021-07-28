@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CCopPed.h"
-#include "CVehicle.h"
+#include "CopPed.h"
+#include "Vehicle.h"
 
 enum eSetPieceType {
     /* http://gtaforums.com/topic/194990-gtasa-opcodes/?p=1057374595 */
@@ -23,7 +22,7 @@ enum eSetPieceType {
     SETPIECE_2CARS_MEDIUM_SPEED = 8
 };
 
-class  CSetPiece {
+class CSetPiece {
 public:
     int           m_nLastGenerationTime;
     short         m_nAreaCornerX1;
@@ -39,10 +38,9 @@ public:
     short         m_nTargetCoord2X;
     short         m_nTargetCoord2Y;
     unsigned char m_nType; // see eSetPieceType
-private:
-    char _pad1D[3];
-public:
+    char          _pad1D[3];
 
+public:
     CSetPiece();
     CVector2D GetSpawnCoord1();
     CVector2D GetSpawnCoord2();

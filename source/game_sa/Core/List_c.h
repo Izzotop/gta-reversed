@@ -6,11 +6,10 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "ListItem_c.h"
 
 /**
- * Double linked list base implemantation
+ * Double linked list base implementation
  * 
  * NOTE: You should not use this class directly, use TList_c template instead.
  */

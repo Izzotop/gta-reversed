@@ -6,18 +6,15 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
-#include "CEntity.h"
-#include "CVehicle.h"
-#include "CPed.h"
+#include "Vector.h"
+#include "Entity.h"
+#include "Vehicle.h"
+#include "Ped.h"
 
 class CPedPlacement {
 public:
-     static bool FindZCoorForPed(CVector *pos);
-     static bool IsPositionClearForPed(CVector const *pos, float radius, int maxNumObjects, CEntity **pObjectList, unsigned char bCheckVehicles, unsigned char bCheckPeds, unsigned char bCheckObjects);
-     static CVehicle *IsPositionClearOfCars(CVector const *pos);
-     static CVehicle *IsPositionClearOfCars(CPed const *ped);
+    static bool FindZCoorForPed(CVector* pos);
+    static bool IsPositionClearForPed(CVector const* pos, float radius, int maxNumObjects, CEntity** pObjectList, unsigned char bCheckVehicles, unsigned char bCheckPeds, unsigned char bCheckObjects);
+    static CVehicle* IsPositionClearOfCars(CVector const* pos);
+    static CVehicle* IsPositionClearOfCars(CPed const* ped);
 };
-
-//#include "meta/meta.CPedPlacement.h"

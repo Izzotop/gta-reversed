@@ -1,6 +1,6 @@
 #pragma once
-#include "CTaskComplex.h"
-#include "CHeli.h"
+#include "TaskComplex.h"
+#include "Heli.h"
 
 class CTaskComplexUseSwatRope : public CTaskComplex
 {

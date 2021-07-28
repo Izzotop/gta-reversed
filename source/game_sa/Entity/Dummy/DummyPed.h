@@ -5,11 +5,11 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CDummy.h"
+
+#include "Dummy.h"
 
 
-class  CDummyPed : public CDummy {
+class CDummyPed : public CDummy {
 public:
 };
 

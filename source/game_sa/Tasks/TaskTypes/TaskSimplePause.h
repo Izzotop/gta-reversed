@@ -1,6 +1,6 @@
 #pragma once
-#include "CTaskSimple.h"
-#include "CTaskTimer.h"
+#include "TaskSimple.h"
+#include "TaskTimer.h"
 
 class CTaskSimplePause : public CTaskSimple 
 {

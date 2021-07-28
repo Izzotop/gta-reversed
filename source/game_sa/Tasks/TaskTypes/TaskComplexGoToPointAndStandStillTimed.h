@@ -1,6 +1,6 @@
 #pragma once
-#include "CTaskComplexGoToPointAndStandStill.h"
-#include "CTaskTimer.h"
+#include "TaskComplexGoToPointAndStandStill.h"
+#include "TaskTimer.h"
 
 class CTaskComplexGoToPointAndStandStillTimed : public CTaskComplexGoToPointAndStandStill
 {

@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 
-enum  eSaveLoadBlocks {
+enum eSaveLoadBlocks {
     BLOCK_SIMPLE_VARIABLES = 0,
     BLOCK_SCRIPTS = 0x1,
     BLOCK_POOLS = 0x2,
@@ -37,24 +36,24 @@ enum  eSaveLoadBlocks {
     BLOCK_USER3DMARKERS = 0x1B
 };
 
-enum  eSaveLoadError {
+enum eSaveLoadError {
     LOADING_SYNC_ERROR = 0,
     LOADING_ERROR = 0x1,
     SAVING_ERROR = 0x2
 };
 
-struct  tSlotSaveDate {
+struct tSlotSaveDate {
     char m_sSavedGameDateAndTime[70];
 };
 
-struct  tSlotFileName {
+struct tSlotFileName {
     char m_sSavedGameName[260];
 };
 
 VALIDATE_SIZE(tSlotSaveDate, 0x46);
 VALIDATE_SIZE(tSlotFileName, 0x104);
 
-class  CGenericGameStorage {
+class CGenericGameStorage {
 public:
      static char *ms_LoadFileNameWithPath; // static char ms_LoadFileNameWithPath[104]
      static char *ms_LoadFileName; // static char ms_LoadFileName[104]

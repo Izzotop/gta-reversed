@@ -5,11 +5,11 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CRope.h"
+
+#include "Rope.h"
 
 
-class  CRopes
+class CRopes
 {
 public:
     static constexpr int MAX_NUM_ROPES = 8;

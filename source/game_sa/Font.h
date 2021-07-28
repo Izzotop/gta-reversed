@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include "CRGBA.h"
-#include "CRect.h"
-#include "CSprite2d.h"
+#include "RGBA.h"
+#include "Rect.h"
+#include "Sprite2d.h"
 
 #define MAX_FONT_SPRITES 2
 #define MAX_FONT_BUTTON_SPRITES 15
@@ -31,7 +31,7 @@ enum eFontStyle : unsigned char {
     FONT_MENU,
     FONT_PRICEDOWN
 };
-class  CFont {
+class CFont {
 public:
     // static variables
 

@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 
 struct tColLighting
 {
@@ -26,7 +25,7 @@ struct tColLighting
 };
 VALIDATE_SIZE(tColLighting, 0x1);
 
-class  CColPoint {
+class CColPoint {
 public:
 	/* https://code.google.com/p/mtasa-blue/source/browse/tags/1.3.4/MTA10/game_sa/CColPointSA.h */
 	CVector       m_vecPoint;                               // 0

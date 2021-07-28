@@ -6,15 +6,14 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CColSphere.h"
-#include "CColBox.h"
-#include "CColLine.h"
+#include "ColSphere.h"
+#include "ColBox.h"
+#include "ColLine.h"
 #include "CompressedVector.h"
-#include "CColTriangle.h"
-#include "CColTrianglePlane.h"
-#include "CColDisk.h"
-#include "CLink.h"
+#include "ColTriangle.h"
+#include "ColTrianglePlane.h"
+#include "ColDisk.h"
+#include "Link.h"
 
 class CCollisionData {
 public:

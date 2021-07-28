@@ -6,11 +6,10 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CTaskTimer.h"
+#include "TaskSimple.h"
+#include "TaskTimer.h"
 
-class  CTaskSimpleStandStill : public CTaskSimple {
+class CTaskSimpleStandStill : public CTaskSimple {
 public:
     int m_nTime;
     CTaskTimer m_timer;

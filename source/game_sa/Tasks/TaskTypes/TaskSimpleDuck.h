@@ -6,13 +6,11 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CAnimBlendAssociation.h"
-#include "CVector2D.h"
+#include "TaskSimple.h"
+#include "AnimBlendAssociation.h"
+#include "Vector2D.h"
 
-enum eDuckControlTypes : unsigned char
-{
+enum eDuckControlTypes : unsigned char {
     DUCK_STANDALONE = 0,	// duck anim removed when task removed
     DUCK_STANDALONE_WEAPON_CROUCH,// duck anim removed when task removed
     DUCK_TASK_CONTROLLED,	// duck directly linked to a controlling task
@@ -20,7 +18,7 @@ enum eDuckControlTypes : unsigned char
     DUCK_SCRIPT_CONTROLLED,
 };
 
-class  CTaskSimpleDuck : public CTaskSimple {
+class CTaskSimpleDuck : public CTaskSimple {
 public:
     unsigned int m_nStartTime;
     unsigned short m_nLengthOfDuck;

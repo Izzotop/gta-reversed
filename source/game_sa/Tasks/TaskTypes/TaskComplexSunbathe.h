@@ -6,14 +6,12 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskComplex.h"
-#include "CTaskTimer.h"
-#include "CAnimBlock.h"
-#include "CObject.h"
+#include "TaskComplex.h"
+#include "TaskTimer.h"
+#include "AnimBlock.h"
+#include "Object.h"
 
-enum eSunbatherType : unsigned int
-{
+enum eSunbatherType : unsigned int {
     SUNBATHER_MALE_1 = 0,
     SUNBATHER_MALE_2,
     SUNBATHER_FEMALE_1,
@@ -21,15 +19,15 @@ enum eSunbatherType : unsigned int
     SUNBATHER_FEMALE_3,
 };
 
-class  CTaskComplexSunbathe : public CTaskComplex {
+class CTaskComplexSunbathe : public CTaskComplex {
 public:
     bool                m_bStartStanding;
     bool                m_bBathing;
     bool                m_bBeachAnimsReferenced;
     bool                m_bSunbatheAnimsReferenced;
     bool                m_bAborted;
-private:
     char _pad[3];
+
 public:
     CTaskTimer          m_BathingTimer;
     eSunbatherType      m_SunbatherType;

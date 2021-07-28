@@ -5,9 +5,9 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
+
 #include "CompressedVector.h"
-#include "CVector.h"
+#include "Vector.h"
 
 enum ePickupType {
     PICKUP_NONE = 0,

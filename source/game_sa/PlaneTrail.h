@@ -5,10 +5,10 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CVector.h"
 
-class  CPlaneTrail {
+#include "Vector.h"
+
+class CPlaneTrail {
 public:
     CVector m_avecPosn[16];
     unsigned int m_anTime[16];

@@ -6,8 +6,8 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "CColourSet.h"
-#include "CBox.h"
+#include "ColourSet.h"
+#include "Box.h"
 
 class CTimeCycleBox;
 

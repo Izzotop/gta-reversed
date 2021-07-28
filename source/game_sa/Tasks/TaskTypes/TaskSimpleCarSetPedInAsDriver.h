@@ -6,27 +6,23 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CVehicle.h"
-#include "CTaskUtilityLineUpPedWithCar.h"
+#include "TaskSimple.h"
+#include "Vehicle.h"
+#include "TaskUtilityLineUpPedWithCar.h"
 
 class CTaskSimpleCarSetPedInAsDriver : public CTaskSimple {
 public:
     bool m_bIsFinished;
-private:
     char _pad[3];
-public:
     CAnimBlendAssociation* m_pAnim;
     CVehicle * m_pTargetVehicle;
     CTaskUtilityLineUpPedWithCar* m_pUtility;
     bool m_bWarpingInToCar;
     unsigned char m_nDoorFlagsToClear;
     unsigned char m_nNumGettingInToClear;
-private:
     char _pad2[1];
-public:
 
+public:
     CTaskSimpleCarSetPedInAsDriver(CVehicle *pTargetVehicle, CTaskUtilityLineUpPedWithCar *pUtility);
     ~CTaskSimpleCarSetPedInAsDriver();
 

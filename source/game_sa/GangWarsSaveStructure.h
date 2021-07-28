@@ -6,15 +6,12 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 
-class  CGangWarsSaveStructure {
+class CGangWarsSaveStructure {
 public:
     bool bGangWarsActive;
-private:
     char _pad1[3];
-public:
     unsigned int State;
     unsigned int TimeStarted;
     unsigned int GangWarZoneInfoIndex;
@@ -30,16 +27,13 @@ public:
     unsigned int FightTimer;
     unsigned int RadarBlip;
     bool bPlayerIsCloseby;
-private:
     char _pad4D[3];
-public:
     float TerritoryUnderControlPercentage;
     float Difficulty;
 
+public:
      void Construct();
      void Extract();
 };
 
 VALIDATE_SIZE(CGangWarsSaveStructure, 0x58);
-
-//#include "meta/meta.CGangWarsSaveStructure.h"

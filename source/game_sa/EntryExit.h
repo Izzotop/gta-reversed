@@ -6,17 +6,15 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CRect.h"
-#include "CVector.h"
-#include "CObject.h"
+#include "Rect.h"
+#include "Vector.h"
+#include "Object.h"
 
 class CPed;
 
 // Each area code can have one or more interiors.
 // For more info, check https://wiki.mtasa.com/wiki/Interior_IDs
-enum eAreaCodes
-{
+enum eAreaCodes {
     AREA_CODE_NORMAL_WORLD,
     AREA_CODE_1,
     AREA_CODE_2,
@@ -93,5 +91,3 @@ public:
 };
 
 VALIDATE_SIZE(CEntryExit, 0x3C);
-
-//#include "meta/meta.CEntryExit.h"

@@ -6,15 +6,12 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "renderware.h"  // important
-#include "CPedClothesDesc.h"
 
+#include "renderware.h" // important
+#include "PedClothesDesc.h"
 
-class  CClothesBuilder
-{
+class CClothesBuilder {
 public:
-	 
     static void BlendTextures(RwTexture* texture1, RwTexture* texture2, RwTexture* texture3, float factorA, float factorB, float factorC, int arg7, RwTexture* texture4);
     static void BlendTextures(RwTexture* texture1, RwTexture* texture2, RwTexture* texture3, float factorA, float factorB, float factorC);
     static void BlendTextures(RwTexture* texture1, RwTexture* texture2, float arg3, float arg4);
@@ -40,5 +37,5 @@ public:
     static void ShutdownPaletteOctTree();
     static void ReducePaletteOctTree(int numColorsToReduce);
     static bool AddColour(RwRGBA* color);
-    static void FillPalette(RwRGBA* color);	
+    static void FillPalette(RwRGBA* color);
 };

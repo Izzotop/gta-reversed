@@ -6,16 +6,13 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CRect.h"
+#include "Rect.h"
 
-class  IplDef {
+class IplDef {
 public:
     CRect m_boundBox;
     char  m_szName[16];
-private:
     short _pad20;
-public:
     short m_nMinBuildingId;
     short m_nMaxBuildingId;
     short m_nMinDummyId;
@@ -27,9 +24,7 @@ public:
     bool  m_bDisableDynamicStreaming;
     char field_30;
     char field_31;
-private:
     char _pad32[2];
-public:
 };
 
 VALIDATE_SIZE(IplDef, 0x34);

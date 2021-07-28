@@ -5,11 +5,11 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CDummy.h"
+
+#include "Dummy.h"
 
 
-class  CDummyObject : public CDummy {
+class CDummyObject : public CDummy {
 public:
     CDummyObject() : CDummy() {}
     explicit CDummyObject(CObject* pObj);

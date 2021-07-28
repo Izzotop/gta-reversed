@@ -1,7 +1,7 @@
 #include "StdInc.h"
-#include "CAEAudioChannel.h"
-#include "CAEAudioUtility.h"
-#include "CAESmoothFadeThread.h"
+#include "AEAudioChannel.h"
+#include "AEAudioUtility.h"
+#include "AESmoothFadeThread.h"
 
 uint32_t& g_numSoundChannelsUsed = *(uint32_t*)0xB5F898;
 

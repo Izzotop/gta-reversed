@@ -1,10 +1,10 @@
 #pragma once
-#include "PluginBase.h"
-#include "CTaskTimer.h"
+
+#include "TaskTimer.h"
 
 class CEvent;
-class CEventHandlerHistory
-{
+
+class CEventHandlerHistory {
 public:
     CTask* m_task = nullptr;
     CEvent* m_nonTempEvent = nullptr;
@@ -23,7 +23,7 @@ public:
     void ClearStoredActiveEvent();
     void Flush();
     CEvent* GetCurrentEvent() { return m_tempEvent ? m_tempEvent : m_nonTempEvent; };
-    std::int32_t GetCurrentEventPriority();
+    int32_t GetCurrentEventPriority();
     CEvent* GetStoredActiveEvent() { return m_storedActiveEvent; }
     bool IsRespondingToEvent(eEventType eventType);
     void RecordCurrentEvent(CPed* ped, CEvent& event);

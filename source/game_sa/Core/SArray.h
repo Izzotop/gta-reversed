@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 
 template <typename T>
 struct SArray /* : public std::vector<T> */ {

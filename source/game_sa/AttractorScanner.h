@@ -6,11 +6,10 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskTimer.h"
-#include "Plugins\TwoDEffectPlugin\C2dEffect.h"
+#include "TaskTimer.h"
+#include "Plugins\TwoDEffectPlugin\2dEffect.h"
 
-class  CAttractorScanner {
+class CAttractorScanner {
 public:
     char field_0;
     char _pad[3];

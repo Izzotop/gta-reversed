@@ -5,11 +5,10 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CEntity.h"
 
+#include "Entity.h"
 
-class  CDummy : public CEntity {
+class CDummy : public CEntity {
 public:
     CDummy() : CEntity() { m_nType = eEntityType::ENTITY_TYPE_DUMMY; }
     static void* operator new(unsigned int size);
@@ -18,7 +17,6 @@ public:
 public:
     static void InjectHooks();
 };
-
 
 VALIDATE_SIZE(CDummy, 0x38);
 

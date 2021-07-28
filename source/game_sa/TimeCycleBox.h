@@ -6,19 +6,16 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CBox.h"
+#include "Box.h"
 
-
-class CTimeCycleBox
-{
+class CTimeCycleBox {
 public:
-  CBox box;
-  short farclip;
-  unsigned char lodDistMult;
-  int extraColor;
-  float strength;
-  float falloff;
+    CBox  box;
+    short farclip;
+    unsigned char lodDistMult;
+    int extraColor;
+    float strength;
+    float falloff;
 };
 
 VALIDATE_SIZE(CTimeCycleBox, 0x28);

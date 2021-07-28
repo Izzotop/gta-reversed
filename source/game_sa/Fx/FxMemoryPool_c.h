@@ -6,18 +6,16 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "RenderWare.h"
-#include "CVector.h"
+#include "Vector.h"
 
-class  FxMemoryPool_c
-{
+class FxMemoryPool_c {
 public:
-	char *data;
-	unsigned int size;
-	unsigned int position;
+    char* data;
+    unsigned int size;
+    unsigned int position;
 
-	void Optimise();
+    void Optimise();
 };
 
 VALIDATE_SIZE(FxMemoryPool_c, 0xC);

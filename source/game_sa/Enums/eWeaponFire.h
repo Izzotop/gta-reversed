@@ -6,9 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
-enum  eWeaponFire : unsigned int {
+enum eWeaponFire : unsigned int {
     WEAPON_FIRE_MELEE = 0,
     WEAPON_FIRE_INSTANT_HIT,
     WEAPON_FIRE_PROJECTILE,

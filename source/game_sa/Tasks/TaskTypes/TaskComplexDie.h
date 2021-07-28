@@ -6,12 +6,11 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskComplex.h"
+#include "TaskComplex.h"
 #include "eWeaponType.h"
-#include "CVehicle.h"
+#include "Vehicle.h"
 
-class  CTaskComplexDie : public CTaskComplex {
+class CTaskComplexDie : public CTaskComplex {
 public:
     eWeaponType m_nWeaponType; // Means Of Death
     int m_animGroup;
@@ -32,7 +31,7 @@ public:
     };
     int nFallToDeathDir;
 
-
+public:
     CTaskComplexDie(eWeaponType nWeaponType/*=WEAPONTYPE_UNARMED*/, int animGroup/*ANIM_STD_PED*/, int animID/*ANIM_STD_KO_FRONT*/,
         float fBlendDelta, float fAnimSpeed, bool bBeingKilledByStealth, bool bFallingToDeath, int nFallToDeathDir, bool bFallToDeathOverRailing);
 

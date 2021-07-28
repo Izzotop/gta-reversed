@@ -5,7 +5,8 @@
     Do not delete this comment block. Respect others' work!
 */
 #include "StdInc.h"
-#include "CDebugMenu.h"
+
+#include "CDebugMenu.h" // NOTSA
 
 // mouse states
 CMouseControllerState& CPad::PCTempMouseControllerState = *(CMouseControllerState*)0xB73404;

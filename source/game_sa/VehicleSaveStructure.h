@@ -1,10 +1,10 @@
 #pragma once
-#include "PluginBase.h"
-#include "CMatrix.h"
+
+#include "Matrix.h"
+
 class CVehicle;
 
-class CVehicleSaveStructure
-{
+class CVehicleSaveStructure {
 public:
     CMatrix   m_matrix;
     uint8_t   field_48;

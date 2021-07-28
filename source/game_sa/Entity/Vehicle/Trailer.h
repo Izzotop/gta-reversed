@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CAutomobile.h"
+#include "Automobile.h"
 
 enum eTrailerNodes {
     TRAILER_NODE_NONE = 0,
@@ -48,7 +47,7 @@ public:
     float m_trailerTowedRatio2;
 
     static float& m_fTrailerSuspensionForce; // 1.5
-    static float& m_fTrailerDampingForce; // 0.1
+    static float& m_fTrailerDampingForce;    // 0.1
 
 public:
     static void InjectHooks();

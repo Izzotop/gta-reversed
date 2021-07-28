@@ -6,13 +6,11 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CAnimBlendAssociation.h"
-#include "CEntity.h"
+#include "TaskSimple.h"
+#include "AnimBlendAssociation.h"
+#include "Entity.h"
 
-enum eClimbHeights : char
-{
+enum eClimbHeights : char {
     CLIMB_NOT_READY = 0,
     CLIMB_GRAB,
     CLIMB_PULLUP,
@@ -22,7 +20,7 @@ enum eClimbHeights : char
     CLIMB_FINISHED_V
 };
 
-class  CTaskSimpleClimb : public CTaskSimple {
+class CTaskSimpleClimb : public CTaskSimple {
 public:
     bool m_bIsFinished;
     bool m_bChangeAnimation;

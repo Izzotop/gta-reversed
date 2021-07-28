@@ -5,7 +5,6 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
 
 /*
     http://www.gtamodding.com/wiki/IMG_archive
@@ -19,12 +18,12 @@ public:
         unsigned short m_nSizeInArchive;
         char m_szName[24];
     };
-    DirectoryInfo *m_pEntries;
-    unsigned int m_nCapacity;
-    unsigned int m_nNumEntries;
-    bool m_bOwnsEntries;
-private:
-    char _padD[3];
+    DirectoryInfo* m_pEntries;
+    unsigned int   m_nCapacity;
+    unsigned int   m_nNumEntries;
+    bool           m_bOwnsEntries;
+    char           _padD[3];
+
 public:
 
     void* operator new(unsigned int size)
@@ -40,6 +39,7 @@ public:
     CDirectory();
     CDirectory(int capacity);
     ~CDirectory();
+
     void Init(int capacity, void* entries);
     void AddItem(DirectoryInfo const& entry);
     void ReadDirFile(char const* filename);

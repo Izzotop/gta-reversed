@@ -6,7 +6,7 @@
 #include <windows.h>
 #include <MMReg.h> // WAVEFORMAT
 
-#include "CAEStreamingDecoder.h"
+#include "AEStreamingDecoder.h"
 
 class CAEWaveDecoder: public CAEStreamingDecoder
 {

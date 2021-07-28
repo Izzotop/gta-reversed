@@ -5,7 +5,6 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
 
 enum class eVehicleComponentFlags : unsigned int {
     IS_VEH_STRUCT_PART = 0x00000001,
@@ -34,6 +33,7 @@ enum class eVehicleComponentFlags : unsigned int {
     COMP_RENDER_ALWAYS = 0x00400000,
     UNKN_4 = 0x20000000,
 };
+
 struct tVehicleComponentFlagsUnion {
     union {
         unsigned int m_nFlags;
@@ -73,11 +73,10 @@ struct tVehicleComponentFlagsUnion {
 };
 VALIDATE_SIZE(tVehicleComponentFlagsUnion, 0x4);
 
-struct  RwObjectNameIdAssocation
-{
-	char *m_pName;
-	unsigned int m_dwHierarchyId;
-	unsigned int m_dwFlags; // see eVehicleComponentFlags
+struct RwObjectNameIdAssocation {
+    char* m_pName;
+    unsigned int m_dwHierarchyId;
+    unsigned int m_dwFlags; // see eVehicleComponentFlags
 
 public:
     inline tVehicleComponentFlagsUnion AsFlagsUnion() {

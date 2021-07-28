@@ -6,11 +6,10 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "RenderWare.h"
-#include "CVector.h"
+#include "Vector.h"
 
-class  CQuaternion {
+class CQuaternion {
 public:
     CQuaternion();
 public:

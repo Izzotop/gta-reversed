@@ -5,27 +5,27 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
+
 #include "eWeaponType.h"
-#include "CProjectile.h"
+#include "Projectile.h"
 #include "FxSystem_c.h"
 
 extern unsigned int MAX_PROJECTILES; // default 32
 
-class  CProjectileInfo {
+class CProjectileInfo {
 public:
-	unsigned int  m_nWeaponType; // see eWeaponType
-	CEntity      *m_pCreator;
-	CEntity      *m_pVictim;
-	int           m_nDestroyTime;
-	bool          m_bActive;
-private:
-	char _pad11[3];
-public:
-	CVector       m_vecLastPosn;
-	FxSystem_c   *m_pFxSystem;
+    unsigned int m_nWeaponType; // see eWeaponType
+    CEntity* m_pCreator;
+    CEntity* m_pVictim;
+    int m_nDestroyTime;
+    bool m_bActive;
+    char _pad11[3];
 
-    static CProjectile **ms_apProjectile; // static CProjectile *ms_apProjectile[MAX_PROJECTILES]
+public:
+    CVector m_vecLastPosn;
+    FxSystem_c* m_pFxSystem;
+
+    static CProjectile** ms_apProjectile; // static CProjectile *ms_apProjectile[MAX_PROJECTILES]
 
     static void Initialise();
     static void RemoveFXSystem(unsigned char bInstantly);
@@ -42,4 +42,4 @@ public:
 };
 
 extern unsigned int MAX_PROJECTILE_INFOS; // default 32
-extern CProjectileInfo *gaProjectileInfo; // CProjectileInfo gaProjectileInfo[MAX_PROJECTILE_INFOS]
+extern CProjectileInfo* gaProjectileInfo; // CProjectileInfo gaProjectileInfo[MAX_PROJECTILE_INFOS]

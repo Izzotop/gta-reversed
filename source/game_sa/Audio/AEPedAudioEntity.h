@@ -6,14 +6,13 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CAEAudioEntity.h"
-#include "CAESound.h"
-#include "CAETwinLoopSoundEntity.h"
+#include "AEAudioEntity.h"
+#include "AESound.h"
+#include "AETwinLoopSoundEntity.h"
 
 class CPed;
 
-class  CAEPedAudioEntity : public CAEAudioEntity {
+class CAEPedAudioEntity : public CAEAudioEntity {
 public:
     char field_7C;
     char field_7D;
@@ -22,14 +21,14 @@ public:
     float field_84;
     float field_88;
     char field_8C[8];
-    CPed *m_pPed;
+    CPed* m_pPed;
     char field_98;
     char field_99[3];
-    CAESound *field_9C;
+    CAESound* field_9C;
     int field_A0;
-    CAESound *field_A4;
-	CAETwinLoopSoundEntity TwinLoopSoundEntity;
-    CAESound *field_150;
+    CAESound* field_A4;
+    CAETwinLoopSoundEntity TwinLoopSoundEntity;
+    CAESound* field_150;
     float field_154;
     float field_158;
 

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "PluginBase.h"
-
-#include "CAEDataStream.h"
+#include "AEDataStream.h"
 
 class CAEStreamingDecoder
 {

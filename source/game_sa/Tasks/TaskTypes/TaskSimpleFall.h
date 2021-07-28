@@ -1,6 +1,6 @@
 #pragma once
-#include "CTaskSimple.h"
-#include "CAnimBlendAssociation.h"
+#include "TaskSimple.h"
+#include "AnimBlendAssociation.h"
 
 class CTaskSimpleFall : public CTaskSimple
 {

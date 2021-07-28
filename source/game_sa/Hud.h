@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CSprite2d.h"
+#include "Sprite2d.h"
 
 enum DRAW_FADE_STATE {
 
@@ -24,7 +23,7 @@ enum eHudSprites {
 
 class CPed;
 
-class  CHud {
+class CHud {
 public:
     static char(*m_BigMessage)[128]; // static char m_BigMessage[7][128]
     static bool &bScriptDontDisplayAreaName;

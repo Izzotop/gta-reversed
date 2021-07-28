@@ -7,9 +7,9 @@ Do not delete this comment block. Respect others' work!
 
 #include "StdInc.h"
 
-#include "CAEAudioEnvironment.h"
-#include "CAEAudioHardware.h"
-#include "CAEAudioUtility.h"
+#include "AEAudioEnvironment.h"
+#include "AEAudioHardware.h"
+#include "AEAudioUtility.h"
 
 void CAESound::InjectHooks()
 {

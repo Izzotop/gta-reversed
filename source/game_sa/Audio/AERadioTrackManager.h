@@ -6,13 +6,12 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 
-struct  tMusicTrackHistory {
+struct tMusicTrackHistory {
     char m_indices[20];
 };
 
-class  CAERadioTrackManager {
+class CAERadioTrackManager {
 public:
     char field_0;
     char field_1;

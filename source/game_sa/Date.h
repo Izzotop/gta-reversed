@@ -6,9 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
-class  CDate {
+class CDate {
 public:
     int seconds;
     int minutes;
@@ -17,15 +15,13 @@ public:
     int month;
     int year;
 
-     CDate();
+    CDate();
 
-     bool operator<(CDate const &rhs);
-     bool operator==(CDate const &rhs);
-     bool operator>(CDate const &rhs);
+    bool operator<(CDate const& rhs);
+    bool operator==(CDate const& rhs);
+    bool operator>(CDate const& rhs);
 
-     void PopulateDateFields(char const &seconds, char const &minutes, char const &hours, char const &day, char const &month, short year);
+    void PopulateDateFields(char const& seconds, char const& minutes, char const& hours, char const& day, char const& month, short year);
 };
 
 VALIDATE_SIZE(CDate, 0x18);
-
-//#include "meta/meta.CDate.h"

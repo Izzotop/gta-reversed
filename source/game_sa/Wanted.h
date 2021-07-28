@@ -6,15 +6,15 @@
 */
 #pragma once
 
-#include "CCrimeBeingQd.h"
-#include "CAEPoliceScannerAudioEntity.h"
+#include "CrimeBeingQd.h"
+#include "AEPoliceScannerAudioEntity.h"
 
 #include "eCrimeType.h"
 
 class CPed;
 class CCopPed;
 
-class  CWanted {
+class CWanted {
 public:
     unsigned int   m_nChaosLevel;
     unsigned int   m_nChaosLevelBeforeParole;

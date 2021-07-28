@@ -1,7 +1,6 @@
 #pragma once
 
 #include "dsound.h"
-#include "PluginBase.h"
 
 enum eSmoothFadeEntryStatus : uint32_t
 {

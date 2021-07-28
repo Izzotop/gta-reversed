@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "eClothesModelPart.h"
 #include "eClothesTexturePart.h"
 

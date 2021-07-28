@@ -6,19 +6,17 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskComplex.h"
+#include "TaskComplex.h"
 
-//typedef int AnimationId;
+// typedef int AnimationId;
 
-class  CTaskComplexPlayHandSignalAnim : public CTaskComplex {
+class CTaskComplexPlayHandSignalAnim : public CTaskComplex {
 public:
     int   m_animationId;
     float m_fBlendFactor;
     union {
         unsigned char m_nFlags;
-        struct
-        {
+        struct {
             unsigned char m_bLeftHandLoaded : 1;
             unsigned char m_bRightHandLoaded : 1;
             unsigned char m_bAnimationLoaded : 1;
@@ -27,6 +25,7 @@ public:
     };
     unsigned char _pad[3];
 
+public:
     CTaskComplexPlayHandSignalAnim(AnimationId animationId, float blendFactor);
     CTask* CreateSubTask(int taskType);
     int GetAnimIdForPed(CPed* ped);

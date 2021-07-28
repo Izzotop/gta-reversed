@@ -6,16 +6,14 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskComplex.h"
-#include "CPed.h"
+#include "TaskComplex.h"
+#include "Ped.h"
 
-class  CTaskComplexKillPedFromBoat : public CTaskComplex {
+class CTaskComplexKillPedFromBoat : public CTaskComplex {
 public:
-	CPed *pPed;
+    CPed* pPed;
 
-	CTaskComplexKillPedFromBoat(CPed* ped);
+    CTaskComplexKillPedFromBoat(CPed* ped);
 };
 
 VALIDATE_SIZE(CTaskComplexKillPedFromBoat, 0x10);
-

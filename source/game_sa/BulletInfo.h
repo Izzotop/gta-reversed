@@ -6,27 +6,23 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 #include "eWeaponType.h"
-#include "CEntity.h"
+#include "Entity.h"
 
-class  CBulletInfo {
+class CBulletInfo {
 public:
     eWeaponType m_nWeaponType;
     CEntity *m_pCreator;
     int      m_nDestroyTime;
     bool     m_bExists;
-private:
-    char _pad0D[3];
-public:
+    char     _pad0D[3];
     CVector  m_vecPosition;
     CVector  m_vecVelocity;
     short    m_nDamage;
-private:
-    char _pad2A[2];
-public:
+    char     _pad2A[2];
 
+public:
     static void Initialise();
     static void Shutdown();
     static bool AddBullet(CEntity* creator, eWeaponType weaponType, CVector position, CVector velocity);

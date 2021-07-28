@@ -1,5 +1,5 @@
 #pragma once
-#include "CEventEditableResponse.h"
+#include "EventEditableResponse.h"
 
 enum ePlayerGroupCommand : std::int32_t
 {

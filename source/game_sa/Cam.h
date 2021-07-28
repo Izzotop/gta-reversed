@@ -6,9 +6,8 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "eCamMode.h"
-#include "CVector.h"
+#include "Vector.h"
 
 /* http://code.google.com/p/mtasa-blue/source/browse/tags/1.3.4/MTA10/game_sa/CCamSA.h */
 
@@ -18,7 +17,7 @@ class CVehicle;
 
 extern bool &gbFirstPersonRunThisFrame;
 
-class  CCam {
+class CCam {
 public:
     bool          m_bBelowMinDist;
     bool          m_bBehindPlayerDesired;
@@ -33,9 +32,7 @@ public:
     bool          m_bResetStatics;
     bool          m_bRotating;
     eCamMode      m_nMode;
-private:
-    char _pad[2];
-public:
+    char          _pad[2];
     unsigned int  m_nFinishTime;
     unsigned int  m_nDoCollisionChecksOnFrameNum;
     unsigned int  m_nDoCollisionCheckEveryNumOfFrames;

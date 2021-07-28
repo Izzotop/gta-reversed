@@ -5,7 +5,7 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
+
 #include "ListItem_c.h"
 #include "FxSphere_c.h"
 
@@ -25,8 +25,10 @@ public:
     void **m_emittersList;
     FxSphere_c *m_pBoundingSphere;
 
+public:
     FxSystemBP_c();
     ~FxSystemBP_c();
+
     static void* operator new(unsigned int size);
     void Unload();
     unsigned int Update(float arg0);

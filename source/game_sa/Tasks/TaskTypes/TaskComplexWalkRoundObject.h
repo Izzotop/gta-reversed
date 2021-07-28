@@ -1,5 +1,5 @@
-#include "CTaskComplex.h"
-#include "CVector.h"
+#include "TaskComplex.h"
+#include "Vector.h"
 
 class CPointRoute;
 class CTaskComplexWalkRoundObject : public CTaskComplex {

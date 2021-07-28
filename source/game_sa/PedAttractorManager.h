@@ -1,5 +1,4 @@
 #pragma once
-#include "PluginBase.h"
 
 class CPedAttractorManager {
     unsigned char ucPad[120];

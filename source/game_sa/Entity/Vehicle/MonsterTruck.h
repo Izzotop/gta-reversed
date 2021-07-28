@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CAutomobile.h"
+#include "Automobile.h"
 
 enum eMonsterTruckNodes {
     MONSTER_NODE_NONE = 0,

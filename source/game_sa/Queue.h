@@ -17,16 +17,16 @@
 
 struct Queue
 {
-    std::int32_t *m_queue;
-    std::int32_t m_head;
-    std::int32_t m_tail;
-    std::int32_t m_size;
+    int32_t *m_queue;
+    int32_t m_head;
+    int32_t m_tail;
+    int32_t m_size;
 };
 static_assert(sizeof(Queue) == 0x10, "Incorrect struct size: Queue");
 
-inline Queue* InitialiseQueue(Queue* q, std::int32_t size)
+inline Queue* InitialiseQueue(Queue* q, int32_t size)
 {
-    q->m_queue = (std::int32_t*)LocalAlloc(LPTR, sizeof(std::int32_t) * size);
+    q->m_queue = (int32_t*)LocalAlloc(LPTR, sizeof(int32_t) * size);
     q->m_size = size;
     q->m_head = q->m_tail = 0;
     return q;
@@ -38,7 +38,7 @@ inline void FinalizeQueue(Queue* q)
     q->m_size = q->m_head = q->m_tail = 0;
 }
 
-inline void AddToQueue(Queue* q, std::int32_t i)
+inline void AddToQueue(Queue* q, int32_t i)
 {
     q->m_queue[q->m_tail] = i;
     q->m_tail = (q->m_tail + 1) % q->m_size;

@@ -5,12 +5,11 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CDecision.h"
+
+#include "Decision.h"
 #include "eDecisionMakerEvents.h"
 
-class CDecisionMaker
-{
+class CDecisionMaker {
 public:
     CDecision m_decision[DM_TOTAL_NUM_EVENTS];
 

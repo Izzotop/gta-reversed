@@ -6,11 +6,10 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskComplex.h"
-#include "CTaskSimpleFacial.h"
+#include "TaskComplex.h"
+#include "TaskSimpleFacial.h"
 
-class  CTaskComplexFacial : public CTaskComplex {
+class CTaskComplexFacial : public CTaskComplex {
 public:
     bool m_bNotPlayer;
     bool m_bStarted;

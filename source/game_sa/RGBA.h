@@ -6,8 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
 struct RwRGBA;
 
 class CRGBA {

@@ -1,5 +1,5 @@
 #pragma once
-#include "PluginBase.h"
+
 
 class CEscalator {
 public:

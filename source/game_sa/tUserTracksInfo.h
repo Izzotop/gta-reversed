@@ -2,14 +2,11 @@
 
 #include <cstdint>
 
-#include "PluginBase.h"
-
 #include "eAudioFileType.h"
 
-struct tUserTracksInfo
-{
-    std::uint32_t startUfilesPath;
-    std::uint32_t pathLength;
+struct tUserTracksInfo {
+    uint32_t startUfilesPath;
+    uint32_t pathLength;
     eAudioFileType fileType;
 };
 

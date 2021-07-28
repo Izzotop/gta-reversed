@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CLink.h"
+#include "Link.h"
 
 template<typename T>
 class CLinkList {

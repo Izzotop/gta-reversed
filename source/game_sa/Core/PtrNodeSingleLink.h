@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 
-class  CPtrNodeSingleLink {
+class CPtrNodeSingleLink {
 public:
     void *pItem;
     CPtrNodeSingleLink *pNext;

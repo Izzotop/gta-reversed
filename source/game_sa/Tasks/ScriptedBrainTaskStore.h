@@ -1,34 +1,31 @@
 #pragma once
-#include "PluginBase.h"
 #include "constants.h"
 
 class CTask;
 class CPed;
 
-class CScriptedBrainTaskEntry
-{
+class CScriptedBrainTaskEntry {
 public:
     CPed* m_ped;
-private:
-    std::int32_t unused1;
-    std::int32_t unused2;
-public:
+    int32_t unused1;
+    int32_t unused2;
     CTask* m_task;
 
+public:
     static void InjectHooks();
 
     CScriptedBrainTaskEntry();
-    ~CScriptedBrainTaskEntry(){}
+    ~CScriptedBrainTaskEntry() {}
+
 private:
     CScriptedBrainTaskEntry* Constructor();
 };
 
 VALIDATE_SIZE(CScriptedBrainTaskEntry, 0x10);
 
-class CScriptedBrainTaskStore
-{
+class CScriptedBrainTaskStore {
 public:
-    static CScriptedBrainTaskEntry(&ms_entries)[TOTAL_SCRIPTED_BRAIN_TASK_ENTRIES];
+    static CScriptedBrainTaskEntry (&ms_entries)[TOTAL_SCRIPTED_BRAIN_TASK_ENTRIES];
 
     static void InjectHooks();
 

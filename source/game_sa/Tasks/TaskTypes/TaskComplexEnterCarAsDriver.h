@@ -6,12 +6,10 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskComplexEnterCar.h"
+#include "TaskComplexEnterCar.h"
 
 class CTaskComplexEnterCarAsDriver : public CTaskComplexEnterCar {
 public:
-
     CTaskComplexEnterCarAsDriver(CVehicle* pTargetVehicle);
     ~CTaskComplexEnterCarAsDriver() {}
 
@@ -19,7 +17,6 @@ public:
     eTaskType GetId() override { return TASK_COMPLEX_ENTER_CAR_AS_DRIVER; }
 
     CTask* Clone_Reversed();
-
 };
 
 VALIDATE_SIZE(CTaskComplexEnterCarAsDriver, 0x50);

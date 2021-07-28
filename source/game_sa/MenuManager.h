@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector2D.h"
-#include "CSprite2d.h"
+#include "Vector2D.h"
+#include "Sprite2d.h"
 
 // Menu entries action to perform
 enum eMenuActions {   // There's many actions @0x57702E and @0x57CD88
@@ -126,7 +125,7 @@ enum eMenuTexture {
     MENUTEX_TEXTURE_COUNT = MENUTEX_MOUSE_TEXTURES_END
 };
 
-struct  CMenuPageButton {
+struct CMenuPageButton {
     unsigned char m_nActionType; // Unknown if signed or signed, but it does only '==' comparisions, so it's safe to use unsigned (moar numbers)
     char m_szName[8];
     char m_nType;
@@ -143,7 +142,7 @@ public:
 
 VALIDATE_SIZE(CMenuPageButton, 0x12);
 
-struct  CMenuPage {
+struct CMenuPage {
     char m_szTitleName[8];
     char m_nPrevMenu;
     char m_nStartingButton;
@@ -152,7 +151,7 @@ struct  CMenuPage {
 
 VALIDATE_SIZE(CMenuPage, 0xE2);
 
-class  CMenuManager {
+class CMenuManager {
 public:
     char field_0;
     char field_1[3];

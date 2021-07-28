@@ -5,11 +5,11 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CRGBA.h"
-#include "CVector.h"
 
-class  CCheckpoint {
+#include "RGBA.h"
+#include "Vector.h"
+
+class CCheckpoint {
 public:
     unsigned short m_nType;
     bool           m_bIsUsed;
@@ -25,6 +25,7 @@ public:
     float          m_fDistanceToPlayer; //or CameraRange
     float m_multiSize;
 
+public:
     void Render();
 };
 

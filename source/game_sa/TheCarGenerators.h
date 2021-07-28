@@ -6,8 +6,8 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "CSpecialPlateHandler.h"
-#include "CCarGenerator.h"
+#include "SpecialPlateHandler.h"
+#include "CarGenerator.h"
 
 static constexpr int NUM_CAR_GENERATORS = 500;
 

@@ -6,8 +6,8 @@ Do not delete this comment block. Respect others' work!
 */
 #include "StdInc.h"
 
-#include "CCarGenerator.h"
-#include "CTheCarGenerators.h"
+#include "CarGenerator.h"
+#include "TheCarGenerators.h"
 
 char (&CFileLoader::ms_line)[512] = *reinterpret_cast<char (*)[512]>(0xB71848);
 unsigned int& gAtomicModelId = *reinterpret_cast<unsigned int*>(0xB71840);

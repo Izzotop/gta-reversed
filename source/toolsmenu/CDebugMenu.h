@@ -1,8 +1,9 @@
 #pragma once
 
 #include "imgui.h"
-#include "CDebugMenuToolInput.h"
-#include "CVector.h"
+#include "Vector.h"
+
+#include "CDebugMenuToolInput.h" // NOTSA
 
 class CDebugMenu
 {

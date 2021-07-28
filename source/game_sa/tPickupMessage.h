@@ -5,8 +5,8 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CRGBA.h"
+
+#include "RGBA.h"
 
 struct tPickupMessage {
     float x;
@@ -17,9 +17,7 @@ struct tPickupMessage {
     CRGBA color;
     unsigned char flags;
     char field_19;
-private:
     char _pad1A[2];
-public:
     unsigned int price;
     char *messageText;
 };

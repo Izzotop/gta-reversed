@@ -6,13 +6,11 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 
 class CEntity;
 
-enum ePointLightType : unsigned char
-{
+enum ePointLightType : unsigned char {
     PLTYPE_POINTLIGHT = 0,
     PLTYPE_SPOTLIGHT = 1,
     PLTYPE_DARKLIGHT = 2,
@@ -20,16 +18,17 @@ enum ePointLightType : unsigned char
 
 class CPointLight {
 public:
-	CVector m_vecPosn;
-	CVector m_vecDirection;
-    float m_fRange;
-    float m_fColorRed;
-    float m_fColorGreen;
-    float m_fColorBlue;
-    CEntity *m_pEntityToLight;
+    CVector         m_vecPosn;
+    CVector         m_vecDirection;
+    float           m_fRange;
+    float           m_fColorRed;
+    float           m_fColorGreen;
+    float           m_fColorBlue;
+    CEntity*        m_pEntityToLight;
     ePointLightType m_nType; // see ePointLightType
-    unsigned char m_nFogType;
-    bool m_bGenerateShadows;
+    unsigned char   m_nFogType;
+    bool            m_bGenerateShadows;
+
 private:
     char _pad0;
 };
@@ -38,18 +37,18 @@ VALIDATE_SIZE(CPointLight, 0x30);
 
 class CPointLights {
 public:
-	// static variables
+    // static variables
 
-	// num of registered lights in frame
-	static unsigned int& NumLights;
-	// lights array. Count: MAX_POINTLIGHTS (32)
-	static CPointLight *aLights;
+    // num of registered lights in frame
+    static unsigned int& NumLights;
+    // lights array. Count: MAX_POINTLIGHTS (32)
+    static CPointLight* aLights;
 
-    static float *aCachedMapReadResults;  // static float aCachedMapReadResults[MAX_POINTLIGHTS];
-    static unsigned int &NextCachedValue; // static int NextCachedValue;
-    static CVector *aCachedMapReads;      // static CVector aCachedMapReads[MAX_POINTLIGHTS];
-    
-	// static functions
+    static float* aCachedMapReadResults;  // static float aCachedMapReadResults[MAX_POINTLIGHTS];
+    static unsigned int& NextCachedValue; // static int NextCachedValue;
+    static CVector* aCachedMapReads;      // static CVector aCachedMapReads[MAX_POINTLIGHTS];
+
+    // static functions
 
     static void Init();
     static float GenerateLightsAffectingObject(CVector const* point, float* totalLighting, CEntity* entity);

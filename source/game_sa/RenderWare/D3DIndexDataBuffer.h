@@ -5,7 +5,7 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
+
 #ifdef _DX9_SDK_INSTALLED
 #include "d3d9.h"
 #endif

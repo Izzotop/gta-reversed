@@ -6,9 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
-class  CGangInfo {
+class CGangInfo {
     PLUGIN_NO_DEFAULT_CONSTRUCTION(CGangInfo)
 
 public:
@@ -17,5 +15,3 @@ public:
 };
 
 VALIDATE_SIZE(CGangInfo, 0x10);
-
-//#include "meta/meta.CGangInfo.h"

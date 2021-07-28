@@ -1,6 +1,7 @@
 #pragma once
-#include "PluginBase.h"
-#include "CAEAudioChannel.h"
+
+#include "AEAudioChannel.h"
+
 struct CAEStreamingDecoder;
 
 class CAEStreamingChannel : public CAEAudioChannel

@@ -5,11 +5,10 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
 
 class CBaseModelInfo;
 
-class  CModelInfoAccelerator {
+class CModelInfoAccelerator {
 public:
     CModelInfoAccelerator() { CModelInfoAccelerator::Init(); }
     ~CModelInfoAccelerator() {}
@@ -18,8 +17,8 @@ public:
     unsigned short* m_pIDs;
     unsigned short  m_nNumIDs;
     char            m_szFilePath[20];
-    char field_1A;
-    bool m_bFileRead;
+    char            field_1A;
+    bool            m_bFileRead;
 
 public:
     static constexpr int BUFFER_SIZE = 41100;

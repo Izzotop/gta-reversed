@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CObject.h"
+#include "Object.h"
 
 class CProjectile : public CObject {
 public:

@@ -6,22 +6,19 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CPed.h"
-#include "CTask.h"
-
+#include "Ped.h"
+#include "Task.h"
 
 class CPedTaskPair {
 public:
-    CPed *m_pPed;
-    CTask *m_pTask;
-    std::int32_t m_taskSlot;
-    std::int32_t field_C;
-    std::int8_t field_10;
+    CPed* m_pPed;
+    CTask* m_pTask;
+    int32_t m_taskSlot;
+    int32_t field_C;
+    int8_t field_10;
 
+public:
     void Flush();
 };
 
 VALIDATE_SIZE(CPedTaskPair, 0x14);
-
-//#include "meta/meta.CPedTaskPair.h"

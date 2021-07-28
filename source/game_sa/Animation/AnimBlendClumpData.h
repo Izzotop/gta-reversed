@@ -6,30 +6,27 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "RenderWare.h"
-#include "CVector.h"
+#include "Vector.h"
 #include "AnimBlendFrameData.h"
 
-class  CAnimBlendClumpData {
+class CAnimBlendClumpData {
 public:
-    RwLinkList m_associationsList;
-    int m_nNumFrames;
-    CVector *m_pvecPedPosition;
-    AnimBlendFrameData *m_pFrames;
+    RwLinkList          m_associationsList;
+    int                 m_nNumFrames;
+    CVector*            m_pvecPedPosition;
+    AnimBlendFrameData* m_pFrames;
 
-     CAnimBlendClumpData();
+public:
+    CAnimBlendClumpData();
+    ~CAnimBlendClumpData();
 
-     ~CAnimBlendClumpData();
-
-     void ForAllFrames(void(*callback)(AnimBlendFrameData *, void *), void *data);
+    void ForAllFrames(void (*callback)(AnimBlendFrameData*, void*), void* data);
     //! dummy function
-     void ForAllFramesInSPR(void(*callback)(AnimBlendFrameData *, void *), void *data, unsigned int a3);
+    void ForAllFramesInSPR(void (*callback)(AnimBlendFrameData*, void*), void* data, unsigned int a3);
     //! dummy function
-     void LoadFramesIntoSPR();
-     void SetNumberOfBones(int numBones);
+    void LoadFramesIntoSPR();
+    void SetNumberOfBones(int numBones);
 };
 
 VALIDATE_SIZE(CAnimBlendClumpData, 0x14);
-
-//#include "meta/meta.CAnimBlendClumpData.h"

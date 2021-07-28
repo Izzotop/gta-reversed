@@ -6,12 +6,11 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimpleAnim.h"
-#include "CAnimBlendAssociation.h"
+#include "TaskSimpleAnim.h"
+#include "AnimBlendAssociation.h"
 
 
-class  CTaskSimpleRunAnim : public CTaskSimpleAnim {
+class CTaskSimpleRunAnim : public CTaskSimpleAnim {
 public:
     unsigned int m_nAnimGroup; // see eAnimGroup
     unsigned int m_nAnimId; // see eAnimID

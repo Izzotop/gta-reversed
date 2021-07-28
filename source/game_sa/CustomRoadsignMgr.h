@@ -1,5 +1,4 @@
 #pragma once
-#include "PluginBase.h"
 
 #define SIGN_CHAR_WIDTH 8
 #define SIGN_CHAR_HEIGHT 16
@@ -10,6 +9,7 @@ public:
     static RwTexture*& pCharsetTex;
     static RwUInt8*& pCharsetLockedRaster;
     static RwUInt8*& pCharsetLockedPallete; //Unused, never really locked
+
 public:
     static void InjectHooks();
 

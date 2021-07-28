@@ -5,12 +5,12 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
+
 #include "RenderWare.h"
-#include "CQuaternion.h"
+#include "Quaternion.h"
 
 enum eMatrixEulerFlags : unsigned int {
-    SWAP_XZ =  0x01,
+    SWAP_XZ = 0x01,
 
     TAIT_BRYAN_ANGLES = 0x0,
     EULER_ANGLES = 0x2,
@@ -28,9 +28,9 @@ enum eMatrixEulerFlags : unsigned int {
 class CMatrix {
 public:
     CMatrix(plugin::dummy_func_t) {}
-	CMatrix(CMatrix const& matrix);
-	CMatrix(RwMatrix *matrix, bool temporary); // like previous + attach
-	~CMatrix(); // destructor detaches matrix if attached
+    CMatrix(CMatrix const& matrix);
+    CMatrix(RwMatrix* matrix, bool temporary); // like previous + attach
+    ~CMatrix();                                // destructor detaches matrix if attached
     CMatrix() {
         m_pAttachMatrix = nullptr;
         m_bOwnsAttachedMatrix = false;
@@ -46,9 +46,10 @@ private:
     unsigned int pad2;
     CVector      m_pos;
     unsigned int pad3;
+
 public:
-	RwMatrix *m_pAttachMatrix;
-	bool m_bOwnsAttachedMatrix; // do we need to delete attaching matrix at detaching
+    RwMatrix* m_pAttachMatrix;
+    bool m_bOwnsAttachedMatrix; // do we need to delete attaching matrix at detaching
 
 public:
     static void InjectHooks();
@@ -58,42 +59,42 @@ public:
     inline CVector& GetUp() { return m_up; }
     inline CVector& GetPosition() { return m_pos; }
 
-    void Attach(RwMatrix *matrix, bool bOwnsMatrix);
-	void Detach();
-	void CopyOnlyMatrix(CMatrix const& matrix); // copy base RwMatrix to another matrix
-	void Update(); // update RwMatrix with attaching matrix. This doesn't check if attaching matrix is present, so use it only if you know it is present.
-	                 // Using UpdateRW() is more safe since it perform this check.
-	void UpdateRW(); // update RwMatrix with attaching matrix.
-	void UpdateRwMatrix(RwMatrix *matrix); // update RwMatrix with this matrix
-	void UpdateMatrix(RwMatrixTag* rwMatrix);
-	void SetUnity();
-	void ResetOrientation();
-	void SetScale(float scale); // set (scaled)
-	void SetScale(float x, float y, float z); // set (scaled)
-	void SetTranslateOnly(CVector translation);
-	void SetTranslate(CVector translation); // like previous + reset orientation
-	void SetRotateXOnly(float angle);
-	void SetRotateYOnly(float angle);
-	void SetRotateZOnly(float angle);
-	void SetRotateX(float angle);
-	void SetRotateY(float angle);
-	void SetRotateZ(float angle);
-	void SetRotate(float x, float y, float z); // set rotate on 3 axes
-	void RotateX(float angle);
-	void RotateY(float angle);
-	void RotateZ(float angle);
-	void Rotate(CVector rotation); // rotate on 3 axes
-	void Reorthogonalise();
-	void CopyToRwMatrix(RwMatrix *matrix); // similar to UpdateRW(RwMatrixTag *)
-	void SetRotate(CQuaternion& quat);
+    void Attach(RwMatrix* matrix, bool bOwnsMatrix);
+    void Detach();
+    void CopyOnlyMatrix(CMatrix const& matrix); // copy base RwMatrix to another matrix
+    void Update();                         // update RwMatrix with attaching matrix. This doesn't check if attaching matrix is present, so use it only if you know it is present.
+                                           // Using UpdateRW() is more safe since it perform this check.
+    void UpdateRW();                       // update RwMatrix with attaching matrix.
+    void UpdateRwMatrix(RwMatrix* matrix); // update RwMatrix with this matrix
+    void UpdateMatrix(RwMatrixTag* rwMatrix);
+    void SetUnity();
+    void ResetOrientation();
+    void SetScale(float scale);               // set (scaled)
+    void SetScale(float x, float y, float z); // set (scaled)
+    void SetTranslateOnly(CVector translation);
+    void SetTranslate(CVector translation); // like previous + reset orientation
+    void SetRotateXOnly(float angle);
+    void SetRotateYOnly(float angle);
+    void SetRotateZOnly(float angle);
+    void SetRotateX(float angle);
+    void SetRotateY(float angle);
+    void SetRotateZ(float angle);
+    void SetRotate(float x, float y, float z); // set rotate on 3 axes
+    void RotateX(float angle);
+    void RotateY(float angle);
+    void RotateZ(float angle);
+    void Rotate(CVector rotation); // rotate on 3 axes
+    void Reorthogonalise();
+    void CopyToRwMatrix(RwMatrix* matrix); // similar to UpdateRW(RwMatrixTag *)
+    void SetRotate(CQuaternion& quat);
     void Scale(float scale);
-	void ForceUpVector(CVector vecUp);
+    void ForceUpVector(CVector vecUp);
     void ConvertToEulerAngles(float* pX, float* pY, float* pZ, unsigned int uiFlags);
     void ConvertFromEulerAngles(float x, float y, float z, unsigned int uiFlags);
 
-	void operator=(CMatrix const& right);
-	void operator+=(CMatrix const& right);
-	void operator*=(CMatrix const& right);
+    void operator=(CMatrix const& right);
+    void operator+=(CMatrix const& right);
+    void operator*=(CMatrix const& right);
 
     static uint8_t* EulerIndices1;
     static uint8_t* EulerIndices2;
@@ -103,13 +104,13 @@ private:
     friend class CVector; // So Vector methods have access to private fields of matrix whitout accessor methods, for more readable code
     friend class CVector2D;
     friend CMatrix operator*(CMatrix const& a, CMatrix const& b);
-    //static CMatrix* impl_operatorMul(CMatrix* pOut, CMatrix const& a, CMatrix const& b);
+    // static CMatrix* impl_operatorMul(CMatrix* pOut, CMatrix const& a, CMatrix const& b);
 
     friend CVector operator*(CMatrix const& a, CVector const& b);
-    //static CVector* impl_operatorMul(CVector* pOut, CMatrix const& a, CVector const& b);
+    // static CVector* impl_operatorMul(CVector* pOut, CMatrix const& a, CVector const& b);
 
     friend CMatrix operator+(CMatrix const& a, CMatrix const& b);
-    //static CMatrix* impl_operatorAdd(CMatrix* pOut, CMatrix const& a, CMatrix const& b);
+    // static CMatrix* impl_operatorAdd(CMatrix* pOut, CMatrix const& a, CMatrix const& b);
 };
 
 CMatrix operator*(CMatrix const& a, CMatrix const& b);

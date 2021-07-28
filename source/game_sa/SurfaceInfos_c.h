@@ -1,11 +1,10 @@
 #pragma once
-#include "PluginBase.h"
+
 #include "SurfaceInfo_c.h"
 
 class CColPoint;
 
-enum eSkidMarkType
-{
+enum eSkidMarkType {
     SKIDMARK_DEFAULT = 0,
     SKIDMARK_SANDY,
     SKIDMARK_MUDDY

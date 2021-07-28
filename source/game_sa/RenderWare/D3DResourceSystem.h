@@ -5,7 +5,7 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
+
 #include "D3DTextureBuffer.h"
 #include "D3DIndexDataBuffer.h"
 #ifdef _DX9_SDK_INSTALLED

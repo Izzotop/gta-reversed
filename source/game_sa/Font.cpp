@@ -6,7 +6,7 @@
     https://github.com/DK22Pac/plugin-sdk
     Do not delete this comment block. Respect others' work!
 */
-#include "CFont.h"
+#include "Font.h"
 
 CSprite2d* CFont::Sprite = (CSprite2d*)0xC71AD0;
 CSprite2d* CFont::ButtonSprite = (CSprite2d*)0xC71AD8;

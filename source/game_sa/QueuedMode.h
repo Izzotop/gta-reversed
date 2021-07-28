@@ -6,9 +6,7 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
-class  CQueuedMode {
+class CQueuedMode {
 public:
     unsigned short m_nMode;
     float m_fDuration;

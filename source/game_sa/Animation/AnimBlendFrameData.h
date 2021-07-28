@@ -6,11 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 
-
-class  AnimBlendFrameData {
+class AnimBlendFrameData {
 public:
     union {
         struct {
@@ -19,7 +17,7 @@ public:
             unsigned char m_IsIFrameTranslationToAffectedByNodes : 1;   // m_IFrame translation will be affected
             unsigned char m_bIsInitialized : 1;
             unsigned char m_bUpdateSkinnedWith3dVelocityExtraction : 1;
-            unsigned char m_bCheckBlendNodeClumpKeyFrames : 1;          // key frames of CAninBlendNode bones will be checked
+            unsigned char m_bCheckBlendNodeClumpKeyFrames : 1;          // key frames of CAnimBlendNode bones will be checked
             unsigned char m_bIsCompressed : 1;
             unsigned char m_bUpdatingFrame : 1;                         // doesn't seem to be used
         };

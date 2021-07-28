@@ -6,7 +6,7 @@
 #include <wmsdkidl.h>
 #include <wmsdk.h>
 
-#include "CAEStreamingDecoder.h"
+#include "AEStreamingDecoder.h"
 
 class CAEWMADecoder: public CAEStreamingDecoder
 {

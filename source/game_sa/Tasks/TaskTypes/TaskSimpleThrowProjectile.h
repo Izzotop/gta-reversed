@@ -6,18 +6,17 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CAnimBlendAssociation.h"
-#include "CEntity.h"
+#include "TaskSimple.h"
+#include "AnimBlendAssociation.h"
+#include "Entity.h"
 
 class CTaskSimpleThrowProjectile : public CTaskSimple {
 public:
     bool m_bIsAborting;
     bool m_bFinished;
     bool m_bStarted;
-private:
-    char pad;
+    char _pad;
+
 public:
     CAnimBlendAssociation *m_pAnim;
     CEntity *m_pTarget;

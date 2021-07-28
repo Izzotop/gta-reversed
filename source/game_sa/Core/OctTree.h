@@ -6,31 +6,33 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CPool.h"
+#include "Pool.h"
 
-class  COctTree {
+class COctTree {
 protected:
     COctTree(plugin::dummy_func_t) {}
+
 public:
     unsigned int level;
-    bool         lastStep; // no childrens
+    bool lastStep; // no childrens
 private:
     char _pad09;
+
 public:
-    short        childrens[8]; // pool slot IDs,  -1 - empty
+    short childrens[8]; // pool slot IDs,  -1 - empty
 private:
     char _pad1A[2];
+
 public:
     unsigned int redComponent;
     unsigned int greenComponent;
     unsigned int blueComponent;
 
-    static bool &ms_bFailed;
-    static unsigned int &ms_level;
-    static CPool<COctTree> &ms_octTreePool;
+    static bool& ms_bFailed;
+    static unsigned int& ms_level;
+    static CPool<COctTree>& ms_octTreePool;
 
-    //vtable
+    // vtable
 
     bool InsertTree(unsigned char colorRed, unsigned char colorGreen, unsigned char colorBlue);
     void FillPalette(unsigned char* colors);
@@ -53,4 +55,4 @@ private:
 
 VALIDATE_SIZE(COctTree, 0x28);
 
-extern COctTree *&gpTmpOctTree;
+extern COctTree*& gpTmpOctTree;

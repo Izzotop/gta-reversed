@@ -6,17 +6,16 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CPed.h"
-#include "CAnimBlendAssociation.h"
+#include "TaskSimple.h"
+#include "Ped.h"
+#include "AnimBlendAssociation.h"
 
 class CTaskSimpleStealthKill : public CTaskSimple
 {
 public:
     bool m_bKeepTargetAlive;
     CPed *m_pTarget;
-    std::int32_t m_nAssocGroupId;
+    int32_t m_nAssocGroupId;
     bool m_bIsAborting;
     bool m_bIsFinished;
     CAnimBlendAssociation *m_pAnim;

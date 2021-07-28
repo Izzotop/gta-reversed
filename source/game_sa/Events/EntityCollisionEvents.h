@@ -1,5 +1,5 @@
-#include "CEvent.h"
-#include "CVector.h"
+#include "Event.h"
+#include "Vector.h"
 
 class CEventPedCollisionWithPed : public CEvent {
 public:

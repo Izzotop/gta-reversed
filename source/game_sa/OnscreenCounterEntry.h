@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 
-class  COnscreenCounterEntry {
+class COnscreenCounterEntry {
 public:
     unsigned int   m_nVarId;
     unsigned int   m_nMaxVarValue;
@@ -20,10 +19,8 @@ public:
     unsigned char  m_nColourId; // color index from HudColours
 
     //! unused
-     void ProcessForDisplayCounter(int type);
+    void ProcessForDisplayCounter(int type);
     //! unused
-     void SetColourID(unsigned char ColourID);
+    void SetColourID(unsigned char ColourID);
 };
 VALIDATE_SIZE(COnscreenCounterEntry, 0x44);
-
-//#include "meta/meta.COnscreenCounterEntry.h"

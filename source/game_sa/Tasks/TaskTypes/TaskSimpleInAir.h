@@ -6,14 +6,13 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CTaskTimer.h"
-#include "CVector.h"
-#include "CAnimBlendAssociation.h"
-#include "CEntity.h"
+#include "TaskSimple.h"
+#include "TaskTimer.h"
+#include "Vector.h"
+#include "AnimBlendAssociation.h"
+#include "Entity.h"
 
-class  CTaskSimpleInAir : public CTaskSimple {
+class CTaskSimpleInAir : public CTaskSimple {
 public:
     CVector m_vecPosn;
     float m_fAngle;
@@ -23,8 +22,7 @@ public:
     float m_fMinZSpeed;
     union {
         unsigned char m_nFlags;
-        struct
-        {
+        struct {
             unsigned char bUsingJumpGlide : 1;
             unsigned char bUsingFallGlide : 1;
             unsigned char bUsingClimbJump : 1;
@@ -34,8 +32,10 @@ public:
     int m_nProcessCounter;
     CTaskTimer m_timer;
     CEntity* m_pClimbEntity;
+
 private:
     CTaskSimpleInAir* Constructor(bool bUsingJumpGlide, bool bUsingFallGlide, bool bUsingClimbJump);
+
 public:
     CTaskSimpleInAir(bool bUsingJumpGlide, bool bUsingFallGlide, bool bUsingClimbJump);
     ~CTaskSimpleInAir() override;
@@ -52,7 +52,7 @@ public:
 
     static void DeleteAnimCB(CAnimBlendAssociation* pAnim, void* data);
 
-    static float ms_fSlowFallThreshold; // 0x8D2EFC
+    static float ms_fSlowFallThreshold;        // 0x8D2EFC
     static unsigned int ms_nMaxSlowFallFrames; // 0x8D2EF8
 };
 

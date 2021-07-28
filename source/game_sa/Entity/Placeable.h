@@ -6,10 +6,10 @@
 */
 #pragma once
 
-#include "CSimpleTransform.h"
-#include "CMatrixLink.h"
+#include "SimpleTransform.h"
+#include "MatrixLink.h"
 
-class  CPlaceable {
+class CPlaceable {
 protected:
     CPlaceable(plugin::dummy_func_t) {}
     CPlaceable();

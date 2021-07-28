@@ -5,9 +5,9 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CClumpModelInfo.h"
-#include "CColModel.h"
+
+#include "ClumpModelInfo.h"
+#include "ColModel.h"
 
 struct tPedColNodeInfo {
 private:
@@ -19,7 +19,7 @@ public:
     float m_fRadius;
 };
 
-class  CPedModelInfo : public CClumpModelInfo {
+class CPedModelInfo : public CClumpModelInfo {
 public:
     CPedModelInfo() : CClumpModelInfo(), m_pHitColModel(nullptr) {}
     ~CPedModelInfo() { if (m_pHitColModel) delete m_pHitColModel; }

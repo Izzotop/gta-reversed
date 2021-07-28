@@ -5,10 +5,10 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CMatrix.h"
 
-class  CMirrors {
+#include "Matrix.h"
+
+class CMirrors {
 public:
     static RwRaster *&pBuffer;
     static RwRaster *&pZBuffer;

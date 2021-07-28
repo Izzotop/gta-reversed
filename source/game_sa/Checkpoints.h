@@ -5,12 +5,12 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CCheckpoint.h"
+
+#include "Checkpoint.h"
 
 extern unsigned int MAX_NUM_CHECKPOINTS; // default 32
 
-class  CCheckpoints {
+class CCheckpoints {
 public:
     static unsigned int &NumActiveCPts; // not used, only initialised (0)
     static CCheckpoint *m_aCheckPtArray; // static CCheckpoint m_aCheckPtArray[32]

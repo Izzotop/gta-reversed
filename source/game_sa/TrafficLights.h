@@ -1,6 +1,6 @@
 #pragma once
-#include "PluginBase.h"
-#include "CVehicle.h"
+
+#include "Vehicle.h"
 
 enum eTrafficLightsState {
     LIGHT_GREEN = 0,

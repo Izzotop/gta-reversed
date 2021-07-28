@@ -1,5 +1,5 @@
 #pragma once
-#include "CAccident.h"
+#include "Accident.h"
 
 const int NUM_ACCIDENTS = 16;
 

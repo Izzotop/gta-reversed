@@ -1,9 +1,8 @@
 #pragma once
-#include "PluginBase.h"
-#include "CTaskSimple.h"
 
-enum eHoldEntityBoneFlags 
-{
+#include "TaskSimple.h"
+
+enum eHoldEntityBoneFlags  {
     HOLD_ENTITY_FLAG_1 = 0x1,
     HOLD_ENTITY_UPDATE_TRANSLATION_ONLY = 0x10
 };

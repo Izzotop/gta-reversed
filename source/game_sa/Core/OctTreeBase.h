@@ -6,10 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "COctTree.h"
+#include "OctTree.h"
 
-class  COctTreeBase : public COctTree {
+class COctTreeBase : public COctTree {
 public:
     unsigned int numBranches;
     bool32       hasTransparentPixels;

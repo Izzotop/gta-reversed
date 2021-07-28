@@ -11,7 +11,7 @@
 #include <mfidl.h>
 #include <mfapi.h>
 
-#include "CAEMFDecoder.h"
+#include "AEMFDecoder.h"
 
 // These GUIDs only available when we link with MediaFoundation
 // libraries. We don't really want to link with it tho.

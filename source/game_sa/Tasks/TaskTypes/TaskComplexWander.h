@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskComplex.h"
-#include "CNodeAddress.h"
+#include "TaskComplex.h"
+#include "NodeAddress.h"
 
 enum eWanderType
 {

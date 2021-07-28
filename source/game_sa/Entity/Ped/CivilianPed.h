@@ -6,10 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CPed.h"
+#include "Ped.h"
 
-class  CCivilianPed : public CPed {
+class CCivilianPed : public CPed {
 public:
     CCivilianPed(ePedType pedType, unsigned int modelIndex);
 };

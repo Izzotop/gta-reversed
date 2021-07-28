@@ -6,10 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CAEAudioEntity.h"
+#include "AEAudioEntity.h"
 
-class  CAEExplosionAudioEntity : public CAEAudioEntity {
+class CAEExplosionAudioEntity : public CAEAudioEntity {
 public:
     char field_7C;
 private:

@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "RenderWare.h"
 #include "List_c.h"
 #include "FxInfoManager_c.h"

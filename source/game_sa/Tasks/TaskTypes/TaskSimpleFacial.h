@@ -6,21 +6,19 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CTaskTimer.h"
+#include "TaskSimple.h"
+#include "TaskTimer.h"
 
-enum eFacialExpression
-{
-    ANIM_FACSURP = 0x0,
+enum eFacialExpression {
+    ANIM_FACSURP  = 0x0,
     ANIM_FACSURPM = 0x1,
     ANIM_FACURIOS = 0x2, // can be 2 or 4
     ANIM_FACANGER = 0x3, // can be 3 or 5
-    ANIM_FACTALK = 0x7,
-    ANIM_FACGUM = 0x8,
+    ANIM_FACTALK  = 0x7,
+    ANIM_FACGUM   = 0x8,
 };
 
-class  CTaskSimpleFacial : public CTaskSimple {
+class CTaskSimpleFacial : public CTaskSimple {
 public:
     CTaskTimer m_Timer;
     eFacialExpression m_nFacialExpression;

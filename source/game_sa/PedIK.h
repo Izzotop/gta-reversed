@@ -6,32 +6,27 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "AnimBlendFrameData.h"
-#include "CVector.h"
+#include "Vector.h"
 
 class CPed;
 
 // Return flags from MoveLimb() function
-enum MoveLimbResult
-{
+enum MoveLimbResult {
     CANT_REACH_TARGET,
     HAVENT_REACHED_TARGET,
     REACHED_TARGET
 };
 
 
-struct LimbOrientation
-{
-public:
+struct LimbOrientation {
     float m_fYaw;
     float m_fPitch;
 };
 VALIDATE_SIZE(LimbOrientation, 0x8);
 
 
-struct LimbMovementInfo 
-{
+struct LimbMovementInfo  {
     float maxYaw, minYaw;
     float yawD;
     float maxPitch, minPitch;
@@ -39,7 +34,7 @@ struct LimbMovementInfo
 };
 VALIDATE_SIZE(LimbMovementInfo, 0x18);
 
-class  CPedIK {
+class CPedIK {
 public:
     CPed *m_pPed;
     LimbOrientation m_TorsoOrien;
@@ -71,9 +66,7 @@ public:
     static RwMatrixTag* GetWorldMatrix(RwFrame* frame, RwMatrixTag* transformMat);
 
     static MoveLimbResult MoveLimb(LimbOrientation& TorsoOrien, float yaw, float pitch, LimbMovementInfo &LimbMoveInfo);
-    static MoveLimbResult MoveLimb(LimbOrientation& TorsoOrien, float yaw, float pitch, LimbMovementInfo &LimbMoveInfo,
-        float fNormalize); 
-
+    static MoveLimbResult MoveLimb(LimbOrientation& TorsoOrien, float yaw, float pitch, LimbMovementInfo &LimbMoveInfo, float fNormalize);
 };
 
 VALIDATE_SIZE(CPedIK, 0x20);

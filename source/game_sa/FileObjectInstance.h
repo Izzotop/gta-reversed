@@ -6,11 +6,10 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
-#include "CQuaternion.h"
+#include "Vector.h"
+#include "Quaternion.h"
 
-class  CFileObjectInstance {
+class CFileObjectInstance {
 public:
     CVector     m_vecPosition;
     CQuaternion m_qRotation;

@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
-#include "CPathFind.h"
+#include "Vector.h"
+#include "PathFind.h"
 #include "eCarMission.h"
 
 enum eCarDrivingStyle : int8_t
@@ -20,7 +19,7 @@ enum eCarDrivingStyle : int8_t
     DRIVINGSTYLE_STOP_FOR_CARS_IGNORE_LIGHTS
 };
 
-class  CAutoPilot {
+class CAutoPilot {
 public:
     CAutoPilot();
 
@@ -59,7 +58,7 @@ public:
     unsigned char m_ucHeliSpeedMult;
     char field_4A;
     union {
-        unsigned char  m_nCarCtrlFlags;
+        unsigned char m_nCarCtrlFlags;
         struct carCtrlFlags {
             unsigned char bHonkAtCar : 1;
             unsigned char bHonkAtPed : 1;
@@ -71,11 +70,9 @@ public:
             unsigned char bHeliFollowTarget : 1;
         } carCtrlFlags;
     };
-    union
-    {
+    union {
         unsigned char m_nMovementFlags;
-        struct movementFlags
-        {
+        struct movementFlags {
             unsigned char bIsStopped : 1;
             unsigned char bIsParked : 1;
         } movementFlags;

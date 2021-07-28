@@ -6,10 +6,9 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskComplex.h"
-#include "CVehicle.h"
-#include "CTaskUtilityLineUpPedWithCar.h"
+#include "TaskComplex.h"
+#include "Vehicle.h"
+#include "TaskUtilityLineUpPedWithCar.h"
 
 class CTaskComplexLeaveCar : public CTaskComplex {
 public:
@@ -19,26 +18,18 @@ public:
     bool m_bSensibleLeaveCar;
     bool m_bForceGetOut;
     bool m_bDie;
-private:
     char _pad1;
-public:
-
     CTaskUtilityLineUpPedWithCar *m_pTaskUtilityLineUpPedWithCar;
     unsigned char m_nDoorFlagsSet;
     unsigned char m_nNumGettingInSet;
-private:
     char _pad2[2];
-public:
-
     int m_nDieAnimID;
     float m_fDieAnimBlendDelta;
     float m_fDieAnimSpeed;
-
     bool m_bIsInAir;
-private:
     char _pad3[3];
-public:
 
+public:
     CTaskComplexLeaveCar(CVehicle* pTargetVehicle, int nTargetDoor, int nDelayTime, bool bSensibleLeaveCar, bool bForceGetOut);
     ~CTaskComplexLeaveCar();
 

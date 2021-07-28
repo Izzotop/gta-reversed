@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include "CAEAudioUtility.h"
+#include "AEAudioUtility.h"
 
 std::int64_t &CAEAudioUtility::startTimeMs = *reinterpret_cast<std::int64_t *> (0xb610f8);
 float (&CAEAudioUtility::m_sfLogLookup)[50][2] = *reinterpret_cast<float(*)[50][2]> (0xb61100);

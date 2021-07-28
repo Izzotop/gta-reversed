@@ -5,8 +5,7 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 
 class CColDisk {
 public:
@@ -15,9 +14,7 @@ public:
     unsigned char m_nMaterial;
     unsigned char m_nPiece;
     unsigned char m_nLighting;
-private:
     char _pad13;
-public:
     CVector m_vecEnd;
     float m_fEndRadius;
 

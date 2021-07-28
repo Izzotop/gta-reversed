@@ -6,10 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CAEAudioEntity.h"
+#include "AEAudioEntity.h"
 
-class  CAEPoliceScannerAudioEntity : public CAEAudioEntity {
+class CAEPoliceScannerAudioEntity : public CAEAudioEntity {
 public:
     void UpdateParameters(CAESound* sound, short curPlayPos) override;
 };

@@ -5,16 +5,14 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CPlayerPed.h"
-#include "CPedClothesDesc.h"
 
+#include "PlayerPed.h"
+#include "PedClothesDesc.h"
 
-class  CClothes
-{
-public:	
-	//funcs
-	static void ConstructPedModel(unsigned int modelid, CPedClothesDesc& newclothes, CPedClothesDesc const* oldclothes, bool bCutscenePlayer);
+class CClothes {
+public:
+    // funcs
+    static void ConstructPedModel(unsigned int modelid, CPedClothesDesc& newclothes, CPedClothesDesc const* oldclothes, bool bCutscenePlayer);
     static void RequestMotionGroupAnims();
     static void RebuildPlayerIfNeeded(CPlayerPed* player);
     static void RebuildPlayer(CPlayerPed* player, bool bIgnoreFatAndMuscle);

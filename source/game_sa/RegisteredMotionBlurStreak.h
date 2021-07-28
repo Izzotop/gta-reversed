@@ -5,9 +5,9 @@
     Do not delete this comment block. Respect others' work!
 */
 #pragma once
-#include "PluginBase.h"
-#include "CVector.h"
-#include "CRGBA.h"
+
+#include "Vector.h"
+#include "RGBA.h"
 
 class CRegisteredMotionBlurStreak {
 public:

@@ -6,20 +6,19 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "cTransmission.h"
-#include "CVector.h"
+#include "Vector.h"
 #include "eVehicleHandlingModelFlags.h"
 #include "eVehicleHandlingFlags.h"
 
-enum  eVehicleLightsSize : unsigned char {
+enum eVehicleLightsSize : unsigned char {
     LIGHTS_LONG,
     LIGHTS_SMALL,
     LIGHTS_BIG,
     LIGHTS_TALL
 };
 
-struct  tHandlingData {
+struct tHandlingData {
     int           m_nVehicleId;
     float         m_fMass; // 1.0 to 50000.0
     float field_8;

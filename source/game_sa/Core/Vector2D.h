@@ -6,13 +6,10 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-
-class  CVector2D
-{
+class CVector2D {
 public:
     float x, y;
-    
+
     inline CVector2D() {
         x = 0.0f;
         y = 0.0f;
@@ -27,15 +24,15 @@ public:
 
     static void InjectHooks();
 
-	// Returns length of vector
-	float Magnitude();
+    // Returns length of vector
+    float Magnitude();
     void Normalise();
     inline float SquaredMagnitude()
     {
         return x * x + y * y ;
     }
 
-	void operator=(const CVector2D& right);
+    void operator=(const CVector2D& right);
 
     inline CVector2D(CVector2D const& src) {
         x = src.x; y = src.y;

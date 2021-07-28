@@ -1,9 +1,9 @@
 #pragma once
+
 #include "dsound.h"
 
-#include "CAESoundManager.h"
-#include "PluginBase.h"
-#include "CVector.h"
+#include "AESoundManager.h"
+#include "Vector.h"
 
 #ifdef PlaySound
 #undef PlaySound

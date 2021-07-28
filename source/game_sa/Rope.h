@@ -6,13 +6,12 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 
 class CEntity;
 class CObject;
 
-class  CRope {
+class CRope {
 public:
     CVector        m_avecRopeSegments[32];
     CVector        m_avecRopeSegmentsReleased[32];

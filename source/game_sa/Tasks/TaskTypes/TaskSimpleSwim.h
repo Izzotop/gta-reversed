@@ -6,13 +6,11 @@ Do not delete this comment block. Respect others' work!
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CVector.h"
+#include "TaskSimple.h"
+#include "Vector.h"
 #include "FxSystem_c.h"
 
-enum eSwimState : unsigned short
-{
+enum eSwimState : unsigned short {
     SWIM_TREAD = 0,
     SWIM_SPRINT = 1,
     SWIM_SPRINTING = 2,
@@ -24,7 +22,7 @@ enum eSwimState : unsigned short
 class CPed;
 class CPlayerPed;
 
-class  CTaskSimpleSwim : public CTaskSimple {
+class CTaskSimpleSwim : public CTaskSimple {
 public:
     bool m_bFinishedBlending;
     bool m_bAnimBlockRefAdded;
@@ -61,7 +59,7 @@ public:
 private:
     CTaskSimpleSwim* Constructor(CVector* pPosition, CPed* pPed);
 public:
-    // original virutal functions
+    // original virtual functions
     CTask* Clone() override;
     eTaskType GetId() override;
     bool MakeAbortable(class CPed* ped, eAbortPriority priority, class CEvent* _event) override;

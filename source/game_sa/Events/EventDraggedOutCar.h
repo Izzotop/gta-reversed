@@ -1,7 +1,7 @@
-#include "CEventEditableResponse.h"
-#include "CPed.h"
+#include "EventEditableResponse.h"
+#include "Ped.h"
 #include "common.h"
-#include "CPedGroup.h"
+#include "PedGroup.h"
 
 class CVehicle;
 

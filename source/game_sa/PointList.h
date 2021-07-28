@@ -6,10 +6,9 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 
-class  CPointList {
+class CPointList {
 public:
     unsigned int m_nCount;
     CVector m_avCoords[24];

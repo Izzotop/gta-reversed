@@ -1,7 +1,7 @@
 #include "StdInc.h"
-#include "CAEStaticChannel.h"
+#include "AEStaticChannel.h"
 
-#include "CAESmoothFadeThread.h"
+#include "AESmoothFadeThread.h"
 
 void CAEStaticChannel::InjectHooks()
 {

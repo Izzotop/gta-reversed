@@ -6,9 +6,8 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CPhysical.h"
-#include "CObjectData.h"
+#include "Physical.h"
+#include "ObjectData.h"
 
 enum eObjectType {
     OBJECT_UNKNOWN = 0,
@@ -32,13 +31,12 @@ public:
     static void* operator new(unsigned int size, int iPoolRef);
     static void operator delete(void* pObj);
 public:
-    CPtrNodeDoubleLink *m_pControlCodeList;
+    CPtrNodeDoubleLink* m_pControlCodeList;
     unsigned char       m_nObjectType; // see enum eObjectType
     unsigned char       m_nBonusValue;
     unsigned short      m_wCostValue;
     union {
-        struct 
-        {
+        struct  {
             unsigned int bIsPickup : 1;
             unsigned int b0x02 : 1;
             unsigned int bPickupPropertyForSale : 1;
@@ -163,7 +161,7 @@ public:
 
     void GrabObjectToCarryWithRope(CPhysical* attachTo);
     bool CanBeUsedToTakeCoverBehind();
-    void ProcessControlLogic();    
+    void ProcessControlLogic();
 
 // Static
 public:

@@ -6,12 +6,11 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CVector.h"
+#include "Vector.h"
 
 class CVehicle;
 
-class  CBouncingPanel {
+class CBouncingPanel {
 public:
     unsigned short m_nFrameId;
     unsigned short m_nAxis;

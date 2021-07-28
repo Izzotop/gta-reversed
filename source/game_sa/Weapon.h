@@ -6,16 +6,14 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 #include "eWeaponType.h"
 #include "FxSystem_c.h"
-#include "CVector2D.h"
-#include "CColPoint.h"
+#include "Vector2D.h"
+#include "ColPoint.h"
 
 enum ePedPieceTypes;
 
-enum eWeaponState : unsigned int
-{
+enum eWeaponState : unsigned int {
     WEAPONSTATE_READY = 0,
     WEAPONSTATE_FIRING,
     WEAPONSTATE_RELOADING,
@@ -27,23 +25,23 @@ class CPed;
 class CVehicle;
 class CColModel;
 
-class  CWeapon {
+class CWeapon {
 public:
     eWeaponType m_nType;
     eWeaponState m_nState;
-	unsigned int m_nAmmoInClip;
-	unsigned int m_nTotalAmmo;
-	unsigned int m_nTimeForNextShot;
-	char field_14;
-	char field_15;
-	char field_16;
-	char field_17;
-    FxSystem_c *m_pFxSystem; // flamethrower, spraycan, extinguisher particle
+    unsigned int m_nAmmoInClip;
+    unsigned int m_nTotalAmmo;
+    unsigned int m_nTimeForNextShot;
+    char field_14;
+    char field_15;
+    char field_16;
+    char field_17;
+    FxSystem_c* m_pFxSystem; // flamethrower, spraycan, extinguisher particle
 
-    static float &ms_fExtinguisherAimAngle; // default -0.34907
-    static bool &bPhotographHasBeenTaken;
-    static bool &ms_bTakePhoto;
-    static CColModel &ms_PelletTestCol;
+    static float& ms_fExtinguisherAimAngle; // default -0.34907
+    static bool& bPhotographHasBeenTaken;
+    static bool& ms_bTakePhoto;
+    static CColModel& ms_PelletTestCol;
 
     static void InjectHooks();
 
@@ -95,13 +93,13 @@ public:
 
 VALIDATE_SIZE(CWeapon, 0x1C);
 
-extern float &fPlayerAimScale; // default 0.75
-extern float &fPlayerAimScaleDist; // default 5.0
-extern float &fPlayerAimRotRate; // default 0.0062832
-extern float &SHOTGUN_SPREAD_RATE; // default 0.05
-extern unsigned int &SHOTGUN_NUM_PELLETS; // default 15
-extern unsigned int &SPAS_NUM_PELLETS; // default 4
-extern float &PELLET_COL_SCALE_RATIO_MULT; // default 1.3
-extern float *fReloadAnimSampleFraction; // default { 0.5, 0.7, 0.75, 0.75, 0.7 }
+extern float& fPlayerAimScale;             // default 0.75
+extern float& fPlayerAimScaleDist;         // default 5.0
+extern float& fPlayerAimRotRate;           // default 0.0062832
+extern float& SHOTGUN_SPREAD_RATE;         // default 0.05
+extern unsigned int& SHOTGUN_NUM_PELLETS;  // default 15
+extern unsigned int& SPAS_NUM_PELLETS;     // default 4
+extern float& PELLET_COL_SCALE_RATIO_MULT; // default 1.3
+extern float* fReloadAnimSampleFraction;   // default { 0.5, 0.7, 0.75, 0.75, 0.7 }
 
 void FireOneInstantHitRound(CVector* startPoint, CVector* endPoint, int intensity);

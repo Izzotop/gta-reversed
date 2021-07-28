@@ -6,14 +6,13 @@
 */
 #pragma once
 
-#include "PluginBase.h"
 
-class CNodeAddress
-{
+class CNodeAddress {
 public:
     short m_wAreaId;
     short m_wNodeId;
 
+public:
     CNodeAddress() : m_wAreaId(-1), m_wNodeId(-1) {}
 
     bool operatorEqual(CNodeAddress* rhs);

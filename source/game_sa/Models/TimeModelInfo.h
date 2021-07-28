@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include "CAtomicModelInfo.h"
+#include "AtomicModelInfo.h"
 
 class CTimeModelInfo : public CAtomicModelInfo {
 public:

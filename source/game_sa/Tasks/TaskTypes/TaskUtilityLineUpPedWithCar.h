@@ -6,18 +6,16 @@
 */
 #pragma once
 
-#include "PluginBase.h"
-#include "CTaskSimple.h"
-#include "CPed.h"
+#include "TaskSimple.h"
+#include "Ped.h"
 
-class  CTaskUtilityLineUpPedWithCar
-{
+class CTaskUtilityLineUpPedWithCar {
 public:
     CVector vecOffsets;
-    int field_C;
-    int m_nTime;
-    int field_14;
-    int field_18;
+    int     field_C;
+    int     m_nTime;
+    int     field_14;
+    int     field_18;
 
     CTaskUtilityLineUpPedWithCar(CVector const& offsets, int nTime, int arg3, int arg4);
     CVector* GetLocalPositionToOpenCarDoor(int unused, CVehicle* pVehicle, float arg3, CAnimBlendAssociation* pAnimBlendAssoc);
