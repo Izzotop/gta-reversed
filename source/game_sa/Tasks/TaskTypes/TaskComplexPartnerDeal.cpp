@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskComplexPartnerDeal.h"
+
 void CTaskComplexPartnerDeal::InjectHooks()
 {
     HookInstall(0x684190, &CTaskComplexPartnerDeal::Constructor);

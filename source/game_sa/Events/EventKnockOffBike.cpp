@@ -1,8 +1,13 @@
 #include "StdInc.h"
 
+#include "EventKnockOffBike.h"
+
+#include "TaskSimpleCarSetPedOut.h"
+#include "TaskComplexEnterCar.h"
+
 void CEventKnockOffBike::InjectHooks()
 {
-    HookInstall(0x4AFCF0, (CEventKnockOffBike * (CEventKnockOffBike::*)(CVehicle*, CVector*, CVector*, float, float, std::uint8_t, std::uint8_t, std::int32_t, CPed*, bool, bool)) & CEventKnockOffBike::Constructor);
+    HookInstall(0x4AFCF0, (CEventKnockOffBike * (CEventKnockOffBike::*)(CVehicle*, CVector*, CVector*, float, float, uint8_t, uint8_t, int32_t, CPed*, bool, bool)) & CEventKnockOffBike::Constructor);
     HookInstall(0x4AFC70, (CEventKnockOffBike * (CEventKnockOffBike::*)()) & CEventKnockOffBike::Constructor);
     HookInstall(0x4AFEE0, &CEventKnockOffBike::AffectsPed_Reversed);
     HookInstall(0x4B4E80, &CEventKnockOffBike::ReportCriminalEvent_Reversed);
@@ -13,7 +18,7 @@ void CEventKnockOffBike::InjectHooks()
     HookInstall(0x4B4AC0, &CEventKnockOffBike::SetPedSafePosition);
 }
 
-CEventKnockOffBike::CEventKnockOffBike(CVehicle* vehicle, CVector* moveSpeed, CVector* collisionImpactVelocity, float damageIntensity, float a6, std::uint8_t knockOffType, std::uint8_t knockOffDirection, std::int32_t time, CPed* ped, bool isVictimDriver, bool forceKnockOff)
+CEventKnockOffBike::CEventKnockOffBike(CVehicle* vehicle, CVector* moveSpeed, CVector* collisionImpactVelocity, float damageIntensity, float a6, uint8_t knockOffType, uint8_t knockOffDirection, int32_t time, CPed* ped, bool isVictimDriver, bool forceKnockOff)
 {
     m_moveSpeed = *moveSpeed;
     m_collisionImpactVelocity = *collisionImpactVelocity;
@@ -55,7 +60,7 @@ CEventKnockOffBike::~CEventKnockOffBike()
         m_ped->CleanUpOldReference(reinterpret_cast<CEntity**>(&m_ped));
 }
 
-CEventKnockOffBike* CEventKnockOffBike::Constructor(CVehicle* vehicle, CVector* moveSpeed, CVector* collisionImpactVelocity, float damageIntensity, float a6, std::uint8_t knockOffType, std::uint8_t knockOffDirection, std::int32_t time, CPed* ped, bool isVictimDriver, bool forceKnockOff)
+CEventKnockOffBike* CEventKnockOffBike::Constructor(CVehicle* vehicle, CVector* moveSpeed, CVector* collisionImpactVelocity, float damageIntensity, float a6, uint8_t knockOffType, uint8_t knockOffDirection, int32_t time, CPed* ped, bool isVictimDriver, bool forceKnockOff)
 {
     this->CEventKnockOffBike::CEventKnockOffBike(vehicle, moveSpeed, collisionImpactVelocity, damageIntensity, a6, knockOffType, knockOffDirection, time, ped, isVictimDriver, forceKnockOff);
     return this;
@@ -67,22 +72,16 @@ CEventKnockOffBike* CEventKnockOffBike::Constructor()
     return this;
 }
 
+// 0x4AFEE0
 bool CEventKnockOffBike::AffectsPed(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4AFEE0, CEventKnockOffBike*, CPed*>(this, ped);
-#else
     return CEventKnockOffBike::AffectsPed_Reversed(ped);
-#endif
 }
 
+// 0x4B4E80
 void CEventKnockOffBike::ReportCriminalEvent(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethod<0x4B4E80, CEventKnockOffBike*, CPed*>(this, ped);
-#else
     return CEventKnockOffBike::ReportCriminalEvent_Reversed(ped);
-#endif
 }
 
 bool CEventKnockOffBike::AffectsPed_Reversed(CPed* ped)
@@ -116,11 +115,9 @@ void CEventKnockOffBike::ReportCriminalEvent_Reversed(CPed* ped)
     }
 }
 
+// 0x4AFDD0
 void CEventKnockOffBike::From(const CEventKnockOffBike& right)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethod<0x4AFDD0, CEventKnockOffBike*, const CEventKnockOffBike& >(this, right);
-#else
     m_vehicle = right.m_vehicle;
     m_moveSpeed = right.m_moveSpeed;
     m_collisionImpactVelocity = right.m_collisionImpactVelocity;
@@ -133,18 +130,17 @@ void CEventKnockOffBike::From(const CEventKnockOffBike& right)
     m_isVictimDriver = right.m_isVictimDriver;
     m_forceKnockOff = right.m_forceKnockOff;
     m_exitDoor = right.m_exitDoor;
+
     if (m_vehicle)
         m_vehicle->RegisterReference(reinterpret_cast<CEntity**>(&m_vehicle));
+
     if (m_ped)
         m_ped->RegisterReference(reinterpret_cast<CEntity**>(&m_ped));
-#endif
 }
 
+// 0x4AFF60
 void CEventKnockOffBike::SetPedOutCar(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethod<0x4AFF60, CEventKnockOffBike*, CPed*>(this, ped);
-#else
     m_exitDoor = TARGET_DOOR_DRIVER;
     if (m_vehicle->m_pDriver == ped)
         m_exitDoor = TARGET_DOOR_DRIVER;
@@ -161,20 +157,18 @@ void CEventKnockOffBike::SetPedOutCar(CPed* ped)
     taskCarSetPedOut.m_bSwitchOffEngine = false;
     taskCarSetPedOut.ProcessPed(ped);
     CCarEnterExit::RemoveCarSitAnim(ped);
-#endif
 }
 
-std::int32_t CEventKnockOffBike::CalcForcesAndAnims(CPed* ped)
+// 0x4B0020
+int32_t CEventKnockOffBike::CalcForcesAndAnims(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<std::int32_t, 0x4B0020, CEventKnockOffBike*, CPed*>(this, ped);
-#else
-    std::uint8_t numContactWheels = 0;
+    uint8_t numContactWheels = 0;
     float massRatio = ped->m_fMass / m_vehicle->m_fMass;
     if (m_vehicle->m_vehicleType == VEHICLE_BIKE)
         numContactWheels = static_cast<CBike*>(m_vehicle)->m_nNumContactWheels;
     else if (m_vehicle->m_vehicleType == VEHICLE_AUTOMOBILE)
         numContactWheels = static_cast<CAutomobile*>(m_vehicle)->m_nNumContactWheels;
+
     switch (m_knockOffType)
     {
     case KNOCK_OFF_TYPE_NONE:
@@ -236,7 +230,7 @@ std::int32_t CEventKnockOffBike::CalcForcesAndAnims(CPed* ped)
             randomNum = 6.0f;
         ped->m_vecMoveSpeed.z += CGeneral::GetRandomNumberInRange(3.0f, randomNum) / 70.0f;
         ped->m_pEntityIgnoredCollision = m_vehicle;
-        std::int32_t animId = ANIM_ID_KO_SKID_BACK;
+        int32_t animId = ANIM_ID_KO_SKID_BACK;
         switch (m_knockOffDirection)
         {
         case 0:
@@ -271,7 +265,7 @@ std::int32_t CEventKnockOffBike::CalcForcesAndAnims(CPed* ped)
         force.z = CGeneral::GetRandomNumberInRange(3.0f, 5.0f);
         ped->ApplyMoveForce(force);
         ped->m_pEntityIgnoredCollision = m_vehicle;
-        std::int32_t animId = ANIM_ID_KO_SKID_BACK;
+        int32_t animId = ANIM_ID_KO_SKID_BACK;
         switch (m_knockOffDirection)
         {
         case 0:
@@ -293,14 +287,11 @@ std::int32_t CEventKnockOffBike::CalcForcesAndAnims(CPed* ped)
     }
     }
     return ANIM_ID_NO_ANIMATION_SET;
-#endif
 }
 
+// 0x4B4AC0
 bool CEventKnockOffBike::SetPedSafePosition(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4B4AC0, CEventKnockOffBike*, CPed*>(this, ped);
-#else
     if (m_vehicle->m_vehicleType == VEHICLE_BIKE) {
         CBike* bike = static_cast<CBike*>(m_vehicle);
         bike->m_rideAnimData.m_fAnimLean = 0.0f;
@@ -372,6 +363,5 @@ bool CEventKnockOffBike::SetPedSafePosition(CPed* ped)
     }
     CWorld::pIgnoreEntity = nullptr;
     return isSafe;
-#endif
 }
 

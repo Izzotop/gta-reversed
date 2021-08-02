@@ -1,5 +1,6 @@
 #include "StdInc.h"
 
+#include "TaskComplexEnterCarAsPassenger.h"
 
 CTaskComplexEnterCarAsPassenger::CTaskComplexEnterCarAsPassenger(CVehicle* pTargetVehicle, int nTargetSeat, bool bCarryOnAfterFallingOff) :
     CTaskComplexEnterCar(pTargetVehicle, false, false, false, bCarryOnAfterFallingOff)

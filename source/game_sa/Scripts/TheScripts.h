@@ -138,7 +138,7 @@ struct tScriptSphere {
     int fRadius;
 };
 
-enum eScriptThingType : std::int32_t {
+enum eScriptThingType : int32_t {
     SCRIPT_THING_SPHERE = 0,
     SCRIPT_THING_EFFECT_SYSTEM,
     SCRIPT_THING_SEARCH_LIGHT,
@@ -226,7 +226,7 @@ public:
     static CUpsideDownCarCheck& UpsideDownCars;
     static tScriptParam* LocalVariablesForCurrentMission; // static ScriptVar LocalVariablesForCurrentMission[1024]
                                                           //! Script space, where main.scm MAIN section is loaded.
-    static std::uint8_t* ScriptSpace;                     // static char ScriptSpace[200000]
+    static uint8_t* ScriptSpace;                     // static char ScriptSpace[200000]
     static char* MissionBlock;                            // static char MissionBlock[69000]
     static CRunningScript*& pIdleScripts;
     static CRunningScript*& pActiveScripts;
@@ -320,7 +320,7 @@ public:
     static bool ScriptAttachAnimGroupToCharModel(int modelId, char* ifpName);
     static void ScriptConnectLodsFunction(int objectHandle1, int objectHandle2);
     static void ScriptDebugCircle2D(float x, float y, float width, float height, CRGBA color);
-    static CRunningScript* StartNewScript(std::uint8_t* startIP);
+    static CRunningScript* StartNewScript(uint8_t* startIP);
     static int StartNewScript(unsigned char* startIP, unsigned short index);
     static void StartTestScript();
     static void UndoBuildingSwaps();
@@ -329,5 +329,3 @@ public:
     static void UseSwitchJumpTable(int* pSwitchLabelAddress);
     static void WipeLocalVariableMemoryForMissionScript();
 };
-
-//#include "meta/meta.CTheScripts.h"

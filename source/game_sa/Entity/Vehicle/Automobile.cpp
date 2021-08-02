@@ -5,9 +5,11 @@
     Do not delete this comment block. Respect others' work!
 */
 #include "StdInc.h"
-#include "WaterCannons.h"
+
 #include "Automobile.h"
 
+#include "WaterCannons.h"
+#include "cHandlingDataMgr.h"
 
 bool& CAutomobile::m_sAllTaxiLights = *(bool*)0xC1BFD0;
 CVector& CAutomobile::vecHunterGunPos = *(CVector*)0x8D3394;
@@ -2949,13 +2951,13 @@ bool CAutomobile::RcbanditCheckHitWheels()
     const float maxX = point.x + fRadius;
     const float minY = point.y - fRadius;
     const float maxY = point.y + fRadius;
-    std::int32_t startSectorX = std::max(CWorld::GetSectorX(minX), 0);
-    std::int32_t startSectorY = std::max(CWorld::GetSectorY(minY), 0);
-    std::int32_t endSectorX = std::min(CWorld::GetSectorX(maxX), MAX_SECTORS_X - 1);
-    std::int32_t endSectorY = std::min(CWorld::GetSectorY(maxY), MAX_SECTORS_Y - 1);
+    int32_t startSectorX = std::max(CWorld::GetSectorX(minX), 0);
+    int32_t startSectorY = std::max(CWorld::GetSectorY(minY), 0);
+    int32_t endSectorX = std::min(CWorld::GetSectorX(maxX), MAX_SECTORS_X - 1);
+    int32_t endSectorY = std::min(CWorld::GetSectorY(maxY), MAX_SECTORS_Y - 1);
     CWorld::IncrementCurrentScanCode();
-    for (std::int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
-        for (std::int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
+    for (int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
+        for (int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
             CRepeatSector* repeatSector = GetRepeatSector(sectorX, sectorY);
             if (RcbanditCheck1CarWheels(repeatSector->m_lists[REPEATSECTOR_VEHICLES]))
                 break;

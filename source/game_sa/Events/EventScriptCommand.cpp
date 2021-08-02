@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleRunAnim.h"
+
 void CEventScriptCommand::InjectHooks()
 {
     HookInstall(0x4B0A00, &CEventScriptCommand::Constructor);
@@ -12,7 +14,7 @@ void CEventScriptCommand::InjectHooks()
     HookInstall(0x4B0AA0, &CEventScriptCommand::CloneScriptTask);
 }
 
-CEventScriptCommand::CEventScriptCommand(std::int32_t primaryTaskIndex, CTask* task, bool affectsDeadPeds)
+CEventScriptCommand::CEventScriptCommand(int32_t primaryTaskIndex, CTask* task, bool affectsDeadPeds)
 {
     m_primaryTaskIndex = primaryTaskIndex;
     m_task = task;
@@ -21,72 +23,50 @@ CEventScriptCommand::CEventScriptCommand(std::int32_t primaryTaskIndex, CTask* t
 
 CEventScriptCommand::~CEventScriptCommand()
 {
-    if (m_task)
-        delete m_task;
+    delete m_task;
 }
 
-CEventScriptCommand* CEventScriptCommand::Constructor(std::int32_t primaryTaskIndex, CTask* task, bool affectsDeadPeds)
+// 0x4B0A00
+CEventScriptCommand* CEventScriptCommand::Constructor(int32_t primaryTaskIndex, CTask* task, bool affectsDeadPeds)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn< CEventScriptCommand*, 0x4B0A00, CEventScriptCommand*, std::int32_t, CTask*, char>(this, primaryTaskIndex, task, affectsDeadPeds);
-#else
     this->CEventScriptCommand::CEventScriptCommand(primaryTaskIndex, task, affectsDeadPeds);
     return this;
-#endif
 }
 
+// 0x4B0B20
 int CEventScriptCommand::GetEventPriority()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<int, 0x4B0B20, CEvent*>(this);
-#else
     return CEventScriptCommand::GetEventPriority_Reversed();
-#endif
 }
 
+// 0x4B6490
 CEvent* CEventScriptCommand::Clone()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<CEvent*, 0x4B6490, CEvent*>(this);
-#else
     return CEventScriptCommand::Clone_Reversed();
-#endif
 }
 
+// 0x4B0AF0
 bool CEventScriptCommand::AffectsPed(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4B0AF0, CEvent*, CPed*>(this, ped);
-#else
     return CEventScriptCommand::AffectsPed_Reversed(ped);
-#endif
 }
 
+// 0x4B0BA0
 bool CEventScriptCommand::TakesPriorityOver(CEvent* refEvent)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4B0BA0, CEvent*, CEvent*>(this, refEvent);
-#else
     return CEventScriptCommand::TakesPriorityOver_Reversed(refEvent);
-#endif
 }
 
+// 0x4B0AB0
 bool CEventScriptCommand::IsValid(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4B0AB0, CEvent*, CPed*>(this, ped);
-#else
     return CEventScriptCommand::IsValid_Reversed(ped);
-#endif
 }
 
+// 0x4B0AA0
 CTask* CEventScriptCommand::CloneScriptTask()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<CTask*, 0x4B0AA0, CEvent*>(this);
-#else
     return CEventScriptCommand::CloneScriptTask_Reversed();
-#endif
 }
 
 int CEventScriptCommand::GetEventPriority_Reversed()
@@ -95,7 +75,7 @@ int CEventScriptCommand::GetEventPriority_Reversed()
         return 75;
     if (!m_task)
         return 53;
-    const std::int32_t taskId = m_task->GetId();
+    const int32_t taskId = m_task->GetId();
     if (taskId == TASK_SIMPLE_NAMED_ANIM) {
         CTaskSimpleRunAnim* pTaskRunAnim = static_cast<CTaskSimpleRunAnim*>(m_task);
         if (pTaskRunAnim->m_nFlags & ANIM_FLAG_LOOPED)

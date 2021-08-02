@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleGoToPointFine.h"
+
 void CTaskSimpleGoToPointFine::InjectHooks()
 {
     HookInstall(0x65EEB0, &CTaskSimpleGoToPointFine::Constructor);

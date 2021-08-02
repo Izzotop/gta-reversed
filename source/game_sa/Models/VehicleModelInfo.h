@@ -217,9 +217,9 @@ public:
 
       public:
         // add upgrade with components upgrade1 and upgrade2
-        void AddUpgradeLink(std::int16_t upgrade1, std::int16_t upgrade2);
+        void AddUpgradeLink(int16_t upgrade1, int16_t upgrade2);
         // find linked upgrade for this upgrade. In this case upgrade param could be upgrade1 or upgrade2
-        std::int16_t FindOtherUpgrade(std::int16_t upgrade);
+        int16_t FindOtherUpgrade(int16_t upgrade);
     } & ms_linkedUpgrades;
 
     // vehicle components description tables
@@ -410,7 +410,7 @@ public:
     static RpAtomic* SetEnvironmentMapAtomicCB(RpAtomic* atomic, void* data);
     // setup environment map intensity for atomic with data (unsigned int)
     static RpAtomic* SetEnvMapCoeffAtomicCB(RpAtomic* atomic, void* data);
-    static void AssignRemapTxd(const char* name, std::int16_t txdSlot);
+    static void AssignRemapTxd(const char* name, int16_t txdSlot);
     static RpAtomic* StoreAtomicUsedMaterialsCB(RpAtomic* atomic, void* data); // data is RpMaterialList**
 
     static void SetupCommonData();

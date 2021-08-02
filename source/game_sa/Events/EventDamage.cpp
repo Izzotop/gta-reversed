@@ -1,5 +1,9 @@
 #include "StdInc.h"
 
+#include "EventDamage.h"
+
+#include "TaskComplexKillPedOnFoot.h"
+
 void CEventDamage::InjectHooks() {
     HookInstall(0x4B33B0, (CEventDamage*(CEventDamage::*)(CEventDamage*)) & CEventDamage::Constructor);
     HookInstall(0x4AD830, (CEventDamage * (CEventDamage::*)(CEntity*, unsigned int, eWeaponType, ePedPieceTypes, unsigned char, bool, bool)) & CEventDamage::Constructor);

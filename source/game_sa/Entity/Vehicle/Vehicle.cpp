@@ -6,6 +6,11 @@
 */
 #include "StdInc.h"
 
+#include "Vehicle.h"
+
+#include "Ropes.h"
+#include "cHandlingDataMgr.h"
+
 float& CVehicle::WHEELSPIN_TARGET_RATE = *(float*)0x8D3498;
 float& CVehicle::WHEELSPIN_INAIR_TARGET_RATE = *(float*)0x8D349C;
 float& CVehicle::WHEELSPIN_RISE_RATE = *(float*)0x8D34A0;
@@ -2428,7 +2433,7 @@ void CVehicle::AddExhaustParticles()
         return;
     float fSquaredMagnitude = (TheCamera.GetPosition() - GetPosition()).SquaredMagnitude();
     if (fSquaredMagnitude > 256.0f || fSquaredMagnitude > 64.0f
-        && !((CTimer::m_FrameCounter + static_cast<std::uint8_t>(m_nModelIndex)) & 1))
+        && !((CTimer::m_FrameCounter + static_cast<uint8_t>(m_nModelIndex)) & 1))
     {
         return;
     }
@@ -2493,8 +2498,8 @@ void CVehicle::AddExhaustParticles()
                 particleAlpha = 0.25f - fMoveSpeed;
             float fLife = std::max(0.2f - fMoveSpeed, 0.0f);
             FxPrtMult_c fxPrt(0.9f, 0.9f, 1.0f, particleAlpha, 0.2f, 1.0f, fLife);
-            std::int32_t numExhausts = 2;
-            for (std::int32_t i = 0; i < 2; i++) {
+            int32_t numExhausts = 2;
+            for (int32_t i = 0; i < 2; i++) {
                 FxSystem_c* pFirstExhaustFxSystem = g_fx.m_pPrtSmokeII3expand;
                 if (bFirstExhaustSubmergedInWater) {
                     fxPrt.m_color.alpha = particleAlpha * 0.5f;

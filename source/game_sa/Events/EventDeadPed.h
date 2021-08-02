@@ -9,14 +9,14 @@ class CEventDeadPed : public CEventEditableResponse
 private:
     char padding[3];
 public:
-    std::uint32_t m_deathTimeInMs;
+    uint32_t m_deathTimeInMs;
 
     static void InjectHooks();
 
-    CEventDeadPed(CPed* ped, bool bUnknown, std::uint32_t deathTimeInMs);
+    CEventDeadPed(CPed* ped, bool bUnknown, uint32_t deathTimeInMs);
     ~CEventDeadPed();
 private:
-    CEventDeadPed* Constructor(CPed* ped, bool bUnknown, std::uint32_t deathTimeInMs);
+    CEventDeadPed* Constructor(CPed* ped, bool bUnknown, uint32_t deathTimeInMs);
 public:
     eEventType GetEventType() override { return EVENT_DEAD_PED; }
     int GetEventPriority() override { return 15; }

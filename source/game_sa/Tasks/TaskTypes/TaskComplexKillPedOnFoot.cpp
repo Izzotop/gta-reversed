@@ -1,11 +1,13 @@
 #include "StdInc.h"
 
+#include "TaskComplexKillPedOnFoot.h"
+
 void CTaskComplexKillPedOnFoot::InjectHooks()
 {
     HookInstall(0x620E30, &CTaskComplexKillPedOnFoot::Constructor);
 }
 
-CTaskComplexKillPedOnFoot::CTaskComplexKillPedOnFoot(CPed* target, std::int32_t time, std::uint32_t pedFlags, std::int32_t delay, std::int32_t chance, std::int8_t a7)
+CTaskComplexKillPedOnFoot::CTaskComplexKillPedOnFoot(CPed* target, int32_t time, uint32_t pedFlags, int32_t delay, int32_t chance, int8_t a7)
 {
     m_bit_1 = true;
     m_bit_2 = true;
@@ -32,7 +34,7 @@ CTaskComplexKillPedOnFoot::~CTaskComplexKillPedOnFoot()
         m_target->CleanUpOldReference(reinterpret_cast<CEntity**>(&m_target));
 }
 
-CTaskComplexKillPedOnFoot* CTaskComplexKillPedOnFoot::Constructor(CPed* target, std::int32_t time, std::uint32_t pedFlags, std::int32_t delay, std::int32_t chance, std::int8_t a7)
+CTaskComplexKillPedOnFoot* CTaskComplexKillPedOnFoot::Constructor(CPed* target, int32_t time, uint32_t pedFlags, int32_t delay, int32_t chance, int8_t a7)
 {
     this->CTaskComplexKillPedOnFoot::CTaskComplexKillPedOnFoot(target, time, pedFlags, delay, chance, a7);
     return this;
@@ -58,8 +60,8 @@ CTask* CTaskComplexKillPedOnFoot::ControlSubTask(CPed* ped)
     return plugin::CallMethodAndReturn<CTask*, 0x626260, CTaskComplexKillPedOnFoot*, CPed*>(this, ped);
 }
 
-void* CTaskComplexKillPedOnFoot::CreateSubTask(std::int32_t taskId, CPed* ped)
+void* CTaskComplexKillPedOnFoot::CreateSubTask(int32_t taskId, CPed* ped)
 {
-    return plugin::CallMethodAndReturn<void*, 0x625E70, CTaskComplexKillPedOnFoot*, std::int32_t, CPed*>(this, taskId, ped);
+    return plugin::CallMethodAndReturn<void*, 0x625E70, CTaskComplexKillPedOnFoot*, int32_t, CPed*>(this, taskId, ped);
 }
 

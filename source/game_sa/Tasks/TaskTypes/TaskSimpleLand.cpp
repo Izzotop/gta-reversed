@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleLand.h"
+
 void CTaskSimpleLand::InjectHooks()
 {
     ReversibleHooks::Install("CTaskSimpleLand", "Constructor", 0x678E90, &CTaskSimpleLand::Constructor);

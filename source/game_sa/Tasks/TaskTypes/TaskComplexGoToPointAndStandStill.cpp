@@ -1,5 +1,12 @@
 #include "StdInc.h"
 
+#include "TaskComplexGoToPointAndStandStill.h"
+
+#include "TaskSimplePause.h"
+#include "TaskSimpleStandStill.h"
+#include "TaskSimpleGoToPoint.h"
+#include "TaskComplexLeaveCar.h"
+
 void CTaskComplexGoToPointAndStandStill::InjectHooks()
 {
     HookInstall(0x668120, &CTaskComplexGoToPointAndStandStill::Constructor);
@@ -49,51 +56,35 @@ CTaskComplexGoToPointAndStandStill::~CTaskComplexGoToPointAndStandStill()
     // nothing here
 }
 
+// 0x668120
 CTaskComplexGoToPointAndStandStill* CTaskComplexGoToPointAndStandStill::Constructor(int moveState, const CVector& targetPoint, float fRadius, float fMoveStateRadius, bool bUnknown, bool bGoToPoint)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn< CTaskComplexGoToPointAndStandStill*, 0x668120, CTask*, int, const CVector &, float, float, bool, bool>
-        (this, moveState, targetPoint, fRadius, fMoveStateRadius, bUnknown, bGoToPoint);
-#else
     this->CTaskComplexGoToPointAndStandStill::CTaskComplexGoToPointAndStandStill(moveState, targetPoint, fRadius, fMoveStateRadius, bUnknown, bGoToPoint);
     return this;
-#endif
 }
 
+// 0x66CEA0
 CTask* CTaskComplexGoToPointAndStandStill::Clone()
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x66CEA0, CTask*>(this);
-#else
     return CTaskComplexGoToPointAndStandStill::Clone_Reversed();
-#endif
 }
 
+// 0x66DBA0
 CTask* CTaskComplexGoToPointAndStandStill::CreateNextSubTask(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x66DBA0, CTask*, CPed*>(this, ped);
-#else
     return CTaskComplexGoToPointAndStandStill::CreateNextSubTask_Reversed(ped);
-#endif
 }
 
+// 0x66DC40
 CTask* CTaskComplexGoToPointAndStandStill::CreateFirstSubTask(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x66DC40, CTask*, CPed*>(this, ped);
-#else
     return CTaskComplexGoToPointAndStandStill::CreateFirstSubTask_Reversed(ped);
-#endif
 }
 
+// 0x668570
 CTask* CTaskComplexGoToPointAndStandStill::ControlSubTask(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x668570, CTask*, CPed*>(this, ped);
-#else
     return CTaskComplexGoToPointAndStandStill::ControlSubTask_Reversed(ped);
-#endif
 }
 
 CTask* CTaskComplexGoToPointAndStandStill::Clone_Reversed()
@@ -144,25 +135,20 @@ CTask* CTaskComplexGoToPointAndStandStill::ControlSubTask_Reversed(CPed* ped)
     return m_pSubTask;
 }
 
+// 0x46FE60
 void CTaskComplexGoToPointAndStandStill::GoToPoint(const CVector& targetPoint, float fRadius, float fMoveStateRadius, bool bUpdateTargetEvenIfItsTheSame)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    plugin::CallMethod<0x46FE60, CTask*, const CVector &, float, float, bool>(this, targetPoint, fRadius, fMoveStateRadius, bUpdateTargetEvenIfItsTheSame);
-#else
     if (bUpdateTargetEvenIfItsTheSame || m_vecTargetPoint != targetPoint || m_fMoveStateRadius != fMoveStateRadius) {
         m_vecTargetPoint = targetPoint;
         m_fRadius = fRadius;
         m_fMoveStateRadius = fMoveStateRadius;
         m_bTargetPointUpdated = true;
     }
-#endif
 }
 
+// 0x668250
 void CTaskComplexGoToPointAndStandStill::SelectMoveState(CTaskSimpleGoToPoint* pGotoPointTask, CPed* ped, float fMoveStateRadius, float fRunOrSprintRadius)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    plugin::CallMethod <0x668250, CTask*, CTaskSimpleGoToPoint *, CPed *, float, float>(this, pGotoPointTask, ped, fMoveStateRadius, fRunOrSprintRadius);
-#else
     CVector2D vecDistance = ped->GetPosition() - pGotoPointTask->m_vecTargetPoint;
     const float fSquaredMagnitude = vecDistance.SquaredMagnitude();
     if (fSquaredMagnitude >= fMoveStateRadius * fMoveStateRadius) {
@@ -174,14 +160,11 @@ void CTaskComplexGoToPointAndStandStill::SelectMoveState(CTaskSimpleGoToPoint* p
     else {
         pGotoPointTask->m_moveState = PEDMOVE_WALK;
     }
-#endif
 }
 
+// 0x6682D0
 CTask* CTaskComplexGoToPointAndStandStill::CreateFirstSubTask(int taskId, CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn <CTask*, 0x6682D0, CTask*, int, CPed *>(this, taskId, ped);
-#else
     if (taskId > TASK_COMPLEX_LEAVE_CAR) {
         if (taskId != TASK_SIMPLE_GO_TO_POINT)
             return nullptr;
@@ -220,5 +203,4 @@ CTask* CTaskComplexGoToPointAndStandStill::CreateFirstSubTask(int taskId, CPed* 
     }
     }
     return nullptr;
-#endif
 }

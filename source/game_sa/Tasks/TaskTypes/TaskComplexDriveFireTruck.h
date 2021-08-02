@@ -1,4 +1,5 @@
 #pragma once
+
 #include "TaskComplex.h"
 
 class CTaskComplexDriveFireTruck : public CTaskComplex

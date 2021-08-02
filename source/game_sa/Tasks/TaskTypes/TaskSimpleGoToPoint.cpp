@@ -1,5 +1,9 @@
 #include "StdInc.h"
 
+#include "TaskSimpleGoToPoint.h"
+
+#include "TaskSimpleStandStill.h"
+
 void CTaskSimpleGoToPoint::InjectHooks()
 {
     HookInstall(0x667CD0, &CTaskSimpleGoToPoint::Constructor);
@@ -22,42 +26,29 @@ CTaskSimpleGoToPoint::~CTaskSimpleGoToPoint()
     // nothing here
 }
 
+// 0x667CD0
 CTaskSimpleGoToPoint* CTaskSimpleGoToPoint::Constructor(int moveState, const CVector& targetPoint, float fRadius, bool bMoveTowardsTargetPoint, bool a6)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTaskSimpleGoToPoint*, 0x667CD0, CTaskSimpleGoToPoint*, int, const CVector&, float, bool, bool>
-        (this, moveState, targetPoint, fRadius, bMoveTowardsTargetPoint, a6);
-#else
     this->CTaskSimpleGoToPoint::CTaskSimpleGoToPoint(moveState, targetPoint, fRadius, bMoveTowardsTargetPoint, a6);
     return this;
-#endif
 }
 
+// 0x66CC60
 CTask* CTaskSimpleGoToPoint::Clone()
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x66CC60, CTask*>(this);
-#else
     return CTaskSimpleGoToPoint::Clone_Reversed();
-#endif
 }
 
+// 0x667D60
 bool CTaskSimpleGoToPoint::MakeAbortable(CPed* ped, eAbortPriority priority, CEvent* _event)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<bool, 0x667D60, CTask*, CPed*, int, CEvent*>(this, ped, priority, _event);
-#else
     return CTaskSimpleGoToPoint::MakeAbortable_Reversed(ped, priority, _event);
-#endif
 }
 
+// 0x66D710
 bool CTaskSimpleGoToPoint::ProcessPed(class CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<bool, 0x66D710, CTask*, CPed*>(this, ped);
-#else
     return CTaskSimpleGoToPoint::ProcessPed_Reversed(ped);
-#endif
 }
 
 CTask* CTaskSimpleGoToPoint::Clone_Reversed()

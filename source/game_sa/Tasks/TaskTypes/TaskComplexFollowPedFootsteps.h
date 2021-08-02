@@ -1,15 +1,17 @@
 #include "TaskComplex.h"
 
 class CPointRoute;
+
 class CTaskComplexFollowPedFootsteps : public CTaskComplex {
 public:
-    CPed* m_targetPed;
-    std::uint32_t m_subTaskCreateCheckTimer;
-    std::uint32_t m_lineOfSightCheckTimer;
+    CPed*        m_targetPed;
+    uint32_t     m_subTaskCreateCheckTimer;
+    uint32_t     m_lineOfSightCheckTimer;
     CPointRoute* m_pointRoute;
-    std::int16_t m_moveState;
-    std::uint8_t m_updateGoToPoint : 1;
+    int16_t      m_moveState;
+    uint8_t      m_updateGoToPoint : 1;
 
+public:
     static void InjectHooks();
 
     CTaskComplexFollowPedFootsteps(CPed* ped);

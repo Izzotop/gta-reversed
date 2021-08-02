@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleStandStill.h"
+
 void CTaskSimpleStandStill::InjectHooks()
 {
     HookInstall(0x62F310, &CTaskSimpleStandStill::Constructor);

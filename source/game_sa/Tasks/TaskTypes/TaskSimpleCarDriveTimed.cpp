@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleCarDriveTimed.h"
+
 CTaskSimpleCarDriveTimed* CTaskSimpleCarDriveTimed::Constructor(CVehicle* pVehicle, int nTime)
 {
     this->CTaskSimpleCarDriveTimed::CTaskSimpleCarDriveTimed(pVehicle, nTime);

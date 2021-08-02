@@ -5,22 +5,22 @@
 
 class CVehicle;
 
-class CEventDraggedOutCar : public CEventEditableResponse
-{
+class CEventDraggedOutCar : public CEventEditableResponse {
 public:
-    CPed* m_carjacker;
+    CPed*     m_carjacker;
     CVehicle* m_vehicle;
-    bool m_IsDriverSeat;
-private:
-    char padding[3];
-public:
+    bool      m_IsDriverSeat;
+    char      _pad[3];
 
+public:
     static void InjectHooks();
 
     CEventDraggedOutCar(CVehicle* vehicle, CPed* carjacker, bool IsDriverSeat);
     ~CEventDraggedOutCar();
+
 private:
     CEventDraggedOutCar* Constructor(CVehicle* vehicle, CPed* carjacker, bool IsDriverSeat);
+
 public:
     eEventType GetEventType() override { return EVENT_DRAGGED_OUT_CAR; }
     int GetEventPriority() override { return 40; }

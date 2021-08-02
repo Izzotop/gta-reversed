@@ -1,4 +1,11 @@
 #include "StdInc.h"
+
+#include "TaskSimplePlayerOnFoot.h"
+
+#include "TaskSimpleStealthKill.h"
+#include "TaskComplexUseGoggles.h"
+#include "TaskComplexJump.h"
+
 #include "eCrimeType.h"
 
 int& gLastRandomNumberForIdleAnimationID = *reinterpret_cast<int*>(0x8D2FEC);

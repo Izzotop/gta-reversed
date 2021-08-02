@@ -6,7 +6,7 @@ class CEventDeath : public CEvent
 private:
     char padding[3];
 public:
-    std::uint32_t m_deathTimeInMs;
+    uint32_t m_deathTimeInMs;
 
     static void InjectHooks();
 

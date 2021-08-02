@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimplePause.h"
+
 void CTaskSimplePause::InjectHooks()
 {
     HookInstall(0x48E750, &CTaskSimplePause::Constructor);

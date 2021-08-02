@@ -129,12 +129,12 @@ void CPhysical::Add_Reversed()
     {
         CRect boundRect;
         GetBoundRect(&boundRect);
-        std::int32_t startSectorX = CWorld::GetSectorX(boundRect.left);
-        std::int32_t startSectorY = CWorld::GetSectorY(boundRect.top);
-        std::int32_t endSectorX = CWorld::GetSectorX(boundRect.right);
-        std::int32_t endSectorY = CWorld::GetSectorY(boundRect.bottom);
-        for (std::int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
-            for (std::int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
+        int32_t startSectorX = CWorld::GetSectorX(boundRect.left);
+        int32_t startSectorY = CWorld::GetSectorY(boundRect.top);
+        int32_t endSectorX = CWorld::GetSectorX(boundRect.right);
+        int32_t endSectorY = CWorld::GetSectorY(boundRect.bottom);
+        for (int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
+            for (int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
                 CPtrListDoubleLink* pDoubleLinkList = nullptr;
                 CRepeatSector* pRepeatSector = GetRepeatSector(sectorX, sectorY);
                 switch (m_nType)
@@ -581,12 +581,12 @@ void CPhysical::ProcessShift_Reversed()
             physicalFlags.bProcessingShift = true;
         }
 
-        std::int32_t startSectorX = CWorld::GetSectorX(boundingBox.left);
-        std::int32_t startSectorY = CWorld::GetSectorY(boundingBox.top);
-        std::int32_t endSectorX = CWorld::GetSectorX(boundingBox.right);
-        std::int32_t endSectorY = CWorld::GetSectorY(boundingBox.bottom);
-        for (std::int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
-            for (std::int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
+        int32_t startSectorX = CWorld::GetSectorX(boundingBox.left);
+        int32_t startSectorY = CWorld::GetSectorY(boundingBox.top);
+        int32_t endSectorX = CWorld::GetSectorX(boundingBox.right);
+        int32_t endSectorY = CWorld::GetSectorY(boundingBox.bottom);
+        for (int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
+            for (int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
                 if (ProcessShiftSectorList(sectorX, sectorY))
                     bShifted = true;
             }
@@ -596,12 +596,12 @@ void CPhysical::ProcessShift_Reversed()
         if (bShifted || m_nType == ENTITY_TYPE_VEHICLE) {
             CWorld::IncrementCurrentScanCode();
             bool bShifted2 = false;
-            std::int32_t startSectorX = CWorld::GetSectorX(boundingBox.left);
-            std::int32_t startSectorY = CWorld::GetSectorY(boundingBox.top);
-            std::int32_t endSectorX = CWorld::GetSectorX(boundingBox.right);
-            std::int32_t endSectorY = CWorld::GetSectorY(boundingBox.bottom);
-            for (std::int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
-                for (std::int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
+            int32_t startSectorX = CWorld::GetSectorX(boundingBox.left);
+            int32_t startSectorY = CWorld::GetSectorY(boundingBox.top);
+            int32_t endSectorX = CWorld::GetSectorX(boundingBox.right);
+            int32_t endSectorY = CWorld::GetSectorY(boundingBox.bottom);
+            for (int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
+                for (int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
                     if (ProcessCollisionSectorList(sectorX, sectorY)) {
                         if (!CWorld::bSecondShift) {
                             *(CMatrix*)m_matrix = oldEntityMatrix;
@@ -640,12 +640,12 @@ void CPhysical::RemoveAndAdd()
         CEntryInfoNode* pEntryInfoNode = m_pCollisionList.m_pNode;
         CRect boundRect;
         GetBoundRect(&boundRect);
-        std::int32_t startSectorX = CWorld::GetSectorX(boundRect.left);
-        std::int32_t startSectorY = CWorld::GetSectorY(boundRect.top);
-        std::int32_t endSectorX = CWorld::GetSectorX(boundRect.right);
-        std::int32_t endSectorY = CWorld::GetSectorY(boundRect.bottom);
-        for (std::int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
-            for (std::int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
+        int32_t startSectorX = CWorld::GetSectorX(boundRect.left);
+        int32_t startSectorY = CWorld::GetSectorY(boundRect.top);
+        int32_t endSectorX = CWorld::GetSectorX(boundRect.right);
+        int32_t endSectorY = CWorld::GetSectorY(boundRect.bottom);
+        for (int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
+            for (int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
                 CPtrListDoubleLink* pDoubleLinkList = nullptr;
                 CRepeatSector* pRepeatSector = GetRepeatSector(sectorX, sectorY);
                 switch (m_nType)
@@ -5309,12 +5309,12 @@ bool CPhysical::CheckCollision()
 
     CRect boundRect;
     GetBoundRect(&boundRect);
-    std::int32_t startSectorX = CWorld::GetSectorX(boundRect.left);
-    std::int32_t startSectorY = CWorld::GetSectorY(boundRect.top);
-    std::int32_t endSectorX = CWorld::GetSectorX(boundRect.right);
-    std::int32_t endSectorY = CWorld::GetSectorY(boundRect.bottom);
-    for (std::int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
-        for (std::int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
+    int32_t startSectorX = CWorld::GetSectorX(boundRect.left);
+    int32_t startSectorY = CWorld::GetSectorY(boundRect.top);
+    int32_t endSectorX = CWorld::GetSectorX(boundRect.right);
+    int32_t endSectorY = CWorld::GetSectorY(boundRect.bottom);
+    for (int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
+        for (int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
             if (ProcessCollisionSectorList(sectorX, sectorY))
                 return true;
         }

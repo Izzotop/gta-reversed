@@ -15,7 +15,7 @@ void CColSphere::Set(float radius, CVector const& center)
     m_vecCenter = center;
 }
 
-void CColSphere::Set(float radius, CVector const& center, std::uint8_t material, std::uint8_t flags, std::uint8_t lighting)
+void CColSphere::Set(float radius, CVector const& center, uint8_t material, uint8_t flags, uint8_t lighting)
 {
     m_fRadius = radius;
     m_vecCenter = center;

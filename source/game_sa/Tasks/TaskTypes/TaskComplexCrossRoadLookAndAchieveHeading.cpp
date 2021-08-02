@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskComplexCrossRoadLookAndAchieveHeading.h"
+
 CTaskComplexCrossRoadLookAndAchieveHeading* CTaskComplexCrossRoadLookAndAchieveHeading::Constructor(unsigned int durationInMs, float fTargetHeading)
 {
     return plugin::CallMethodAndReturn<CTaskComplexCrossRoadLookAndAchieveHeading*, 0x631AE0, 

@@ -36,11 +36,11 @@ std::shared_ptr<SSimpleReversibleHook> SSimpleReversibleHook::InstallHook(uint32
     VirtualProtect((void*)installAddress, maxBytesToProtect, PAGE_EXECUTE_READWRITE, &dwProtect[0]);
 
     // workaround for hoodlum crashes due to securom protection.
-    if (*(std::uint8_t*)installAddress == NOP_OPCODE) {
+    if (*(uint8_t*)installAddress == NOP_OPCODE) {
         bool bJumpFound = false;
-        std::uint32_t i = 0;
+        uint32_t i = 0;
         for (; i < 4; i++) {
-            if (*(std::uint8_t*)(installAddress + i) == JUMP_OPCODE) {
+            if (*(uint8_t*)(installAddress + i) == JUMP_OPCODE) {
                 bJumpFound = true;
                 break;
             }

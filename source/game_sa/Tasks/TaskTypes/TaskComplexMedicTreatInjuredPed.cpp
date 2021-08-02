@@ -1,5 +1,17 @@
 #include "StdInc.h"
 
+#include "TaskComplexMedicTreatInjuredPed.h"
+#include "TaskComplexTreatAccident.h"
+#include "TaskSimpleStandStill.h"
+#include "TaskComplexEnterCarAsPassenger.h"
+#include "TaskComplexEnterCarAsDriver.h"
+#include "TaskComplexLeaveCar.h"
+#include "TaskSimpleCarDrive.h"
+#include "TaskComplexDriveToPoint.h"
+#include "TaskComplexCarDrive.h"
+#include "TaskComplexGoToPointAndStandStill.h"
+#include "TaskComplexWanderMedic.h"
+#include "TaskComplexDriveWander.h"
 
 void CTaskComplexMedicTreatInjuredPed::InjectHooks()
 {
@@ -67,7 +79,7 @@ CTask* CTaskComplexMedicTreatInjuredPed::CreateSubTask(eTaskType taskType)
         m_bLeftCarOnce = true;
         return new CTaskComplexLeaveCar(m_pVehicle, 0, 0, true, false);
     case TASK_SIMPLE_CAR_DRIVE:
-        return new CTaskSimpleCarDrive(m_pVehicle, 0, 0);
+        return new CTaskSimpleCarDrive(m_pVehicle, nullptr, false);
     case TASK_COMPLEX_CAR_DRIVE_TO_POINT:
         return new CTaskComplexDriveToPoint(m_pVehicle, m_vecAccidentPosition, 30.0F, 0, -1, -1.0F, 2);
     case TASK_COMPLEX_CAR_DRIVE_WANDER:
@@ -75,7 +87,7 @@ CTask* CTaskComplexMedicTreatInjuredPed::CreateSubTask(eTaskType taskType)
     case TASK_COMPLEX_GO_TO_POINT_AND_STAND_STILL:
         return new CTaskComplexGoToPointAndStandStill(PEDMOVE_RUN, m_vecAccidentPosition, 0.125F, 2.0F, false, false);
     case TASK_COMPLEX_WANDER:
-        return new CTaskComplexWanderMedic(PEDMOVE_WALK, CGeneral::GetRandomNumberInRange(0, 8), 1);
+        return new CTaskComplexWanderMedic(PEDMOVE_WALK, CGeneral::GetRandomNumberInRange(0, 8), true);
     default:
         return nullptr;
     }
@@ -278,14 +290,14 @@ CTask* CTaskComplexMedicTreatInjuredPed::ControlSubTask_Reversed(CPed* ped)
     if (subTaskId == TASK_COMPLEX_GO_TO_POINT_AND_STAND_STILL)
     {
         if (!m_pAccident || !m_pAccident->m_pPed)
-            return CreateDealWithNextAccidentTask(ped, 0);
+            return CreateDealWithNextAccidentTask(ped, nullptr);
 
         auto subTask = reinterpret_cast<CTaskComplexGoToPointAndStandStill*>(m_pSubTask);
         if (subTask->m_moveState != PEDMOVE_WALK && DistanceBetweenPoints(m_vecAccidentPosition, ped->GetPosition()) < 25.0F)
         {
             for (CEntity* pEntity : ped->GetIntelligence()->m_vehicleScanner.m_apEntities)
                 if (pEntity && CPedGeometryAnalyser::IsEntityBlockingTarget(pEntity, m_vecAccidentPosition, 0.125F))
-                    return CreateDealWithNextAccidentTask(ped, 0);
+                    return CreateDealWithNextAccidentTask(ped, nullptr);
 
             FindAccidentPosition(ped, m_pAccident->m_pPed);
             subTask->m_moveState = PEDMOVE_WALK;

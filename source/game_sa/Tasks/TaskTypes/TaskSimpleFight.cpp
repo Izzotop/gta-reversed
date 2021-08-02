@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleFight.h"
+
 CMeleeInfo* CTaskSimpleFight::m_aComboData = (CMeleeInfo*)0xC170D0;
 
 CTaskSimpleFight* CTaskSimpleFight::Constructor(CEntity* pTargetEntity, int nCommand, unsigned int nIdlePeriod) {

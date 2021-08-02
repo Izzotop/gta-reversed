@@ -13,22 +13,22 @@ enum eVehicleEvadeType
 class CEventVehicleCollision : public CEvent
 {
 public:
-    std::int16_t m_pieceType;
-    std::int16_t m_evadeType;
+    int16_t m_pieceType;
+    int16_t m_evadeType;
     float m_fDamageIntensity;
     CVehicle* m_vehicle;
     CVector m_collisionImpactVelocity;
     CVector m_collisionPosition;
-    std::int8_t m_moveState;
-    std::int8_t field_31;
-    std::int8_t field_32[2];
+    int8_t m_moveState;
+    int8_t field_31;
+    int8_t field_32[2];
 
     static void InjectHooks();
 
-    CEventVehicleCollision(std::int16_t pieceType, float damageIntensity, CVehicle* vehicle, const CVector& collisionImpactVelocity, const CVector& collisionPosition, std::int8_t moveState, std::int16_t evadeType);
+    CEventVehicleCollision(int16_t pieceType, float damageIntensity, CVehicle* vehicle, const CVector& collisionImpactVelocity, const CVector& collisionPosition, int8_t moveState, int16_t evadeType);
     ~CEventVehicleCollision();
 private:
-    CEventVehicleCollision* Constructor(std::int16_t pieceType, float damageIntensity, CVehicle* vehicle, const CVector& collisionImpactVelocity, const CVector& collisionPosition, std::int8_t moveState, std::int16_t evadeType);
+    CEventVehicleCollision* Constructor(int16_t pieceType, float damageIntensity, CVehicle* vehicle, const CVector& collisionImpactVelocity, const CVector& collisionPosition, int8_t moveState, int16_t evadeType);
 public:
     eEventType GetEventType() override { return EVENT_VEHICLE_COLLISION; }
     int GetEventPriority() override { return 58; }

@@ -6,6 +6,10 @@
 */
 #include "StdInc.h"
 
+#include "VehicleModelInfo.h"
+
+#include "cHandlingDataMgr.h"
+
 CVehicleModelInfo::CLinkedUpgradeList& CVehicleModelInfo::ms_linkedUpgrades = *(CVehicleModelInfo::CLinkedUpgradeList*)0xB4E6D8;
 RwTexture* &CVehicleModelInfo::ms_pRemapTexture = *(RwTexture**)0xB4E47C;
 RwTexture* &CVehicleModelInfo::ms_pLightsTexture = *(RwTexture**)0xB4E68C;
@@ -1209,7 +1213,7 @@ RpAtomic* CVehicleModelInfo::SetEnvMapCoeffAtomicCB(RpAtomic* atomic, void* data
     return atomic;
 }
 
-void CVehicleModelInfo::AssignRemapTxd(const char* name, std::int16_t txdSlot)
+void CVehicleModelInfo::AssignRemapTxd(const char* name, int16_t txdSlot)
 {
     auto iLen = strlen(name);
     if (!isdigit(name[iLen - 1]))
@@ -1531,14 +1535,14 @@ void CVehicleModelInfo::LoadEnvironmentMaps()
     CTxdStore::PopCurrentTxd();
 }
 
-void CVehicleModelInfo::CLinkedUpgradeList::AddUpgradeLink(std::int16_t upgrade1, std::int16_t upgrade2)
+void CVehicleModelInfo::CLinkedUpgradeList::AddUpgradeLink(int16_t upgrade1, int16_t upgrade2)
 {
     m_anUpgrade1[m_nLinksCount] = upgrade1;
     m_anUpgrade2[m_nLinksCount] = upgrade2;
     ++m_nLinksCount;
 }
 
-std::int16_t CVehicleModelInfo::CLinkedUpgradeList::FindOtherUpgrade(std::int16_t upgrade)
+int16_t CVehicleModelInfo::CLinkedUpgradeList::FindOtherUpgrade(int16_t upgrade)
 {
     if (!m_nLinksCount)
         return -1;

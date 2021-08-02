@@ -89,7 +89,7 @@ public:
     bool m_bUseMissionCleanup;
     bool m_bIsExternal;
     bool m_bTextBlockOverride;
-    std::int8_t m_externalType;
+    int8_t m_externalType;
     char field_CA[2];
     int m_nWakeTime;
     unsigned short m_nLogicalOp;
@@ -144,7 +144,7 @@ public:
     void DoDeathArrestCheck(); // original name DoDeatharrestCheck
 
     void SetCharCoordinates(CPed* pPed, float x, float y, float z, bool bWarpGang, bool bOffset);
-    void GivePedScriptedTask(std::int32_t pedHandle, CTask* task, std::int32_t opcode);
+    void GivePedScriptedTask(int32_t pedHandle, CTask* task, int32_t opcode);
 
     void AddScriptToList(CRunningScript** queueList);
     void RemoveScriptFromList(CRunningScript** queueList);

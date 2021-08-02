@@ -7,6 +7,10 @@ Do not delete this comment block. Respect others' work!
 
 #include "StdInc.h"
 
+#include "Ropes.h"
+#include "Escalators.h"
+#include "MotionBlurStreaks.h"
+
 void CEntity::InjectHooks()
 {
 //Virtual
@@ -143,24 +147,24 @@ void CEntity::Add_Reversed(CRect const& rect)
         usedRect.bottom = 2999.0F;
 
     if (m_bIsBIGBuilding) {
-        std::int32_t startSectorX = CWorld::GetLodSectorX(usedRect.left);
-        std::int32_t startSectorY = CWorld::GetLodSectorY(usedRect.top);
-        std::int32_t endSectorX = CWorld::GetLodSectorX(usedRect.right);
-        std::int32_t endSectorY = CWorld::GetLodSectorY(usedRect.bottom);
-        for (std::int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
-            for (std::int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
+        int32_t startSectorX = CWorld::GetLodSectorX(usedRect.left);
+        int32_t startSectorY = CWorld::GetLodSectorY(usedRect.top);
+        int32_t endSectorX = CWorld::GetLodSectorX(usedRect.right);
+        int32_t endSectorY = CWorld::GetLodSectorY(usedRect.bottom);
+        for (int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
+            for (int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
                 auto& pLodListEntry = CWorld::GetLodPtrList(sectorX, sectorY);
                 pLodListEntry.AddItem(this);
             }
         }
     }
     else {
-        std::int32_t startSectorX = CWorld::GetSectorX(usedRect.left);
-        std::int32_t startSectorY = CWorld::GetSectorY(usedRect.top);
-        std::int32_t endSectorX = CWorld::GetSectorX(usedRect.right);
-        std::int32_t endSectorY = CWorld::GetSectorY(usedRect.bottom);
-        for (std::int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
-            for (std::int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
+        int32_t startSectorX = CWorld::GetSectorX(usedRect.left);
+        int32_t startSectorY = CWorld::GetSectorY(usedRect.top);
+        int32_t endSectorX = CWorld::GetSectorX(usedRect.right);
+        int32_t endSectorY = CWorld::GetSectorY(usedRect.bottom);
+        for (int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
+            for (int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
                 CPtrListDoubleLink* pDoubleLinkList = nullptr;
                 auto pRepeatSector = GetRepeatSector(sectorX, sectorY);
                 auto pSector = GetSector(sectorX, sectorY);
@@ -214,24 +218,24 @@ void CEntity::Remove_Reversed()
         usedRect.bottom = 2999.0F;
 
     if (m_bIsBIGBuilding) {
-        std::int32_t startSectorX = CWorld::GetLodSectorX(usedRect.left);
-        std::int32_t startSectorY = CWorld::GetLodSectorY(usedRect.top);
-        std::int32_t endSectorX = CWorld::GetLodSectorX(usedRect.right);
-        std::int32_t endSectorY = CWorld::GetLodSectorY(usedRect.bottom);
-        for (std::int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
-            for (std::int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
+        int32_t startSectorX = CWorld::GetLodSectorX(usedRect.left);
+        int32_t startSectorY = CWorld::GetLodSectorY(usedRect.top);
+        int32_t endSectorX = CWorld::GetLodSectorX(usedRect.right);
+        int32_t endSectorY = CWorld::GetLodSectorY(usedRect.bottom);
+        for (int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
+            for (int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
                 auto& pLodListEntry = CWorld::GetLodPtrList(sectorX, sectorY);
                 pLodListEntry.DeleteItem(this);
             }
         }
     }
     else {
-        std::int32_t startSectorX = CWorld::GetSectorX(usedRect.left);
-        std::int32_t startSectorY = CWorld::GetSectorY(usedRect.top);
-        std::int32_t endSectorX = CWorld::GetSectorX(usedRect.right);
-        std::int32_t endSectorY = CWorld::GetSectorY(usedRect.bottom);
-        for (std::int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
-            for (std::int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
+        int32_t startSectorX = CWorld::GetSectorX(usedRect.left);
+        int32_t startSectorY = CWorld::GetSectorY(usedRect.top);
+        int32_t endSectorX = CWorld::GetSectorX(usedRect.right);
+        int32_t endSectorY = CWorld::GetSectorY(usedRect.bottom);
+        for (int32_t sectorY = startSectorY; sectorY <= endSectorY; ++sectorY) {
+            for (int32_t sectorX = startSectorX; sectorX <= endSectorX; ++sectorX) {
                 CPtrListDoubleLink* pDoubleLinkList = nullptr;
                 auto pRepeatSector = GetRepeatSector(sectorX, sectorY);
                 auto pSector = GetSector(sectorX, sectorY);

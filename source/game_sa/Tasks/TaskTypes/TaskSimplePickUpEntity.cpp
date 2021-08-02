@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimplePickUpEntity.h"
+
 void CTaskSimplePickUpEntity::InjectHooks() {
     HookInstall(0x691870, (CTaskSimplePickUpEntity*(CTaskSimplePickUpEntity::*)(CEntity*, CVector*, char, unsigned char, CAnimBlock*, CAnimBlendHierarchy*, int, float)) & CTaskSimplePickUpEntity::Constructor);
     HookInstall(0x6917B0, (CTaskSimplePickUpEntity * (CTaskSimplePickUpEntity::*)(CEntity*, CVector*, char, unsigned char, int, int, float)) & CTaskSimplePickUpEntity::Constructor);

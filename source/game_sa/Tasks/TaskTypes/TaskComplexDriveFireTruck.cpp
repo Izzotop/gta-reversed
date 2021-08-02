@@ -1,5 +1,13 @@
 #include "StdInc.h"
 
+#include "TaskComplexDriveFireTruck.h"
+
+#include "TaskComplexDriveToPoint.h"
+#include "TaskComplexDriveWander.h"
+#include "TaskComplexDriveToPoint.h"
+#include "TaskComplexUseWaterCannon.h"
+#include "TaskSimpleCarDrive.h"
+
 void CTaskComplexDriveFireTruck::InjectHooks()
 {
     ReversibleHooks::Install("CTaskComplexDriveFireTruck", "Constructor", 0x659310, &CTaskComplexDriveFireTruck::Constructor);

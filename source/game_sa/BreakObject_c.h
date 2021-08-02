@@ -1,7 +1,6 @@
 #pragma once
 
-class BreakObject_c
-{
+class BreakObject_c {
 public:
     char field_0;
     char m_bActive;

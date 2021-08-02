@@ -176,7 +176,7 @@ class C2dEffect {
         tEffectPedAttractor pedAttractor;
         tEffectEnEx         enEx;
         tEffectRoadsign     roadsign;
-        std::int32_t        iSlotMachineIndex;
+        int32_t        iSlotMachineIndex;
         tEffectCoverPoint   coverPoint;
         tEffectEscalator    escalator;
     };

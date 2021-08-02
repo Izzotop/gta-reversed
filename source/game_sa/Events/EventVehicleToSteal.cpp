@@ -1,5 +1,9 @@
 #include "StdInc.h"
 
+#include "EventVehicleToSteal.h"
+
+#include "TaskComplexEnterCar.h"
+
 void CEventVehicleToSteal::InjectHooks()
 {
     HookInstall(0x4AF670, &CEventVehicleToSteal::Constructor);
@@ -19,31 +23,24 @@ CEventVehicleToSteal::~CEventVehicleToSteal()
         m_vehicle->CleanUpOldReference(reinterpret_cast<CEntity**>(&m_vehicle));
 }
 
+// 0x4AF670
 CEventVehicleToSteal* CEventVehicleToSteal::Constructor(CVehicle* vehicle)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<CEventVehicleToSteal*, 0x4AF670, CEvent*, CVehicle*>(this, vehicle);
-#else
     this->CEventVehicleToSteal::CEventVehicleToSteal(vehicle);
     return this;
-#endif
 }
 
-
+// 0x4AF760
 bool CEventVehicleToSteal::AffectsPed(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4AF760, CEvent*, CPed*>(this, ped);
-#else
     return CEventVehicleToSteal::AffectsPed_Reversed(ped);
-#endif
 }
 
 bool CEventVehicleToSteal::AffectsPed_Reversed(CPed* ped)
 {
     if (ped->IsAlive() && m_vehicle) {
-        auto enterCarAsDriverTask = reinterpret_cast<CTaskComplexEnterCar*>(FindPlayerPed()->GetTaskManager().FindTaskByType(
-            TASK_PRIMARY_PRIMARY, TASK_COMPLEX_ENTER_CAR_AS_DRIVER));
+        auto taskManager = FindPlayerPed()->GetTaskManager();
+        auto enterCarAsDriverTask = reinterpret_cast<CTaskComplexEnterCar*>(taskManager.FindTaskByType(TASK_PRIMARY_PRIMARY, TASK_COMPLEX_ENTER_CAR_AS_DRIVER));
         if (!enterCarAsDriverTask || !enterCarAsDriverTask->m_pTargetVehicle) {
             if (m_vehicle == FindPlayerPed()->m_pVehicle
                 && (CTheScripts::IsPlayerOnAMission() || CPad::GetPad(0)->bPlayerSafe))

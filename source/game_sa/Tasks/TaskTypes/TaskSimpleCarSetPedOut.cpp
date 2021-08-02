@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleCarSetPedOut.h"
+
 CTaskSimpleCarSetPedOut::CTaskSimpleCarSetPedOut(CVehicle* pTargetVehicle, int nTargetDoor, bool bSwitchOffEngine)
 {
     m_nTargetDoor = nTargetDoor;

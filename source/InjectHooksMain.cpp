@@ -2,6 +2,8 @@
 
 #include "SimpleVariablesSaveStructure.h"
 
+#include "TaskTypesInc.h"
+
 // Audio
 #include "AEAudioChannel.h"
 #include "AEAudioEnvironment.h"
@@ -24,8 +26,27 @@
 
 #include "CarGenerator.h"
 #include "TheCarGenerators.h"
+
 #include "Radar.h"
 #include "WaterCannons.h"
+#include "LoadMonitor.h"
+#include "WaterCreature_c.h"
+#include "WaterCreatureManager_c.h"
+#include "MovingThings.h"
+#include "Rope.h"
+#include "Ropes.h"
+#include "cHandlingDataMgr.h"
+
+#include "SpecialFX\3dMarker\3dMarker.h"
+#include "SpecialFX\3dMarker\3dMarkers.h"
+#include "SpecialFX\BrightLights.h"
+#include "SpecialFX\BulletTraces.h"
+#include "SpecialFX\Checkpoint\Checkpoint.h"
+#include "SpecialFX\Checkpoint\Checkpoints.h"
+#include "SpecialFX\MotionBlur\MotionBlurStreaks.h"
+#include "SpecialFX\MotionBlur\RegisteredMotionBlurStreak.h"
+#include "SpecialFX\ShinyTexts.h"
+#include "SpecialFX\SpecialFX.h"
 
 void WaitForDebugger() {
     while (!::IsDebuggerPresent()) {

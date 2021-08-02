@@ -1,4 +1,5 @@
 #pragma once
+
 #include "constants.h"
 
 class CTask;
@@ -6,10 +7,10 @@ class CPed;
 
 class CScriptedBrainTaskEntry {
 public:
-    CPed* m_ped;
+    CPed*   m_ped;
     int32_t unused1;
     int32_t unused2;
-    CTask* m_task;
+    CTask*  m_task;
 
 public:
     static void InjectHooks();

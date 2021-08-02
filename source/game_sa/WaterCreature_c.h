@@ -17,8 +17,7 @@ enum eWaterCreatureType : unsigned char {
     DOLPHIN
 };
 
-class WaterCreature_c : public ListItem_c
-{
+class WaterCreature_c : public ListItem_c {
 public:
     WaterCreature_c() : ListItem_c(), m_pObject(nullptr) {}
     ~WaterCreature_c() = default;

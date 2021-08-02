@@ -1,5 +1,8 @@
 #include "StdInc.h"
 
+#include "TaskComplexUseWaterCannon.h"
+#include "TaskSimpleCarDriveTimed.h"
+
 void CTaskComplexUseWaterCannon::InjectHooks()
 {
     ReversibleHooks::Install("CTaskComplexUseWaterCannon", "Constructor", 0x659780, &CTaskComplexUseWaterCannon::Constructor);

@@ -1,5 +1,11 @@
 #include "StdInc.h"
 
+#include "TaskComplexTreatAccident.h"
+
+#include "TaskSimpleGiveCPR.h"
+#include "TaskSimpleNone.h"
+#include "TaskSimpleAchieveHeading.h"
+
 void CTaskComplexTreatAccident::InjectHooks()
 {
     ReversibleHooks::Install("CTaskComplexTreatAccident", "Constructor", 0x658AB0, &CTaskComplexTreatAccident::Constructor);

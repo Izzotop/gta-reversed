@@ -25,7 +25,7 @@ public:
     CKeyArray           m_MissionKeyArray;
     CData               m_MissionText;
 
-    uchar               m_nLangCode;
+    uint8_t             m_nLangCode;
     bool                m_bIsMissionTextOffsetsLoaded;
     bool                m_bCdErrorLoaded;
     bool                m_bIsMissionPackLoaded;
@@ -49,7 +49,7 @@ public:
     void LoadMissionPackText();
 
 private:
-    bool ReadChunkHeader(ChunkHeader* header, FILESTREAM file, uint* offset, uchar nSkipBytes);
+    bool ReadChunkHeader(ChunkHeader* header, FILESTREAM file, uint32_t* offset, uint8_t nSkipBytes);
     char GetUpperCase(char unk);
 
 private:

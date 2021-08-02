@@ -4,7 +4,7 @@
 
 #include <sstream>
 
-void CDebugMenuToolInput::Initialise(std::int32_t inputBufferCapacity, ToolMap* OriginalMap)
+void CDebugMenuToolInput::Initialise(int32_t inputBufferCapacity, ToolMap* OriginalMap)
 {
     m_inputBuffer.reserve(inputBufferCapacity);
     m_originalGristListMap = OriginalMap;
@@ -30,7 +30,7 @@ void CDebugMenuToolInput::Process()
         }
         else {
             m_gristListMap.clear();
-            std::int32_t id = 0;
+            int32_t id = 0;
             std::stringstream sstream(m_inputBuffer);
             sstream >> id;
             bool checkWithID = !sstream.fail();

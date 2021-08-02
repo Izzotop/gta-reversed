@@ -1,5 +1,11 @@
 #include "StdInc.h"
 
+#include "TaskComplexGoToPointAndStandStillTimed.h"
+
+#include "TaskComplexLeaveCar.h"
+#include "TaskSimplePause.h"
+#include "TaskSimpleStandStill.h"
+
 void CTaskComplexGoToPointAndStandStillTimed::InjectHooks()
 {
     HookInstall(0x6685E0, &CTaskComplexGoToPointAndStandStillTimed::Constructor);
@@ -21,61 +27,41 @@ CTaskComplexGoToPointAndStandStillTimed::~CTaskComplexGoToPointAndStandStillTime
     // nothing here
 }
 
+// 0x6685E0
 CTaskComplexGoToPointAndStandStillTimed* CTaskComplexGoToPointAndStandStillTimed::Constructor(int moveState, const CVector& targetPoint, float fRadius, float fMoveStateRadius, int time)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTaskComplexGoToPointAndStandStillTimed*, 0x6685E0, CTask*, int, const CVector&, float, float, int>
-        (this, moveState, targetPoint, fRadius, fMoveStateRadius, time);
-#else
     this->CTaskComplexGoToPointAndStandStillTimed::CTaskComplexGoToPointAndStandStillTimed(moveState,  targetPoint, fRadius, fMoveStateRadius, time);
     return this;
-#endif
 }
 
+// 0x66CF30
 CTask* CTaskComplexGoToPointAndStandStillTimed::Clone()
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x66CF30, CTask*>(this);
-#else
     return CTaskComplexGoToPointAndStandStillTimed::Clone_Reversed();
-#endif
 }
 
-
+// 0x6686A0
 void CTaskComplexGoToPointAndStandStillTimed::StopTimer(CEvent* _event)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethod<0x6686A0, CTask*, CEvent*>(this, _event);
-#else
     return CTaskComplexGoToPointAndStandStillTimed::StopTimer_Reversed(_event);
-#endif
 }
 
+// 0x668640
 bool CTaskComplexGoToPointAndStandStillTimed::MakeAbortable(CPed* ped, eAbortPriority priority, CEvent* _event)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<bool, 0x668640, CTask*, CPed*, int, CEvent*>(this, ped, priority, _event);
-#else
     return CTaskComplexGoToPointAndStandStillTimed::MakeAbortable_Reversed(ped, priority, _event);
-#endif
 }
 
+// 0x66DC90
 CTask* CTaskComplexGoToPointAndStandStillTimed::CreateFirstSubTask(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x66DC90, CTask*, CPed*>(this, ped);
-#else
     return CTaskComplexGoToPointAndStandStillTimed::CreateFirstSubTask_Reversed(ped);
-#endif
 }
 
+// 0x66DCE0
 CTask* CTaskComplexGoToPointAndStandStillTimed::ControlSubTask(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x66DCE0, CTask*, CPed*>(this, ped);
-#else
     return CTaskComplexGoToPointAndStandStillTimed::ControlSubTask_Reversed(ped);
-#endif
 }
 
 CTask* CTaskComplexGoToPointAndStandStillTimed::Clone_Reversed()

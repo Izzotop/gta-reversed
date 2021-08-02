@@ -93,8 +93,8 @@ public:
         int m_nLodIndex; // -1 - without LOD model
         CEntity* m_pLod;
     };
-    std::int8_t   m_nNumLodChildren;
-    std::uint8_t  m_nNumLodChildrenRendered;
+    int8_t   m_nNumLodChildren;
+    uint8_t  m_nNumLodChildrenRendered;
     eEntityType   m_nType : 3;
     eEntityStatus m_nStatus : 5;
 

@@ -76,7 +76,7 @@ CStreamedScripts& CTheScripts::StreamedScripts = *reinterpret_cast<CStreamedScri
 CScriptResourceManager& CTheScripts::ScriptResourceManager = *reinterpret_cast<CScriptResourceManager*>(0xA485A8);
 CUpsideDownCarCheck& CTheScripts::UpsideDownCars = *reinterpret_cast<CUpsideDownCarCheck*>(0xA4892C);
 tScriptParam* CTheScripts::LocalVariablesForCurrentMission = reinterpret_cast<tScriptParam*>(0xA48960);
-std::uint8_t* CTheScripts::ScriptSpace = reinterpret_cast<std::uint8_t*>(0xA49960);
+uint8_t* CTheScripts::ScriptSpace = reinterpret_cast<uint8_t*>(0xA49960);
 char* CTheScripts::MissionBlock = reinterpret_cast<char*>(0xA7A6A0);
 CRunningScript*& CTheScripts::pIdleScripts = *reinterpret_cast<CRunningScript**>(0xA8B428);
 CRunningScript*& CTheScripts::pActiveScripts = *reinterpret_cast<CRunningScript**>(0xA8B42C);
@@ -164,8 +164,8 @@ void CTheScripts::RemoveThisPed(CPed* ped) {
 }
 
 // 0x464C20
-CRunningScript* CTheScripts::StartNewScript(std::uint8_t* startIP) {
-    return plugin::CallAndReturn<CRunningScript*, 0x464C20, std::uint8_t*>(startIP);
+CRunningScript* CTheScripts::StartNewScript(uint8_t* startIP) {
+    return plugin::CallAndReturn<CRunningScript*, 0x464C20, uint8_t*>(startIP);
 }
 
 void CTheScripts::UndoBuildingSwaps() {

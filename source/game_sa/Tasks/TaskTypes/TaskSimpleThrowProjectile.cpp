@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleThrowProjectile.h"
+
 CTaskSimpleThrowProjectile* CTaskSimpleThrowProjectile::Constructor(CEntity* pTarget, CVector Posn)
 {
     return plugin::CallMethodAndReturn<CTaskSimpleThrowProjectile*, 0x61F660, CTaskSimpleThrowProjectile*, CEntity*, CVector>(this, pTarget, Posn);

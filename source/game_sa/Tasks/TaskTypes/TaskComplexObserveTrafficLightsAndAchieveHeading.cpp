@@ -1,5 +1,6 @@
 #include "StdInc.h"
 
+#include "TaskComplexObserveTrafficLightsAndAchieveHeading.h"
 
 CTaskComplexObserveTrafficLightsAndAchieveHeading* CTaskComplexObserveTrafficLightsAndAchieveHeading::Constructor(unsigned int durationInMs, float fTargetHeading)
 {

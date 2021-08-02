@@ -8,6 +8,8 @@ Do not delete this comment block. Respect others' work!
 
 #include "CDebugMenu.h" // NOTSA
 
+#include "SpecialFX.h"
+
 int& g_nNumIm3dDrawCalls = *(int*)0xB73708;
 int gDefaultTaskTime = 9999999; // or 0x98967F a.k.a (one milllion - 1)
 char *gString = (char *)0xB71670;

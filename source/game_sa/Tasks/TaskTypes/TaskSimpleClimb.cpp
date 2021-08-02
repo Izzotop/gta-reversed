@@ -6,6 +6,8 @@ Do not delete this comment block. Respect others' work!
 */
 #include "StdInc.h"
 
+#include "TaskSimpleClimb.h"
+
 bool& CTaskSimpleClimb::tempMatrix_Initialized = *reinterpret_cast<bool*>(0xC19630);
 CMatrix& CTaskSimpleClimb::tempMatrix = *reinterpret_cast<CMatrix*>(0xC195E8);
 CColModel& CTaskSimpleClimb::ms_ClimbColModel = *reinterpret_cast<CColModel*>(0xC19518);

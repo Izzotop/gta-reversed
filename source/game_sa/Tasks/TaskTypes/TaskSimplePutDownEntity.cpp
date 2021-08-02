@@ -1,5 +1,6 @@
 #include "StdInc.h"
 
+#include "TaskSimplePutDownEntity.h"
 
 void CTaskSimplePutDownEntity::InjectHooks() {
     HookInstall(0x691990, &CTaskSimplePutDownEntity::Constructor);

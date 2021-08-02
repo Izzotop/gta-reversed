@@ -10,24 +10,24 @@ public:
     CVector field_10;
     CVector field_1C;
     CVector field_28;
-    std::int32_t field_34;
-    std::int32_t field_38;
-    std::int32_t field_3C;
+    int32_t field_34;
+    int32_t field_38;
+    int32_t field_3C;
     CTaskTimer field_40;
     CTaskTimer field_4C;
-    std::int32_t m_moveState; // see eMoveState
-    std::int8_t m_flag1 : 1;
-    std::int8_t m_flag2 : 1;
-    std::int8_t m_flag3 : 1;
-    std::int8_t m_flag4 : 1;
+    int32_t m_moveState; // see eMoveState
+    int8_t m_flag1 : 1;
+    int8_t m_flag2 : 1;
+    int8_t m_flag3 : 1;
+    int8_t m_flag4 : 1;
     char field_5D[3];
 
     static void InjectHooks();
 
-    CTaskComplexAvoidOtherPedWhileWandering(CPed* ped, CVector* targetPoint, std::int32_t moveState);
+    CTaskComplexAvoidOtherPedWhileWandering(CPed* ped, CVector* targetPoint, int32_t moveState);
     ~CTaskComplexAvoidOtherPedWhileWandering();
 private:
-    CTaskComplexAvoidOtherPedWhileWandering* Constructor(CPed* ped, CVector* targetPoint, std::int32_t moveState);
+    CTaskComplexAvoidOtherPedWhileWandering* Constructor(CPed* ped, CVector* targetPoint, int32_t moveState);
 public:
     CTask* Clone() override;
     CTask* ControlSubTask(CPed* ped) override;
@@ -37,7 +37,7 @@ public:
     CTask* CreateFirstSubTask(CPed* ped) override;
 
     void QuitIK(CPed* ped);
-    std::uint8_t NearbyPedsInSphere(CColSphere* colsphere, CPed* ped);
+    uint8_t NearbyPedsInSphere(CColSphere* colsphere, CPed* ped);
     void SetUpIK(CPed* ped);
     bool ComputeSphere(CPed* ped, CColSphere* colsphere, CPed** pedsToCheck, CPed** pedsInSphere);
     void ComputeAvoidSphere(CPed* ped, CColSphere* colsphere);

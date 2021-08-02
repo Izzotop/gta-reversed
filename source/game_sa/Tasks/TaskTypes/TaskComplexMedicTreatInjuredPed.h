@@ -3,8 +3,8 @@
 #include "TaskComplex.h"
 #include "Vehicle.h"
 #include "Accident.h"
-class CTaskComplexMedicTreatInjuredPed : public CTaskComplex
-{
+
+class CTaskComplexMedicTreatInjuredPed : public CTaskComplex {
 public:
     CVehicle* m_pVehicle;
     CPed* m_pPartnerMedic;
@@ -15,14 +15,16 @@ public:
     unsigned char m_bLeftCarOnce;
     char _pad2[3];
 
-
+public:
     static void InjectHooks();
+
     CTaskComplexMedicTreatInjuredPed(CVehicle* vehicle, CPed* ped, unsigned char isDriver);
     ~CTaskComplexMedicTreatInjuredPed();
+
 private:
     CTaskComplexMedicTreatInjuredPed* Constructor(CVehicle* vehicle, CPed* ped, unsigned char isDriver);
-public:
 
+public:
     CTask* Clone() override;
     eTaskType GetId() override { return TASK_COMPLEX_MEDIC_TREAT_INJURED_PED; };
     CTask* CreateFirstSubTask(CPed* ped) override;
@@ -41,4 +43,3 @@ public:
 };
 
 VALIDATE_SIZE(CTaskComplexMedicTreatInjuredPed, 0x2C);
-

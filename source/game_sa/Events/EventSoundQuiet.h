@@ -7,15 +7,15 @@ class CEventSoundQuiet : public CEventEditableResponse
 public:
     CEntity* m_entity;
     float m_fLocalSoundLevel;
-    std::uint32_t m_startTimeInMs;
+    uint32_t m_startTimeInMs;
     CVector m_position;
 
     static void InjectHooks();
 
-    CEventSoundQuiet(CEntity* entity, float fLocalSoundLevel, std::uint32_t startTime, CVector& position);
+    CEventSoundQuiet(CEntity* entity, float fLocalSoundLevel, uint32_t startTime, CVector& position);
     ~CEventSoundQuiet();
 private:
-    CEventSoundQuiet* Constructor(CEntity* entity, float fLocalSoundLevel, std::uint32_t startTime, CVector& position);
+    CEventSoundQuiet* Constructor(CEntity* entity, float fLocalSoundLevel, uint32_t startTime, CVector& position);
 public:
     eEventType GetEventType() override { return EVENT_SOUND_QUIET; }
     int GetEventPriority() override { return 8; }

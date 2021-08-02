@@ -2,29 +2,26 @@
 
 #include "IplDef.h"
 
-struct CColAccelColBound
-{
-    CRect m_Area;
+struct CColAccelColBound {
+    CRect   m_Area;
     int16_t m_wModelStart;
     int16_t m_wModelEnd;
-    bool m_bProcedural;
-    bool m_bInterior;
+    bool    m_bProcedural;
+    bool    m_bInterior;
 };
 VALIDATE_SIZE(CColAccelColBound, 0x18);
 
-struct CColAccelColEntry
-{
+struct CColAccelColEntry {
     CBoundingBox m_boundBox;
-    CSphere m_boundSphere;
-    int16_t m_wModelStart;
-    int16_t m_wModelEnd;
-    uint8_t m_nColSlot;
-    bool m_bUnkn;
+    CSphere      m_boundSphere;
+    int16_t      m_wModelStart;
+    int16_t      m_wModelEnd;
+    uint8_t      m_nColSlot;
+    bool         m_bUnkn;
 };
 VALIDATE_SIZE(CColAccelColEntry, 0x30);
 
-struct CColAccelIPLEntry
-{
+struct CColAccelIPLEntry {
     int32_t m_nLodIndex;
     int32_t m_nEntityIndex;
     int32_t m_nModelId;

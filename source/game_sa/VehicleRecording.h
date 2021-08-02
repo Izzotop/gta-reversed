@@ -1,8 +1,7 @@
 #include "Vector.h"
 #include "PathFind.h"
 
-class CVehicleStateEachFrame
-{
+class CVehicleStateEachFrame {
 public:
     float m_fTime;
     short m_sVelocityX;
@@ -21,13 +20,12 @@ public:
     CVector m_vecPosn;
 };
 
-class CPath
-{
+class CPath {
 public:
-    std::int32_t m_nNumber;
+    int32_t m_nNumber;
     CVehicleStateEachFrame* m_pData;
-    std::int32_t m_nSize;
-    std::int8_t m_nRefCount;
+    int32_t m_nSize;
+    int8_t m_nRefCount;
 };
 
 VALIDATE_SIZE(CVehicleStateEachFrame, 0x20);
@@ -37,12 +35,11 @@ struct RwStream;
 
 const uint32_t TOTAL_VEHICLE_RECORDS = 16;
 
-class CVehicleRecording
-{
+class CVehicleRecording {
 public:
-    static std::int32_t& NumPlayBackFiles;
-    static CPath(&StreamingArray)[TOTAL_RRR_MODEL_IDS];
-    static bool(&bUseCarAI)[TOTAL_VEHICLE_RECORDS];
+    static int32_t& NumPlayBackFiles;
+    static CPath (&StreamingArray)[TOTAL_RRR_MODEL_IDS];
+    static bool (&bUseCarAI)[TOTAL_VEHICLE_RECORDS];
     /*
     * DisplayMode
     * PlayBackStreamingIndex
@@ -55,7 +52,8 @@ public:
     * bPlaybackLooped
     * bPlaybackPaused
     * pPlaybackBuffer
-    * pVehicleForPlayback*/
+    * pVehicleForPlayback
+    */
 
     static void Init();
     /*
@@ -66,9 +64,9 @@ public:
     * IsPlaybackGoingOnForCar(CVehicle*)
     * IsPlaybackPausedForCar(CVehicle*)
     */
-    static bool HasRecordingFileBeenLoaded(std::int32_t rrrNumber);
-    static void Load(RwStream *stream, std::int32_t resourceId, std::int32_t totalSize);
-    static std::int32_t RegisterRecordingFile(char const* name);
+    static bool HasRecordingFileBeenLoaded(int32_t rrrNumber);
+    static void Load(RwStream* stream, int32_t resourceId, int32_t totalSize);
+    static int32_t RegisterRecordingFile(char const* name);
     static void SetPlaybackSpeed(CVehicle* vehicle, float speed);
     /*
     * PausePlaybackRecordedCar(CVehicle*)
@@ -88,6 +86,6 @@ public:
     * StopPlaybackWithIndex(int)
     * UnpausePlaybackRecordedCar(CVehicle*)
     */
-    static void StartPlaybackRecordedCar(CVehicle* vehicle, std::int32_t pathNumber, bool bUseCarAI, bool bLooped);
+    static void StartPlaybackRecordedCar(CVehicle* vehicle, int32_t pathNumber, bool bUseCarAI, bool bLooped);
     static void StopPlaybackRecordedCar(CVehicle* vehicle);
 };

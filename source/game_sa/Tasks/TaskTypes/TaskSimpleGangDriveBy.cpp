@@ -1,7 +1,9 @@
 #include "StdInc.h"
 
+#include "TaskSimpleGangDriveBy.h"
+
 CTaskSimpleGangDriveBy::CTaskSimpleGangDriveBy(CEntity* target, const CVector* targetPos, float abortRange,
-    std::int8_t frequencyPercentage, std::int8_t drivebyStyle, bool seatRHS)
+    int8_t frequencyPercentage, int8_t drivebyStyle, bool seatRHS)
 {
     m_bSeatRHS = seatRHS;
     m_nDrivebyStyle = drivebyStyle;

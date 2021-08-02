@@ -1,8 +1,8 @@
 #pragma once
+
 #include "WaterCreature_c.h"
 
-struct WaterCreatureInfo
-{
+struct WaterCreatureInfo {
     uint16_t* m_pModelId;
     uint8_t m_nMinCreated;
     uint8_t m_nMaxCreated;
@@ -19,8 +19,7 @@ struct WaterCreatureInfo
 };
 VALIDATE_SIZE(WaterCreatureInfo, 0x2C);
 
-class WaterCreatureManager_c
-{
+class WaterCreatureManager_c {
 public:
     WaterCreatureManager_c();
 

@@ -71,7 +71,7 @@ void CColStore::Shutdown()
     CColStore::ms_pQuadTree = nullptr;
 }
 
-std::int32_t CColStore::AddColSlot(const char* name)
+int32_t CColStore::AddColSlot(const char* name)
 {
     auto pColDef = new ColDef();
     pColDef->m_bActive = false;
@@ -120,7 +120,7 @@ void CColStore::AddRef(int colNum)
     ++pColDef->m_nRefCount; //BUG: We don't check whether the GetAt returned nullptr, which it can
 }
 
-std::int32_t CColStore::FindColSlot()
+int32_t CColStore::FindColSlot()
 {
     return -1;
 }

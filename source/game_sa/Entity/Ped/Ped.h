@@ -522,7 +522,7 @@ public:
     inline unsigned char GetCreatedBy() { return m_nCreatedBy; }
     inline bool IsCreatedBy(ePedCreatedBy v) { return v == m_nCreatedBy; }
     inline CPedStuckChecker& GetStuckChecker() { return m_pIntelligence->m_pedStuckChecker; }
-    inline std::int32_t GetGroupId() { return m_pPlayerData->m_nPlayerGroup; }
+    inline int32_t GetGroupId() { return m_pPlayerData->m_nPlayerGroup; }
     inline CPedGroup& GetGroup() { return CPedGroups::GetGroup(m_pPlayerData->m_nPlayerGroup); }
     inline CPedIntelligence* GetIntelligence() { return m_pIntelligence; }
     inline CTaskManager& GetTaskManager() { return m_pIntelligence->m_TaskMgr; }

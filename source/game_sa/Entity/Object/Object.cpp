@@ -7,6 +7,8 @@
 #include "StdInc.h"
 
 #include "Radar.h"
+#include "Ropes.h"
+#include "WaterCreatureManager_c.h"
 
 unsigned short& CObject::nNoTempObjects = *(unsigned short*)(0xBB4A70);
 float& CObject::fDistToNearestTree = *(float*)0x8D0A20;

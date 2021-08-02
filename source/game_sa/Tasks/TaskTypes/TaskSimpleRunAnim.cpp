@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleRunAnim.h"
+
 void CTaskSimpleRunAnim::InjectHooks()
 {
     ReversibleHooks::Install("CTaskSimpleRunAnim", "Constructor", 0x61A8B0, &CTaskSimpleRunAnim::Constructor);

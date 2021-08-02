@@ -1,11 +1,10 @@
 #pragma once
+
 #include "TaskComplexCarDrive.h"
 
-class CTaskComplexCarDriveWander : public CTaskComplexCarDrive
-{
+class CTaskComplexCarDriveWander : public CTaskComplexCarDrive {
 public:
-    CTaskComplexCarDriveWander(CVehicle *vehicle, int arg2, float fSpeed);
-
+    CTaskComplexCarDriveWander(CVehicle* vehicle, int arg2, float fSpeed);
 };
 
 VALIDATE_SIZE(CTaskComplexCarDrive, 0x24);

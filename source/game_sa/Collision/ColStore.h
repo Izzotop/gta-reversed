@@ -41,10 +41,10 @@ public:
 
     static void Initialise();
     static void Shutdown();
-    static std::int32_t AddColSlot(const char* name);
+    static int32_t AddColSlot(const char* name);
     static void AddCollisionNeededAtPosn(const CVector& pos);
     static void AddRef(int colNum);
-    static std::int32_t FindColSlot();
+    static int32_t FindColSlot();
     static void BoundingBoxesPostProcess();
     static void EnsureCollisionIsInMemory(CVector const& pos);
     static CRect* GetBoundingBox(int colSlot);

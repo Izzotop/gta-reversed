@@ -19,14 +19,14 @@ public:
     short m_nAnimId;
     unsigned short m_nAnimGroup;
     unsigned short m_nFlags;
-    CAnimBlendSequence **m_pSequenceArray;
-    CAnimBlendHierarchy *m_pHierarchy;
+    CAnimBlendSequence** m_pSequenceArray;
+    CAnimBlendHierarchy* m_pHierarchy;
 
     // vtable function #0 (destructor)
 
-     void AllocateSequenceArray(int count);
-     void FreeSequenceArray();
-     void Init(RpClump *clump, CAnimBlendHierarchy *hierarchy);
+    void AllocateSequenceArray(int count);
+    void FreeSequenceArray();
+    void Init(RpClump* clump, CAnimBlendHierarchy* hierarchy);
 };
 
 VTABLE_DESC(CAnimBlendStaticAssociation, 0x85C6CC, 1);

@@ -33,7 +33,7 @@ public:
     static void InjectHooks();
 
     void Set(float radius, CVector const& center);
-    void Set(float radius, CVector const& center, std::uint8_t material, std::uint8_t flags, std::uint8_t lighting);
+    void Set(float radius, CVector const& center, uint8_t material, uint8_t flags, uint8_t lighting);
     bool IntersectRay(CVector const& rayOrigin, CVector const& direction, CVector& intersectPoint1, CVector& intersectPoint2);
     bool IntersectEdge(CVector const& startPoint, CVector const& endPoint, CVector& intersectPoint1, CVector& intersectPoint2);
     bool IntersectSphere(CColSphere const& right);

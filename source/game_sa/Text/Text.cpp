@@ -19,7 +19,7 @@ CText& TheText = *(CText*)0xC1B340;
 char GxtErrorString[32];
 
 // 0x56D3A4
-static constexpr std::uint8_t FrenchUpperCaseTable[] = {
+static constexpr uint8_t FrenchUpperCaseTable[] = {
     0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F,
     0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x41, 0x41, 0x41, 0x41, 0x84, 0x85, 0x45, 0x45, 0x45,
     0x45, 0x49, 0x49, 0x49, 0x49, 0x4F, 0x4F, 0x4F, 0x4F, 0x55, 0x55, 0x55, 0x55, 0xAD, 0xAD, 0xAF,
@@ -138,12 +138,12 @@ void CText::Load(bool bKeepMissionPack) {
     CFileMgr::SetDir("TEXT");
     FILESTREAM file = CFileMgr::OpenFile(filename, "rb");
 
-    ushort version = 0;
-    ushort encoding = 0;
+    uint16_t version = 0;
+    uint16_t encoding = 0;
     CFileMgr::Read(file, &version, sizeof(version));
     CFileMgr::Read(file, &encoding, sizeof(encoding));
 
-    uint offset = sizeof(ushort) * 2; // skip version and encoding
+    uint32_t offset = sizeof(uint16_t) * 2; // skip version and encoding
     bool bTKEY = false;
     bool bTDAT = false;
     ChunkHeader header{};
@@ -236,8 +236,8 @@ void CText::GetNameOfLoadedMissionText(char* outStr) {
 }
 
 // 0x69F940
-bool CText::ReadChunkHeader(ChunkHeader* header, FILESTREAM file, uint* offset, uchar nSkipBytes) {
-    return plugin::CallMethodAndReturn<bool, 0x69F940, CText*, ChunkHeader*, FILESTREAM, uint*, uchar>(this, header, file, offset, nSkipBytes);
+bool CText::ReadChunkHeader(ChunkHeader* header, FILESTREAM file, uint32_t* offset, uint8_t nSkipBytes) {
+    return plugin::CallMethodAndReturn<bool, 0x69F940, CText*, ChunkHeader*, FILESTREAM, uint32_t*, uint8_t>(this, header, file, offset, nSkipBytes);
 
 #ifdef USE_ORIGINAL_CODE
     // Taken from re3. That not same as original, but do same thing

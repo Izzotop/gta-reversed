@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskComplexFollowPedFootsteps.h"
+
 void CTaskComplexFollowPedFootsteps::InjectHooks()
 {
     HookInstall(0x694E20, &CTaskComplexFollowPedFootsteps::Constructor);

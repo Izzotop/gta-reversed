@@ -46,8 +46,8 @@ private:
     CEventSpecial* Constructor();
 public:
     eEventType GetEventType() override { return EVENT_SPECIAL; }
-    std::int32_t GetEventPriority() override { return 52; }
-    std::int32_t GetLifeTime() override { return 0; }
+    int32_t GetEventPriority() override { return 52; }
+    int32_t GetLifeTime() override { return 0; }
     bool AffectsPed(CPed* ped) override { return true; }
     CEventSpecial* CloneEditable() override { return new CEventSpecial(); }
 };
@@ -66,8 +66,8 @@ private:
     CEventFireNearby* Constructor(CVector const& position);
 public:
     eEventType GetEventType() override { return EVENT_FIRE_NEARBY; }
-    std::int32_t GetEventPriority() override { return 17; }
-    std::int32_t GetLifeTime() override { return 0; }
+    int32_t GetEventPriority() override { return 17; }
+    int32_t GetLifeTime() override { return 0; }
     bool AffectsPed(CPed* ped) override;
     bool TakesPriorityOver(CEvent* refevent) override { return true; }
     CEventFireNearby* CloneEditable() override { return new CEventFireNearby(m_position); }
@@ -93,8 +93,8 @@ private:
     CEventDanger* Constructor(CEntity* dangerFrom, float dangerRadius);
 public:
     eEventType GetEventType() override { return EVENT_DANGER; }
-    std::int32_t GetEventPriority() override { return 20; }
-    std::int32_t GetLifeTime() override { return 0; }
+    int32_t GetEventPriority() override { return 20; }
+    int32_t GetLifeTime() override { return 0; }
     bool AffectsPed(CPed* ped) override;
     bool AffectsPedGroup(CPedGroup* pedGroup) override;
     CEntity* GetSourceEntity() override;
@@ -119,8 +119,8 @@ private:
     CEventSeenPanickedPed* Constructor(CPed* ped);
 public:
     eEventType GetEventType() override { return EVENT_SEEN_PANICKED_PED; }
-    std::int32_t GetEventPriority() override { return 13; }
-    std::int32_t GetLifeTime() override { return 0; }
+    int32_t GetEventPriority() override { return 13; }
+    int32_t GetLifeTime() override { return 0; }
     bool AffectsPed(CPed* ped) override;
     CEntity* GetSourceEntity() override { return m_ped;}
     CEventSeenPanickedPed* CloneEditable() override { return new CEventSeenPanickedPed(m_ped); }

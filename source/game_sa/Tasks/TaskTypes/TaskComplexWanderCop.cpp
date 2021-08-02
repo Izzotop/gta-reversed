@@ -1,5 +1,9 @@
 #include "StdInc.h"
 
+#include "TaskComplexWanderCop.h"
+#include "TaskSimpleStandStill.h"
+#include "TaskComplexPolicePursuit.h"
+
 void CTaskComplexWanderCop::InjectHooks()
 {
     HookInstall(0x460C80, &CTaskComplexWanderCop::Constructor);
@@ -35,68 +39,45 @@ CTaskComplexWanderCop::~CTaskComplexWanderCop() {
         delete pTask;
 }
 
+// 0x460C80
 CTaskComplexWanderCop* CTaskComplexWanderCop::Constructor(int moveState, unsigned char dir) {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTaskComplexWanderCop*, 0x460C80, CTaskComplexWanderCop*, int, unsigned char>(this, moveState, dir);
-#else
     this->CTaskComplexWanderCop::CTaskComplexWanderCop(moveState, dir);
     return this;
-#endif
 }
 
-
+// 0x460CE0
 CTask* CTaskComplexWanderCop::Clone() {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x460CE0, CTaskComplexWander*>(this);
-#else
     return new CTaskComplexWanderCop(m_nMoveState, m_nDir);
-#endif
 }
 
+// 0x674860
 CTask* CTaskComplexWanderCop::CreateNextSubTask(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x674860, CTaskComplexWander*, CPed*>(this, ped);
-#else
     return CreateNextSubTask_Reversed(ped);
-#endif
 }
 
+// 0x674750
 CTask* CTaskComplexWanderCop::CreateFirstSubTask(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x674750, CTaskComplexWander*, CPed*>(this, ped);
-#else
     return CreateFirstSubTask_Reversed(ped);
-#endif
 }
 
+// 0x674D80
 CTask* CTaskComplexWanderCop::ControlSubTask(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<CTask*, 0x674D80, CTaskComplexWander*, CPed*>(this, ped);
-#else
     return ControlSubTask_Reversed(ped);
-#endif
 }
 
+// 0x460D50
 int CTaskComplexWanderCop::GetWanderType()
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return ((int(__thiscall*)(CTaskComplex*))0x460D50)(this);
-#else
     return CTaskComplexWanderCop::GetWanderType_Reversed();
-#endif
 }
 
-
+// 0x6702B0
 void CTaskComplexWanderCop::ScanForStuff(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return ((void(__thiscall*)(CTaskComplex*, CPed*))0x6702B0)(this, ped);
-#else
     return ScanForStuff_Reversed(ped);
-#endif
 }
 
 CTask* CTaskComplexWanderCop::Clone_Reversed() {
@@ -255,12 +236,10 @@ void CTaskComplexWanderCop::ScanForStuff_Reversed(CPed* ped)
     }
 }
 
+// 0x66B1B0
 void CTaskComplexWanderCop::LookForCarAlarms(CCopPed* pPed)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    plugin::CallMethod<0x66B1B0, CTaskComplexWanderCop*, CPed*>(this, pPed);
-#else
-    CVehicle* pPlayerVehicle = FindPlayerVehicle(-1, 0);
+    CVehicle* pPlayerVehicle = FindPlayerVehicle(-1, false);
     if (pPlayerVehicle && pPlayerVehicle->IsAutomobile()) {
         short alaramState = pPlayerVehicle->m_nAlarmState;
         if (alaramState) {
@@ -271,14 +250,11 @@ void CTaskComplexWanderCop::LookForCarAlarms(CCopPed* pPed)
             }
         }
     }
-#endif
 }
 
+// 0x66B290
 void CTaskComplexWanderCop::LookForStolenCopCars(CCopPed* pPed)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    plugin::CallMethod<0x66B290, CTaskComplexWanderCop*, CPed*>(this, pPed);
-#else
     CPlayerPed* pPlayerPed = FindPlayerPed(-1);
 
     CWanted* pWanted = nullptr;
@@ -294,14 +270,11 @@ void CTaskComplexWanderCop::LookForStolenCopCars(CCopPed* pPed)
             pPlayerPed->SetWantedLevelNoDrop(1);
         }
     }
-#endif
 }
 
+// 0x66B300
 void CTaskComplexWanderCop::LookForCriminals(CCopPed* pPed)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    plugin::CallMethod<0x66B300, CTaskComplexWanderCop*, CPed*>(this, pPed);
-#else
     CPed* pCriminalPed = nullptr;
     for (int entityIndex = 0; entityIndex < 16; entityIndex++)
     {
@@ -341,14 +314,11 @@ void CTaskComplexWanderCop::LookForCriminals(CCopPed* pPed)
     // 30 seconds wait for next check
     m_nTimePassedSinceLastLookedForCriminals = CTimer::m_snTimeInMilliseconds + 30000;
     m_pLastCriminalPedLookedFor = pCriminalPed;
-#endif
 }
 
+// 0x66B160
 bool CTaskComplexWanderCop::ShouldPursuePlayer(CCopPed* pPed)
 {
-#ifdef USE_DEFAULT_FUNCTIONS 
-    return plugin::CallMethodAndReturn<bool, 0x66B160, CTaskComplexWanderCop*, CPed*>(this, pPed);
-#else
     CWanted* pWantedPlayer = FindPlayerWanted(-1);
     if (pWantedPlayer->m_nWantedLevel > 0)
     {
@@ -361,5 +331,4 @@ bool CTaskComplexWanderCop::ShouldPursuePlayer(CCopPed* pPed)
         }
     }
     return false;
-#endif
 }

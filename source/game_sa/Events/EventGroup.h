@@ -11,7 +11,7 @@
 enum eTaskType;
 class CPed;
 
-const std::int32_t TOTAL_EVENTS_PER_EVENTGROUP = 16;
+const int32_t TOTAL_EVENTS_PER_EVENTGROUP = 16;
 
 class CEventGroup {
 public:

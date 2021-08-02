@@ -1,5 +1,8 @@
 #include "StdInc.h"
 
+#include "TaskComplexKillPedOnFoot.h"
+#include "TaskComplexArrestPed.h"
+
 void CEventLeaderEnteredCarAsDriver::InjectHooks()
 {
     HookInstall(0x48E1C0, &CEventLeaderEnteredCarAsDriver::Constructor);
@@ -49,19 +52,16 @@ CEventLeaderEnteredCarAsDriver* CEventLeaderEnteredCarAsDriver::Constructor(CVeh
     return this;
 }
 
+// 0x4B0EF0
 bool CEventLeaderEnteredCarAsDriver::AffectsPedGroup(CPedGroup* pedGroup)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4B0EF0, CEventLeaderEnteredCarAsDriver*, CPedGroup*>(this, pedGroup);
-#else
     return CEventLeaderEnteredCarAsDriver::AffectsPedGroup_Reversed(pedGroup);
-#endif
 }
 
 bool CEventLeaderEnteredCarAsDriver::AffectsPedGroup_Reversed(CPedGroup* pedGroup)
 {
     if (m_vehicle && pedGroup->m_bMembersEnterLeadersVehicle) {
-        for (std::int32_t i = 0; i < TOTAL_PED_GROUP_FOLLOWERS; i++) {
+        for (int32_t i = 0; i < TOTAL_PED_GROUP_FOLLOWERS; i++) {
             CPed* member = pedGroup->GetMembership().GetMember(i);
             if (member) {
                 if (!member->bInVehicle
@@ -82,18 +82,15 @@ CEventLeaderExitedCarAsDriver* CEventLeaderExitedCarAsDriver::Constructor()
     return this;
 }
 
+// 0x4B0F80
 bool CEventLeaderExitedCarAsDriver::AffectsPedGroup(CPedGroup* pedGroup)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4B0F80, CEventLeaderExitedCarAsDriver*, CPedGroup*>(this, pedGroup);
-#else
     return CEventLeaderExitedCarAsDriver::AffectsPedGroup_Reversed(pedGroup);
-#endif
 }
 
 bool CEventLeaderExitedCarAsDriver::AffectsPedGroup_Reversed(CPedGroup* pedGroup)
 {
-    for (std::int32_t i = 0; i < TOTAL_PED_GROUP_FOLLOWERS; i++) {
+    for (int32_t i = 0; i < TOTAL_PED_GROUP_FOLLOWERS; i++) {
         CPedGroupMembership& memberShip = pedGroup->GetMembership();
         CPed* member = memberShip.GetMember(i);
         if (member) {
@@ -115,13 +112,10 @@ CEventLeaderQuitEnteringCarAsDriver* CEventLeaderQuitEnteringCarAsDriver::Constr
     return this;
 }
 
+// 0x4B1010
 bool CEventLeaderQuitEnteringCarAsDriver::AffectsPedGroup(CPedGroup* pedGroup)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4B1010, CEventLeaderQuitEnteringCarAsDriver*, CPedGroup*>(this, pedGroup);
-#else
     return CEventLeaderQuitEnteringCarAsDriver::AffectsPedGroup_Reversed(pedGroup);
-#endif
 }
 
 bool CEventLeaderQuitEnteringCarAsDriver::AffectsPedGroup_Reversed(CPedGroup* pedGroup)
@@ -151,22 +145,16 @@ CEventAreaCodes* CEventAreaCodes::Constructor(CPed* ped)
     return this;
 }
 
+// 0x4B2270
 bool CEventAreaCodes::AffectsPed(CPed* ped)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4B2270, CEventAreaCodes*, CPed*>(this, ped);
-#else
     return CEventAreaCodes::AffectsPed_Reversed(ped);
-#endif
 }
 
+// 0x4B2350
 bool CEventAreaCodes::TakesPriorityOver(CEvent* refEvent)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return plugin::CallMethodAndReturn<bool, 0x4B2350, CEventAreaCodes*, CEvent*>(this, refEvent);
-#else
     return CEventAreaCodes::TakesPriorityOver_Reversed(refEvent);
-#endif
 }
 
 bool CEventAreaCodes::AffectsPed_Reversed(CPed* ped)

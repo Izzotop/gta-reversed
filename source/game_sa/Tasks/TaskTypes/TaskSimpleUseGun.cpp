@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleUseGun.h"
+
 CTaskSimpleUseGun* CTaskSimpleUseGun::Constructor(CEntity* pTargetEntity, CVector vecTarget, unsigned char nCommand, unsigned short nBurstLength, bool bAimImmediate)
 {
     return plugin::CallMethodAndReturn<CTaskSimpleUseGun*, 0x61DE60, CTaskSimpleUseGun* , CEntity*, CVector, unsigned char, unsigned short, bool>

@@ -4,17 +4,17 @@
 class CEventCreatePartnerTask : public CEvent
 {
 public:
-    std::int32_t m_randomNumber;
+    int32_t m_randomNumber;
     CPed* m_partner;
     bool m_leadSpeaker;
     float m_distanceMultiplier;
 
     static void InjectHooks();
 
-    CEventCreatePartnerTask(std::int32_t randomNumber, CPed* partner, bool leadSpeaker, float distanceMultiplier);
+    CEventCreatePartnerTask(int32_t randomNumber, CPed* partner, bool leadSpeaker, float distanceMultiplier);
     ~CEventCreatePartnerTask();
 private:
-    CEventCreatePartnerTask* Constructor(std::int32_t randomNumber, CPed* partner, bool leadSpeaker, float distanceMultiplier);
+    CEventCreatePartnerTask* Constructor(int32_t randomNumber, CPed* partner, bool leadSpeaker, float distanceMultiplier);
 public:
     eEventType GetEventType() override { return EVENT_CREATE_PARTNER_TASK; }
     int GetEventPriority() override { return 6; }

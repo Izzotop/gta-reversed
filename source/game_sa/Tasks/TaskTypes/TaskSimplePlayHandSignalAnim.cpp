@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimplePlayHandSignalAnim.h"
+
 void CTaskSimplePlayHandSignalAnim::InjectHooks()
 {
 // VIRTUAL

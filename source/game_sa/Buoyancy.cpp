@@ -35,7 +35,7 @@ bool cBuoyancy::ProcessBuoyancy(CPhysical* pEntity, float fBuoyancy, CVector* ve
     {
         pEntity->GetColModel(); // for some reason, this is here?
 
-        m_bInWater = 1;
+        m_bInWater = true;
         m_fEntityWaterImmersion = (m_fWaterLevel - entityPosition.z + 1.0F) / 1.9F;
         if (m_fEntityWaterImmersion > 1.0F)
         {
@@ -44,7 +44,7 @@ bool cBuoyancy::ProcessBuoyancy(CPhysical* pEntity, float fBuoyancy, CVector* ve
         else if (m_fEntityWaterImmersion < 0.0F) 
         {
             m_fEntityWaterImmersion = 0.0F;
-            m_bInWater = 0;
+            m_bInWater = false;
         }
 
         m_vecTurnPoint = CVector(0.0F, 0.0F, 0.0F);
@@ -332,7 +332,7 @@ void cBuoyancy::AddSplashParticles(CPhysical* pEntity, CVector vecFrom, CVector 
         }
     }
 
-    AudioEngine.ReportWaterSplash(pEntity, -100.0F, 0);
+    AudioEngine.ReportWaterSplash(pEntity, -100.0F, false);
 }
 
 void cBuoyancy::SimpleCalcBuoyancy(CPhysical* pEntity)

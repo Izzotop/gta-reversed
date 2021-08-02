@@ -1,5 +1,12 @@
 #include "StdInc.h"
 
+#include "TaskComplexInAirAndLand.h"
+
+#include "TaskSimpleGetUp.h"
+#include "TaskSimpleLand.h"
+#include "TaskSimpleFall.h"
+#include "TaskSimpleLand.h"
+
 void CTaskComplexInAirAndLand::InjectHooks()
 {
     ReversibleHooks::Install("CTaskComplexInAirAndLand", "Constructor", 0x678C80, &CTaskComplexInAirAndLand::Constructor);

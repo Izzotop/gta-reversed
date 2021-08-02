@@ -4,18 +4,20 @@
 #include "PedGroup.h"
 
 class CPed;
-class CEventGroupEvent : public CEvent
-{
+class CEventGroupEvent : public CEvent {
 public:
     CPed* m_ped;
     CEvent* m_event;
 
+public:
     static void InjectHooks();
 
     CEventGroupEvent(CPed* ped, CEvent* event);
     ~CEventGroupEvent();
+
 private:
     CEventGroupEvent* Constructor(CPed* ped, CEvent* event);
+
 public:
     eEventType GetEventType() override { return EVENT_GROUP_EVENT; }
     int GetEventPriority() override { return 41; };
@@ -27,6 +29,7 @@ public:
 
     CEvent* Clone_Reversed();
     bool BaseEventTakesPriorityOverBaseEvent(CEventGroupEvent* other);
+
 private:
     bool IsPriorityEvent();
 };

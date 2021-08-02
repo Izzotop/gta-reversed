@@ -1,5 +1,7 @@
 #include "StdInc.h"
 
+#include "TaskSimpleGoTo.h"
+
 float& CTaskSimpleGoTo::ms_fLookAtThresholdDotProduct = *(float*)0xC18D48;
 
 void CTaskSimpleGoTo::InjectHooks() {
@@ -46,12 +48,15 @@ bool CTaskSimpleGoTo::HasCircledTarget(CPed* pPed)
         gotoFlags.m_b01 = true;
     else if (m_vecTargetPoint.x < pedPos.x)
         gotoFlags.m_b02 = true;
+
     if (m_vecTargetPoint.y > pedPos.y)
         gotoFlags.m_b03 = true;
     else if (m_vecTargetPoint.y < pedPos.y) 
         gotoFlags.m_b04 = true;
+
     if (gotoFlags.m_b01 && gotoFlags.m_b02 && gotoFlags.m_b03 && gotoFlags.m_b04)
         return true;
+
     return false;
 #endif
 }

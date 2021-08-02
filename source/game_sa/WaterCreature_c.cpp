@@ -1,5 +1,8 @@
 #include "StdInc.h"
 
+#include "WaterCreature_c.h"
+#include "WaterCreatureManager_c.h"
+
 void WaterCreature_c::InjectHooks()
 {
     ReversibleHooks::Install("WaterCreature_c", "Init", 0x6E4160, &WaterCreature_c::Init);
@@ -82,10 +85,7 @@ void WaterCreature_c::Exit()
     g_waterCreatureMan.m_createdList.RemoveItem(this);
     g_waterCreatureMan.m_freeList.AddItem(this);
     CWorld::Remove(m_pObject);
-
-    if (m_pObject)
-        delete m_pObject;
-
+    delete m_pObject;
     m_pObject = nullptr;
     --CObject::nNoTempObjects;
 }

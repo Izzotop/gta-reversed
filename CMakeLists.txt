@@ -46,23 +46,106 @@ target_include_directories(gta_reversed PRIVATE
     source/game_sa/Debug/
     source/game_sa/Animation/
     source/game_sa/Audio/
+    source/game_sa/Audio/Entities
+    source/game_sa/Audio/Hardware
+    source/game_sa/Audio/Loaders
+    source/game_sa/Audio/Managers
+    source/game_sa/Audio/Utility
+
+    source/game_sa/Car/
+    source/game_sa/Car/Data/
+    source/game_sa/Car/Data/Generators/
+
     source/game_sa/Collision/
+    source/game_sa/Control/
+    source/game_sa/Controllers/
+    source/game_sa/Filesystem/
+    source/game_sa/Filesystem/Save/
+    source/game_sa/Filesystem/Streaming/
+    source/game_sa/Filesystem/Ipl/
+    source/game_sa/Dynamic/
+    source/game_sa/Frontend/
+
     source/game_sa/Core/
+    source/game_sa/Core/List/
+    source/game_sa/Core/List/Double
+    source/game_sa/Core/List/Single
+    source/game_sa/Core/Matrix/
+    source/game_sa/Core/Tree/
+    source/game_sa/Core/Vector/
+
+    source/
+
     source/game_sa/Entity/
+    source/game_sa/Entity/Camera
     source/game_sa/Entity/Dummy/
     source/game_sa/Entity/Object/
     source/game_sa/Entity/Ped/
     source/game_sa/Entity/Vehicle/
     source/game_sa/Enums/
     source/game_sa/Events/
-    source/game_sa/Fx/
+
+    source/game_sa/Peds/
+    source/game_sa/Peds/AI
+    source/game_sa/Peds/Attractors
+    source/game_sa/Peds/Conversation
+    source/game_sa/Peds/Data
+    source/game_sa/Peds/Decision
+    source/game_sa/Peds/Gangs
+
+    source/game_sa/Plugins//
+    source/game_sa/Plugins/CollisionPlugin/
+    source/game_sa/Plugins/JPegCompressPlugin/
+    source/game_sa/Plugins/NodeNamePlugin/
+    source/game_sa/Plugins/PipelinePlugin/
+    source/game_sa/Plugins/TwoDEffectPlugin/
+
+    source/game_sa/Render/
+    source/game_sa/Render/2D/
+    source/game_sa/Render/2D/Hud/
+    source/game_sa/Render/2D/UserDisplay/
+
+    source/game_sa/Render/3D/
+    source/game_sa/Render/Attractors/
+    source/game_sa/Render/3D/Attractors/Light
+    source/game_sa/Render/3D/Attractors/CoverPoint
+    source/game_sa/Render/3D/Attractors/EnterExit
+    source/game_sa/Render/3D/MovingThings/
+    source/game_sa/Render/3D/MovingThings/Escalator
+    source/game_sa/Render/3D/MovingThings/PlaneTrails
+    source/game_sa/Render/3D/Rope
+
+    source/game_sa/Render/3D/Effects/
+    source/game_sa/Render/3D/Corona/
+    source/game_sa/Render/3D/Fire/
+    source/game_sa/Render/3D/SpecialFX/
+    source/game_sa/Render/3D/SpecialFX/3dMarker/
+    source/game_sa/Render/3D/SpecialFX/Checkpoint/
+    source/game_sa/Render/3D/SpecialFX/MotionBlur/
+    source/game_sa/Render/3D/Stencil/
+    source/game_sa/Render/3D/WaterCannons/
+    source/game_sa/Render/3D/Shadows/
+
+    source/game_sa/FxTools/
+    source/game_sa/FxTools/Blueprints/
+    source/game_sa/FxTools/Blueprints/Info/
+
     source/game_sa/Models/
     source/game_sa/Plugins/
     source/game_sa/RenderWare/
     source/game_sa/RenderWare/rw/
     source/game_sa/Scripts/
+    source/game_sa/Scripts/CarCheck/
     source/game_sa/Tasks/
     source/game_sa/Tasks/TaskTypes/
+
+    source/game_sa/Text/
+    source/game_sa/Weapon/
+
+    source/game_sa/World/
+    source/game_sa/World/Weather/
+    source/game_sa/World/Zone/
+
     libs/imgui/
     libs/imgui/misc/cpp/
 )

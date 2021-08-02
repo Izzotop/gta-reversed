@@ -1,9 +1,9 @@
 #pragma once
+
 #include "TaskSimple.h"
 #include "Accident.h"
 
-class CTaskSimpleGiveCPR : public CTaskSimple
-{
+class CTaskSimpleGiveCPR : public CTaskSimple {
 public:
     union {
         struct {
@@ -20,6 +20,7 @@ public:
 
 private:
     CTaskSimpleGiveCPR* Constructor(CAccident* pAccident);
+
 public:
     CTaskSimpleGiveCPR(CAccident* pAccident);
     ~CTaskSimpleGiveCPR() override;

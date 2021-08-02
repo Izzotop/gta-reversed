@@ -108,7 +108,7 @@ void* CRunningScript::GetPointerToLocalVariable(int varId) {
 }
 
 // 0x465C20
-void CRunningScript::GivePedScriptedTask(std::int32_t pedHandle, CTask* task, std::int32_t opcode) {
+void CRunningScript::GivePedScriptedTask(int32_t pedHandle, CTask* task, int32_t opcode) {
     if (pedHandle == -1) {
         CTaskSequences::AddTaskToActiveSequence(task);
         return;
@@ -117,27 +117,27 @@ void CRunningScript::GivePedScriptedTask(std::int32_t pedHandle, CTask* task, st
     CPedGroup* pPedGroup = CPedGroups::GetPedsGroup(ped);
     CPed* pOtherPed = nullptr;
     if (m_externalType == 5 || m_externalType == 2 || !m_externalType || m_externalType == 3) {
-        std::int32_t* pLocalVariable = reinterpret_cast<std::int32_t*>(GetPointerToLocalVariable(0));
+        int32_t* pLocalVariable = reinterpret_cast<int32_t*>(GetPointerToLocalVariable(0));
         pOtherPed = CPools::ms_pPedPool->GetAtRef(*pLocalVariable);
     }
     if (ped->bHasAScriptBrain && pOtherPed != ped) {
         delete task;
     } else if (pOtherPed && m_externalType == 5) {
         if (CScriptedBrainTaskStore::SetTask(ped, task)) {
-            const std::int32_t slot = CPedScriptedTaskRecord::GetVacantSlot();
+            const int32_t slot = CPedScriptedTaskRecord::GetVacantSlot();
             CPedScriptedTaskRecord::ms_scriptedTasks[slot].SetAsAttractorScriptTask(ped, opcode, task);
         }
     } else if (!pPedGroup || ped->IsPlayer()) {
         CEventScriptCommand eventScriptCommand(TASK_PRIMARY_PRIMARY, task, false);
         CEventScriptCommand* event = static_cast<CEventScriptCommand*>(ped->GetEventGroup().Add(&eventScriptCommand, false));
         if (event) {
-            const std::int32_t slot = CPedScriptedTaskRecord::GetVacantSlot();
+            const int32_t slot = CPedScriptedTaskRecord::GetVacantSlot();
             CPedScriptedTaskRecord::ms_scriptedTasks[slot].Set(ped, opcode, event);
         }
     } else {
         pPedGroup->GetIntelligence().SetScriptCommandTask(ped, task);
         CTask* pScriptedTask = pPedGroup->GetIntelligence().GetTaskScriptCommand(ped);
-        const std::int32_t slot = CPedScriptedTaskRecord::GetVacantSlot();
+        const int32_t slot = CPedScriptedTaskRecord::GetVacantSlot();
         CPedScriptedTaskRecord::ms_scriptedTasks[slot].SetAsGroupTask(ped, opcode, pScriptedTask);
         delete task;
     }
