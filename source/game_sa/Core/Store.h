@@ -9,14 +9,14 @@
 template <typename ObjectType, unsigned int Capacity>
 class CStore {
 public:
-    unsigned int m_nCount;
-    ObjectType   m_aObjects[Capacity];
+    uint32_t   m_nCount;
+    ObjectType m_aObjects[Capacity];
 
     CStore() {
-        count = 0;
+        m_nCount = 0;
     }
 
-    inline ObjectType& GetItemAtIndex(unsigned int index) { return m_aObjects[index]; }
+    inline ObjectType& GetItemAtIndex(uint32_t index) { return m_aObjects[index]; }
     inline ObjectType& AddItem() {
         auto& pObj = m_aObjects[m_nCount];
         ++m_nCount;
