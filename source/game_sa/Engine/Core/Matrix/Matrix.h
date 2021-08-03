@@ -7,7 +7,7 @@
 #pragma once
 
 #include "RenderWare.h"
-#include "Quaternion.h"
+#include "game_sa/Engine/Core/Quaternion.h"
 
 enum eMatrixEulerFlags : unsigned int {
     SWAP_XZ = 0x01,

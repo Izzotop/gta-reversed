@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vector.h"
-#include "List/PtrList.h"
+#include "PtrList.h"
 
 class CEntity;
 class CVehicle;

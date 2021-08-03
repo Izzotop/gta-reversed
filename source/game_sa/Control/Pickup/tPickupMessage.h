@@ -9,17 +9,17 @@
 #include "RGBA.h"
 
 struct tPickupMessage {
-    float x;
-    float y;
-    float z;
-    float width;
-    float height;
-    CRGBA color;
-    unsigned char flags;
-    char field_19;
-    char _pad1A[2];
-    unsigned int price;
-    char *messageText;
+    float    x;
+    float    y;
+    float    z;
+    float    width;
+    float    height;
+    CRGBA    color;
+    uint8_t  flags;
+    char     field_19;
+    char     _pad1A[2];
+    uint32_t price;
+    char*    messageText;
 };
 
 VALIDATE_SIZE(tPickupMessage, 0x24);

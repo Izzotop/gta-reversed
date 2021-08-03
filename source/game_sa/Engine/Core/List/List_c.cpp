@@ -17,7 +17,7 @@ void List_c::InjectHooks()
 
 // US-1.00 @ 0x004A8DF0
 // EU-1.00 @ 0x004A8DF0
-void List_c::AddItem(ListItem_c * pItem) {
+void List_c::AddItem(ListItem_c* pItem) {
     assert(pItem);
     auto* pOldHead = m_pHead;
     m_pHead = pItem;
@@ -34,7 +34,7 @@ void List_c::AddItem(ListItem_c * pItem) {
 
 // US-1.00 @ 0x004A8E30
 // EU-1.00 @ 0x004A8E30
-void List_c::RemoveItem(ListItem_c * pItem) {
+void List_c::RemoveItem(ListItem_c* pItem) {
     assert(pItem);
 
     if (pItem->m_pNext)
@@ -50,7 +50,7 @@ void List_c::RemoveItem(ListItem_c * pItem) {
     --m_nCount;
 }
 
-ListItem_c * List_c::GetHead() {
+ListItem_c* List_c::GetHead() {
     return m_pHead;
 }
 
@@ -59,9 +59,8 @@ ListItem_c* List_c::GetTail()
     return m_pTail;
 }
 
-
 // EU-1.00 @ 0x004A8E70
-ListItem_c * List_c::RemoveHead(void) {
+ListItem_c* List_c::RemoveHead() {
     //return plugin::CallMethodAndReturn<ListItem_c *, 0x004A8E70, List_c *>(this);
     if (!m_pHead)
         return nullptr;

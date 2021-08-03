@@ -6,7 +6,7 @@ Do not delete this comment block. Respect others' work!
 */
 #include "StdInc.h"
 
-#include "oswrapper.h"
+#include "Platform/oswrapper.h"
 #include "SpecialFX.h"
 
 CTimer::TimerFunction_t& CTimer::ms_fnTimerFunction = *(TimerFunction_t*)0xB7CB28; // Izzotop: Added in commit 50ce121c. That should be just timerDef.

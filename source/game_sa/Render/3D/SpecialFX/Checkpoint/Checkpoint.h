@@ -11,19 +11,19 @@
 
 class CCheckpoint {
 public:
-    unsigned short m_nType;
-    bool           m_bIsUsed;
-    bool           m_bMustBeRenderedThisFrame;
-    int            m_nIdentifier;
-    CRGBA          m_colour;
-    short          m_nPulsePeriod;
-    short          m_nRotateRate;
-    CVector        m_vecPosition;
-    CVector        m_vecDirection;
-    float          m_fPulseFraction;
-    float          m_fSize;
-    float          m_fDistanceToPlayer; //or CameraRange
-    float m_multiSize;
+    uint16_t m_nType;
+    bool     m_bIsUsed;
+    bool     m_bMustBeRenderedThisFrame;
+    int      m_nIdentifier;
+    CRGBA    m_colour;
+    short    m_nPulsePeriod;
+    short    m_nRotateRate;
+    CVector  m_vecPosition;
+    CVector  m_vecDirection;
+    float    m_fPulseFraction;
+    float    m_fSize;
+    float    m_fDistanceToPlayer; //or CameraRange
+    float    m_multiSize;
 
 public:
     void Render();

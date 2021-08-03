@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include "List/PtrList.h"
+#include "PtrList.h"
 #include "PtrNodeDoubleLink.h"
 
 class CPtrListDoubleLink : public CPtrList {

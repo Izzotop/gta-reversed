@@ -10,7 +10,7 @@
 #include "Vector.h"
 #include "RealTimeShadow.h"
 #include "PolyBunch.h"
-#include "List/PtrList.h"
+#include "PtrList.h"
 
 /*
  Shadow rectangle:

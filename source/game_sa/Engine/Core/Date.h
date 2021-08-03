@@ -8,20 +8,21 @@
 
 class CDate {
 public:
-    int seconds;
-    int minutes;
-    int hours;
-    int day;
-    int month;
-    int year;
+    int32_t seconds;
+    int32_t minutes;
+    int32_t hours;
+    int32_t day;
+    int32_t month;
+    int32_t year;
 
+public:
     CDate();
 
     bool operator<(CDate const& rhs);
     bool operator==(CDate const& rhs);
     bool operator>(CDate const& rhs);
 
-    void PopulateDateFields(char const& seconds, char const& minutes, char const& hours, char const& day, char const& month, short year);
+    void PopulateDateFields(const char& seconds, const char& minutes, const char& hours, const char& day, const char& month, short year);
 };
 
 VALIDATE_SIZE(CDate, 0x18);

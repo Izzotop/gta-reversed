@@ -41,8 +41,23 @@ endif()
 
 target_include_directories(gta_reversed PRIVATE
     source/
-    source/toolsmenu/
     source/game_sa/
+    source/reversiblehooks/
+    source/toolsmenu/
+
+    source/game_sa/Engine/
+    source/game_sa/Engine/Core/
+    source/game_sa/Engine/Core/List/
+    source/game_sa/Engine/Core/List/Double
+    source/game_sa/Engine/Core/List/Single
+    source/game_sa/Engine/Core/Matrix/
+    source/game_sa/Engine/Core/Tree/
+    source/game_sa/Engine/Core/Tree/Oct/
+    source/game_sa/Engine/Core/Tree/Quad/
+    source/game_sa/Engine/Core/Vector/
+    source/game_sa/Engine/Memory/
+    source/game_sa/Engine/Text/
+
     source/game_sa/Debug/
     source/game_sa/Animation/
     source/game_sa/Audio/
@@ -57,24 +72,21 @@ target_include_directories(gta_reversed PRIVATE
     source/game_sa/Car/Data/Generators/
 
     source/game_sa/Collision/
+
     source/game_sa/Control/
+    source/game_sa/Control/BreakObject
+    source/game_sa/Control/SetPiece
+    source/game_sa/Control/WaterCreature
+
     source/game_sa/Controllers/
     source/game_sa/Filesystem/
     source/game_sa/Filesystem/Save/
     source/game_sa/Filesystem/Streaming/
     source/game_sa/Filesystem/Ipl/
     source/game_sa/Dynamic/
-    source/game_sa/Frontend/
+    source/game_sa/Render/2D/Frontend/
 
     source/game_sa/Core/
-    source/game_sa/Core/List/
-    source/game_sa/Core/List/Double
-    source/game_sa/Core/List/Single
-    source/game_sa/Core/Matrix/
-    source/game_sa/Core/Tree/
-    source/game_sa/Core/Vector/
-
-    source/
 
     source/game_sa/Entity/
     source/game_sa/Entity/Camera
@@ -82,6 +94,7 @@ target_include_directories(gta_reversed PRIVATE
     source/game_sa/Entity/Object/
     source/game_sa/Entity/Ped/
     source/game_sa/Entity/Vehicle/
+    source/game_sa/Entity/Vehicle/Data
     source/game_sa/Enums/
     source/game_sa/Events/
 
@@ -125,6 +138,7 @@ target_include_directories(gta_reversed PRIVATE
     source/game_sa/Render/3D/Stencil/
     source/game_sa/Render/3D/WaterCannons/
     source/game_sa/Render/3D/Shadows/
+    source/game_sa/Render/3D/Building/
 
     source/game_sa/FxTools/
     source/game_sa/FxTools/Blueprints/
@@ -139,7 +153,6 @@ target_include_directories(gta_reversed PRIVATE
     source/game_sa/Tasks/
     source/game_sa/Tasks/TaskTypes/
 
-    source/game_sa/Text/
     source/game_sa/Weapon/
 
     source/game_sa/World/

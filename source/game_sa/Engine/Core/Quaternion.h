@@ -11,13 +11,13 @@
 
 class CQuaternion {
 public:
-    CQuaternion();
-public:
     CVector imag;
     float real;
 
 public:
     static void InjectHooks();
+
+    CQuaternion();
 
     // Quat to matrix
     void Get(RwMatrixTag* out);
