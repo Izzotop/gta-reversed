@@ -17,5 +17,5 @@ class CPlayerSkin {
     static void Initialise();
     static void Shutdown();
     static void RenderFrontendSkinEdit();
-    static RwTexture* CPlayerSkin::GetSkinTexture(const char* name);
+    static RwTexture* GetSkinTexture(const char* name);
 };
