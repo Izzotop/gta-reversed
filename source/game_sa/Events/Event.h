@@ -16,12 +16,12 @@ public:
     bool field_A;
     bool field_B;
 
-    static void* CEvent::operator new(unsigned int size)
+    static void* operator new(unsigned int size)
     {
         return ((CEvent * (__cdecl*)(unsigned int))0x4B5620)(size);
     }
 
-    static void CEvent::operator delete(void* object)
+    static void operator delete(void* object)
     {
         ((void(__cdecl*)(void*))0x4B5630)(object);
     }
