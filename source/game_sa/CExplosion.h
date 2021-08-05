@@ -53,7 +53,7 @@ public:
     static bool DoesExplosionMakeSound(uchar id);
     static int32_t GetExplosionType(uchar id);
     static const CVector& GetExplosionPosition(uchar id);
-    static int8_t TestForExplosionInArea(eExplosionType type, float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
+    static bool TestForExplosionInArea(eExplosionType type, float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
     static void RemoveAllExplosionsInArea(CVector pos, float r);
     static void Initialise();
     static int8_t AddExplosion(CEntity* pNewVictim, CEntity* pNewCreator, eExplosionType type, CVector const& pos, uint lifetimea, uchar usesSound, float cameraShake, uchar isVisible);

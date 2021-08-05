@@ -80,9 +80,18 @@ const CVector& CExplosion::GetExplosionPosition(uchar id)
     return aExplosions[id].m_vecPosition;
 }
 
-int8_t CExplosion::TestForExplosionInArea(eExplosionType type, float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
+bool CExplosion::TestForExplosionInArea(eExplosionType type, float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
 {
-    return plugin::CallAndReturn<int8_t, 0x736950, eExplosionType, float, float, float, float, float, float>(type, minX, maxX, minY, maxY, minZ, maxZ);
+    const CBoundingBox boundingBox{ {minX, minY, minZ}, {maxX, maxY, maxZ} };
+    for (auto& exp : aExplosions) {
+        if (!exp.m_nActiveCounter)
+            continue;
+        if (type != -1 && exp.m_nType != type)
+            continue;
+        if (boundingBox.IsPointWithin(exp.m_vecPosition))
+            return true;
+    }
+    return false;
 }
 
 void CExplosion::RemoveAllExplosionsInArea(CVector pos, float r)
