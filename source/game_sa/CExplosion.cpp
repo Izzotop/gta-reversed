@@ -6,7 +6,7 @@ CExplosion(&CExplosion::aExplosions)[16] = *(CExplosion(*)[16])0xC88950;
 void CExplosion::InjectHooks()
 {
     ReversibleHooks::Install("CExplosion", "ClearAllExplosions", 0x736840, &CExplosion::ClearAllExplosions);
-    //ReversibleHooks::Install("CExplosion", "Shutdown", 0x7368F0, &CExplosion::Shutdown);
+    ReversibleHooks::Install("CExplosion", "Shutdown", 0x7368F0, &CExplosion::Shutdown);
     //ReversibleHooks::Install("CExplosion", "GetExplosionActiveCounter", 0x736900, &CExplosion::GetExplosionActiveCounter);
     //ReversibleHooks::Install("CExplosion", "ResetExplosionActiveCounter", 0x736910, &CExplosion::ResetExplosionActiveCounter);
     //ReversibleHooks::Install("CExplosion", "DoesExplosionMakeSound", 0x736920, &CExplosion::DoesExplosionMakeSound);
@@ -52,7 +52,7 @@ void CExplosion::ClearAllExplosions()
 
 void CExplosion::Shutdown()
 {
-    return plugin::Call<0x7368F0>();
+    /* Empty */
 }
 
 int8_t CExplosion::GetExplosionActiveCounter(uchar id)
