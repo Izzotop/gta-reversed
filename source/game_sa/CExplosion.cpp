@@ -72,7 +72,7 @@ bool CExplosion::DoesExplosionMakeSound(uchar id)
 
 int32_t CExplosion::GetExplosionType(uchar id)
 {
-    return plugin::CallAndReturn<int32_t, 0x736930, uchar>(id);
+    return aExplosions[id].m_nType;
 }
 
 CVector * CExplosion::GetExplosionPosition(uchar id)
