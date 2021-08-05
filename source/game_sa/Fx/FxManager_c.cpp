@@ -114,13 +114,13 @@ void FxManager_c::UnloadFxProject() {
 }
 
 // Converted from thiscall FxSystem_c* FxManager_c::CreateFxSystem(char *name,RwMatrixTag *transform,RwMatrixTag *objectMatrix,uchar ignoreBoundingChecks) 0x4A9BB0
-FxSystem_c* FxManager_c::CreateFxSystem(char* name, RwMatrix* transform, RwMatrix* objectMatrix, unsigned char ignoreBoundingChecks) {
-    return ((FxSystem_c * (__thiscall*)(FxManager_c*, char*, RwMatrix*, RwMatrix*, unsigned char))0x4A9BB0)(this, name, transform, objectMatrix, ignoreBoundingChecks);
+FxSystem_c* FxManager_c::CreateFxSystem(const char * name, RwMatrix* transform, RwMatrix* objectMatrix, unsigned char ignoreBoundingChecks) {
+    return ((FxSystem_c * (__thiscall*)(FxManager_c*, const char*, RwMatrix*, RwMatrix*, unsigned char))0x4A9BB0)(this, name, transform, objectMatrix, ignoreBoundingChecks);
 }
 
 // Converted from thiscall FxSystem_c* FxManager_c::CreateFxSystem(char *name,RwV3d *position,RwMatrixTag *objectMatrix,uchar ignoreBoundingChecks) 0x4A9BE0
-FxSystem_c* FxManager_c::CreateFxSystem(char* name, RwV3d* position, RwMatrix* objectMatrix, unsigned char ignoreBoundingChecks) {
-    return ((FxSystem_c * (__thiscall*)(FxManager_c*, char*, RwV3d*, RwMatrix*, unsigned char))0x4A9BE0)(this, name, position, objectMatrix, ignoreBoundingChecks);
+FxSystem_c* FxManager_c::CreateFxSystem(const char * name, RwV3d* position, RwMatrix* objectMatrix, unsigned char ignoreBoundingChecks) {
+    return ((FxSystem_c * (__thiscall*)(FxManager_c*, const char*, RwV3d*, RwMatrix*, unsigned char))0x4A9BE0)(this, name, position, objectMatrix, ignoreBoundingChecks);
 }
 
 // Converted from thiscall FxSystemBP_c* FxManager_c::LoadFxSystemBP(char *filename,int file) 0x5C1F50

@@ -52,8 +52,8 @@ public:
     void Exit();
     void Update(RwCamera* arg0, float timeDelta);
     void UnloadFxProject();
-    FxSystem_c* CreateFxSystem(char* name, RwMatrix* transform, RwMatrix* objectMatrix, unsigned char ignoreBoundingChecks);
-    FxSystem_c* CreateFxSystem(char* name, RwV3d* position, RwMatrix* objectMatrix, unsigned char ignoreBoundingChecks);
+    FxSystem_c* CreateFxSystem(const char * name, RwMatrix* transform, RwMatrix* objectMatrix, unsigned char ignoreBoundingChecks);
+    FxSystem_c* CreateFxSystem(const char * name, RwV3d* position, RwMatrix* objectMatrix, unsigned char ignoreBoundingChecks);
     FxSystemBP_c* LoadFxSystemBP(char* filename, int file);
     bool LoadFxProject(char* filename);
 };
