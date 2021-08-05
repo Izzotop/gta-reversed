@@ -12,8 +12,8 @@ void CExplosion::InjectHooks()
     ReversibleHooks::Install("CExplosion", "DoesExplosionMakeSound", 0x736920, &CExplosion::DoesExplosionMakeSound);
     ReversibleHooks::Install("CExplosion", "GetExplosionType", 0x736930, &CExplosion::GetExplosionType);
     ReversibleHooks::Install("CExplosion", "GetExplosionPosition", 0x736940, &CExplosion::GetExplosionPosition);
-    //ReversibleHooks::Install("CExplosion", "TestForExplosionInArea", 0x736950, &CExplosion::TestForExplosionInArea);
-    //ReversibleHooks::Install("CExplosion", "RemoveAllExplosionsInArea", 0x7369E0, &CExplosion::RemoveAllExplosionsInArea);
+    ReversibleHooks::Install("CExplosion", "TestForExplosionInArea", 0x736950, &CExplosion::TestForExplosionInArea);
+    ReversibleHooks::Install("CExplosion", "RemoveAllExplosionsInArea", 0x7369E0, &CExplosion::RemoveAllExplosionsInArea);
     //ReversibleHooks::Install("CExplosion", "Initialise", 0x736A40, &CExplosion::Initialise);
     //ReversibleHooks::Install("CExplosion", "AddExplosion", 0x736A50, &CExplosion::AddExplosion);
     //ReversibleHooks::Install("CExplosion", "Update", 0x737620, &CExplosion::Update);
@@ -96,7 +96,13 @@ bool CExplosion::TestForExplosionInArea(eExplosionType type, float minX, float m
 
 void CExplosion::RemoveAllExplosionsInArea(CVector pos, float r)
 {
-    return plugin::Call<0x7369E0, CVector, float>(pos, r);
+    for (auto& exp : aExplosions) {
+        if (!exp.m_nActiveCounter)
+            continue;
+        if (DistanceBetweenPointsSquared(exp.m_vecPosition, pos) < r * r) {
+            exp.m_nActiveCounter = 0;
+        }
+    }
 }
 
 void CExplosion::Initialise()
