@@ -5,7 +5,7 @@ CExplosion(&CExplosion::aExplosions)[16] = *(CExplosion(*)[16])0xC88950;
 
 void CExplosion::InjectHooks()
 {
-    //ReversibleHooks::Install("CExplosion", "ClearAllExplosions", 0x736840, &CExplosion::ClearAllExplosions);
+    ReversibleHooks::Install("CExplosion", "ClearAllExplosions", 0x736840, &CExplosion::ClearAllExplosions);
     //ReversibleHooks::Install("CExplosion", "Shutdown", 0x7368F0, &CExplosion::Shutdown);
     //ReversibleHooks::Install("CExplosion", "GetExplosionActiveCounter", 0x736900, &CExplosion::GetExplosionActiveCounter);
     //ReversibleHooks::Install("CExplosion", "ResetExplosionActiveCounter", 0x736910, &CExplosion::ResetExplosionActiveCounter);
@@ -22,7 +22,32 @@ void CExplosion::InjectHooks()
 
 void CExplosion::ClearAllExplosions()
 {
-    return plugin::Call<0x736840>();
+    for (auto& exp : aExplosions) {
+        exp = {};
+        /*
+        - We use the constructor here for code clarity, the original code is this:
+
+        exp.m_vecPosition.x = {0.0f, 0.0f, 0.0f};
+        exp.m_nType = 0;
+        exp.m_fRadius = 1.0;
+        exp.m_fVisibleDistance = 0.0;
+        exp.m_fPropagationRate = 0.0;
+        exp.m_fGroundZ = 0.0;
+        exp.m_pCreator = 0;
+        exp.m_pVictim = 0;
+        exp.m_nExpireTime = 0.0;
+        exp.m_nActiveCounter = 0;
+        exp.m_nCreatedTime = 0.0;
+        exp.m_bMakeSound = 1;
+        exp.m_nFuelTimer = 0;
+
+        for (auto i = 0; i < 3; i++) {
+            exp.m_vecFuelDirection[i] = {0.0f, 0.0f, 0.0f};
+            exp.m_fFuelOffsetDistance[i] = 0.0;
+            exp.m_fFuelSpeed[i] = 0.0;
+        }
+        */
+    }
 }
 
 void CExplosion::Shutdown()

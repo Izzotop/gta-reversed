@@ -22,25 +22,25 @@ enum eExplosionType : uint32_t {
 
 class CExplosion {
 public:
-    eExplosionType m_nType;
-    CVector        m_vecPosition;
-    float          m_fRadius;
-    float          m_fPropagationRate;
-    CEntity* m_pCreator;
-    CEntity* m_pVictim;
-    float          m_nExpireTime;
-    float          m_fDamagePercentage;
-    uint8_t        m_nActiveCounter;
-    byte           _pad;
-    bool           m_bMakeSound;
-    float          m_nCreatedTime;
-    int32_t        m_nParticlesExpireTime;
-    float          m_fVisibleDistance;
-    float          m_fGroundZ;
-    int32_t        m_nFuelTimer;
-    CVector        m_vecFuelDirection[3];
-    float          m_fFuelOffsetDistance[3];
-    float          m_fFuelSpeed[3];
+    eExplosionType m_nType{};
+    CVector        m_vecPosition{};
+    float          m_fRadius{1.0f};
+    float          m_fPropagationRate{};
+    CEntity*       m_pCreator{};
+    CEntity*       m_pVictim{};
+    float          m_nExpireTime{};
+    float          m_fDamagePercentage{};
+    uint8_t        m_nActiveCounter{};
+    byte           _pad{};
+    bool           m_bMakeSound{true};
+    float          m_nCreatedTime{};
+    int32_t        m_nParticlesExpireTime{};
+    float          m_fVisibleDistance{};
+    float          m_fGroundZ{};
+    int32_t        m_nFuelTimer{};
+    CVector        m_vecFuelDirection[3]{};
+    float          m_fFuelOffsetDistance[3]{};
+    float          m_fFuelSpeed[3]{};
 
     static CAEExplosionAudioEntity& m_ExplosionAudioEntity;
     static CExplosion(&aExplosions)[16];
