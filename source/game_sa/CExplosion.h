@@ -1,16 +1,10 @@
-/*
-Plugin-SDK (Grand Theft Auto San Andreas) header file
-Authors: GTA Community. See more here
-https://github.com/DK22Pac/plugin-sdk
-Do not delete this comment block. Respect others' work!
-*/
 #pragma once
 
 #include "PluginBase.h"
 #include "CVector.h"
 #include "CAEExplosionAudioEntity.h"
 
-enum eExplosionType {
+enum eExplosionType : uint32_t {
     EXPLOSION_GRENADE,
     EXPLOSION_MOLOTOV,
     EXPLOSION_ROCKET,
@@ -26,48 +20,44 @@ enum eExplosionType {
     EXPLOSION_RC_VEHICLE
 };
 
-class CEntity;
-
-class  CExplosion {
+class CExplosion {
 public:
-    unsigned int   m_nType; // see eExplosionType
+    eExplosionType m_nType;
     CVector        m_vecPosition;
     float          m_fRadius;
     float          m_fPropagationRate;
-    CEntity       *m_pCreator;
-    CEntity       *m_pVictim;
-    int            m_nExpireTime;
+    CEntity* m_pCreator;
+    CEntity* m_pVictim;
+    float          m_nExpireTime;
     float          m_fDamagePercentage;
-    bool           m_bIsActive;
-    unsigned char  m_nActiveCounter;
+    uint8_t        m_nActiveCounter;
+    byte           _pad;
     bool           m_bMakeSound;
-    int            m_nCreatedTime;
-    int            m_nParticlesExpireTime;
+    float          m_nCreatedTime;
+    int32_t        m_nParticlesExpireTime;
     float          m_fVisibleDistance;
     float          m_fGroundZ;
-    int            m_nFuelTimer; // goes down
+    int32_t        m_nFuelTimer;
     CVector        m_vecFuelDirection[3];
     float          m_fFuelOffsetDistance[3];
     float          m_fFuelSpeed[3];
 
-    static CAEExplosionAudioEntity &m_ExplosionAudioEntity;
+    static CAEExplosionAudioEntity& m_ExplosionAudioEntity;
+    static CExplosion(&aExplosions)[16];
 
+    static void InjectHooks();
     static void ClearAllExplosions();
-    // dummy function
     static void Shutdown();
-    static unsigned char GetExplosionActiveCounter(unsigned char explosionId);
-    static void ResetExplosionActiveCounter(unsigned char explosionId);
-    static bool DoesExplosionMakeSound(unsigned char explosionId);
-    static unsigned int GetExplosionType(unsigned char explosionId);
-    static CVector* GetExplosionPosition(unsigned char explosionId);
-    static bool TestForExplosionInArea(eExplosionType explosionType, float x1, float y1, float z1, float x2, float y2, float z2);
-    static void RemoveAllExplosionsInArea(CVector posn, float radius);
+    static int8_t GetExplosionActiveCounter(uchar id);
+    static void ResetExplosionActiveCounter(uchar id);
+    static int8_t DoesExplosionMakeSound(uchar id);
+    static int32_t GetExplosionType(uchar id);
+    static CVector* GetExplosionPosition(uchar id);
+    static int8_t TestForExplosionInArea(eExplosionType type, float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
+    static void RemoveAllExplosionsInArea(CVector pos, float r);
     static void Initialise();
-    static bool AddExplosion(CEntity* victim, CEntity* creator, eExplosionType explosionType, CVector posn, unsigned int time, bool bMakeSound, float camShake, bool bHideExplosion);
+    static int8_t AddExplosion(CEntity* pNewVictim, CEntity* pNewCreator, eExplosionType type, CVector const& pos, uint lifetimea, uchar usesSound, float cameraShake, uchar isVisible);
     static void Update();
+
 };
-
 VALIDATE_SIZE(CExplosion, 0x7C);
-
-extern unsigned int MAX_EXPLOSIONS; // default 16
-extern CExplosion *aExplosions; // CExplosion aExplosions[MAX_EXPLOSIONS]
