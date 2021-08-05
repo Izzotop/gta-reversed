@@ -56,8 +56,24 @@ public:
     static bool TestForExplosionInArea(eExplosionType type, float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
     static void RemoveAllExplosionsInArea(CVector pos, float r);
     static void Initialise();
-    static int8_t AddExplosion(CEntity* pNewVictim, CEntity* pNewCreator, eExplosionType type, CVector const& pos, uint lifetimea, uchar usesSound, float cameraShake, uchar isVisible);
+    static void AddExplosion(CEntity* pNewVictim, CEntity* pNewCreator, eExplosionType type, CVector pos, uint lifetimea, uchar usesSound, float cameraShake, uchar isVisible);
     static void Update();
 
+    static CExplosion* GetFree(); // NOTSA
+
+    // NOTSA functions:
+    void SetCreator(CEntity* pNewCreator) noexcept {
+        if (m_pCreator)
+            m_pCreator->CleanUpOldReference(&m_pCreator);
+        if (pNewCreator)
+            pNewCreator->RegisterReference(&m_pCreator);
+    }
+
+    void SetVictim(CEntity* pNewVictim) noexcept {
+        if (m_pVictim)
+            m_pVictim->CleanUpOldReference(&m_pVictim);
+        if (pNewVictim)
+            pNewVictim->RegisterReference(&m_pVictim);
+    }
 };
 VALIDATE_SIZE(CExplosion, 0x7C);

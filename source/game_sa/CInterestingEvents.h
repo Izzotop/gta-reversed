@@ -1,12 +1,11 @@
 #pragma once
 
+#include <eEventType.h>
+
 class CInterestingEvents {
 public:
-    enum EType {
+    using EType = eEventType;
 
-    };
-
-public:
     static void InjectHooks();
 
     CInterestingEvents();
@@ -15,7 +14,7 @@ public:
     ~CInterestingEvents();
     CInterestingEvents* Destructor();
 
-    void Add(CInterestingEvents::EType type, CEntity* entity);
+    void Add(eEventType type, CEntity* entity);
     void ScanForNearbyEntities();
     void GetInterestingEvent();
     void InvalidateEvent(const void* interestingEvent);

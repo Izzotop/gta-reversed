@@ -56,8 +56,8 @@ void CPad::StartShake(short time, unsigned char frequency, unsigned int arg2) {
 }
 
 // Converted from thiscall void CPad::StartShake_Distance(short time,uchar frequency,float x,float y,float z) 0x53F9A0
-void CPad::StartShake_Distance(short time, unsigned char frequency, float x, float y, float z) {
-    plugin::CallMethod<0x53F9A0, CPad*, short, unsigned char, float, float, float>(this, time, frequency, x, y, z);
+void CPad::StartShake_Distance(short time, unsigned char frequency, CVector pos) {
+    plugin::CallMethod<0x53F9A0, CPad*, short, unsigned char, CVector>(this, time, frequency, pos);
 }
 
 // Converted from thiscall void CPad::StartShake_Train(float x,float y) 0x53FA70

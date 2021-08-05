@@ -117,7 +117,7 @@ public:
     void ReconcileTwoControllersInput(CControllerState const& controllerA, CControllerState const& controllerB);
     void SetDrunkInputDelay(int delay);
     void StartShake(short time, unsigned char frequency, unsigned int arg2);
-    void StartShake_Distance(short time, unsigned char frequency, float x, float y, float z);
+    void StartShake_Distance(short time, unsigned char frequency, CVector pos);
     void StartShake_Train(float x, float y);
     void ProcessPCSpecificStuff();
     void StopShaking(short arg0);

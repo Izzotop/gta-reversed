@@ -36,7 +36,7 @@ public:
     void CreateAllFxSystems();
     void Shutdown();
     void GetNextFreeFire(unsigned char bAllowDeletingOldFire); // bAllowDeletingOldFire - allow deleting old fire if no free slots available
-    CFire* StartFire(CVector point, _IGNORED_ float size, _IGNORED_ unsigned char arg2, CEntity* creator, unsigned int time, signed char numGenerations, _IGNORED_ unsigned char arg6);
+    CFire* StartFire(CVector pos, float size, uchar unused, CEntity* creator, uint time, signed char numGenerations, uchar unused_);
     CFire* StartFire(CEntity* target, CEntity* creator, _IGNORED_ float size, _IGNORED_ unsigned char arg3, unsigned int time, signed char numGenerations);
     int StartScriptFire(CVector const& point, CEntity* target, _IGNORED_ float arg2, _IGNORED_ unsigned char arg3, signed char numGenerations, int size);
     void Update();
