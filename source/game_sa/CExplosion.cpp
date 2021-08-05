@@ -10,8 +10,8 @@ void CExplosion::InjectHooks()
     ReversibleHooks::Install("CExplosion", "GetExplosionActiveCounter", 0x736900, &CExplosion::GetExplosionActiveCounter);
     ReversibleHooks::Install("CExplosion", "ResetExplosionActiveCounter", 0x736910, &CExplosion::ResetExplosionActiveCounter);
     ReversibleHooks::Install("CExplosion", "DoesExplosionMakeSound", 0x736920, &CExplosion::DoesExplosionMakeSound);
-    //ReversibleHooks::Install("CExplosion", "GetExplosionType", 0x736930, &CExplosion::GetExplosionType);
-    //ReversibleHooks::Install("CExplosion", "GetExplosionPosition", 0x736940, &CExplosion::GetExplosionPosition);
+    ReversibleHooks::Install("CExplosion", "GetExplosionType", 0x736930, &CExplosion::GetExplosionType);
+    ReversibleHooks::Install("CExplosion", "GetExplosionPosition", 0x736940, &CExplosion::GetExplosionPosition);
     //ReversibleHooks::Install("CExplosion", "TestForExplosionInArea", 0x736950, &CExplosion::TestForExplosionInArea);
     //ReversibleHooks::Install("CExplosion", "RemoveAllExplosionsInArea", 0x7369E0, &CExplosion::RemoveAllExplosionsInArea);
     //ReversibleHooks::Install("CExplosion", "Initialise", 0x736A40, &CExplosion::Initialise);
@@ -75,9 +75,9 @@ int32_t CExplosion::GetExplosionType(uchar id)
     return aExplosions[id].m_nType;
 }
 
-CVector * CExplosion::GetExplosionPosition(uchar id)
+const CVector& CExplosion::GetExplosionPosition(uchar id)
 {
-    return plugin::CallAndReturn<CVector *, 0x736940, uchar>(id);
+    return aExplosions[id].m_vecPosition;
 }
 
 int8_t CExplosion::TestForExplosionInArea(eExplosionType type, float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
