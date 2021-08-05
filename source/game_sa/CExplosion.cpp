@@ -14,7 +14,7 @@ void CExplosion::InjectHooks()
     ReversibleHooks::Install("CExplosion", "GetExplosionPosition", 0x736940, &CExplosion::GetExplosionPosition);
     ReversibleHooks::Install("CExplosion", "TestForExplosionInArea", 0x736950, &CExplosion::TestForExplosionInArea);
     ReversibleHooks::Install("CExplosion", "RemoveAllExplosionsInArea", 0x7369E0, &CExplosion::RemoveAllExplosionsInArea);
-    //ReversibleHooks::Install("CExplosion", "Initialise", 0x736A40, &CExplosion::Initialise);
+    ReversibleHooks::Install("CExplosion", "Initialise", 0x736A40, &CExplosion::Initialise);
     //ReversibleHooks::Install("CExplosion", "AddExplosion", 0x736A50, &CExplosion::AddExplosion);
     //ReversibleHooks::Install("CExplosion", "Update", 0x737620, &CExplosion::Update);
 }
@@ -107,7 +107,7 @@ void CExplosion::RemoveAllExplosionsInArea(CVector pos, float r)
 
 void CExplosion::Initialise()
 {
-    return plugin::Call<0x736A40>();
+    ClearAllExplosions();
 }
 
 int8_t CExplosion::AddExplosion(CEntity * pNewVictim, CEntity * pNewCreator, eExplosionType type, CVector const& pos, uint lifetimea, uchar usesSound, float cameraShake, uchar isVisible)
