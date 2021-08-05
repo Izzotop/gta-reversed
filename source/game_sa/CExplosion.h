@@ -50,7 +50,7 @@ public:
     static void Shutdown();
     static int8_t GetExplosionActiveCounter(uchar id);
     static void ResetExplosionActiveCounter(uchar id);
-    static int8_t DoesExplosionMakeSound(uchar id);
+    static bool DoesExplosionMakeSound(uchar id);
     static int32_t GetExplosionType(uchar id);
     static CVector* GetExplosionPosition(uchar id);
     static int8_t TestForExplosionInArea(eExplosionType type, float minX, float maxX, float minY, float maxY, float minZ, float maxZ);

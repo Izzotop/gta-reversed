@@ -9,7 +9,7 @@ void CExplosion::InjectHooks()
     ReversibleHooks::Install("CExplosion", "Shutdown", 0x7368F0, &CExplosion::Shutdown);
     ReversibleHooks::Install("CExplosion", "GetExplosionActiveCounter", 0x736900, &CExplosion::GetExplosionActiveCounter);
     ReversibleHooks::Install("CExplosion", "ResetExplosionActiveCounter", 0x736910, &CExplosion::ResetExplosionActiveCounter);
-    //ReversibleHooks::Install("CExplosion", "DoesExplosionMakeSound", 0x736920, &CExplosion::DoesExplosionMakeSound);
+    ReversibleHooks::Install("CExplosion", "DoesExplosionMakeSound", 0x736920, &CExplosion::DoesExplosionMakeSound);
     //ReversibleHooks::Install("CExplosion", "GetExplosionType", 0x736930, &CExplosion::GetExplosionType);
     //ReversibleHooks::Install("CExplosion", "GetExplosionPosition", 0x736940, &CExplosion::GetExplosionPosition);
     //ReversibleHooks::Install("CExplosion", "TestForExplosionInArea", 0x736950, &CExplosion::TestForExplosionInArea);
@@ -65,9 +65,9 @@ void CExplosion::ResetExplosionActiveCounter(uchar id)
     aExplosions[id]._pad = 0;
 }
 
-int8_t CExplosion::DoesExplosionMakeSound(uchar id)
+bool CExplosion::DoesExplosionMakeSound(uchar id)
 {
-    return plugin::CallAndReturn<int8_t, 0x736920, uchar>(id);
+    return aExplosions[id].m_bMakeSound;
 }
 
 int32_t CExplosion::GetExplosionType(uchar id)
