@@ -14,10 +14,6 @@ enum eSoundPlayingStatus : int16_t {
 
 class CAESoundManager {
 public:
-    CAESoundManager();
-    ~CAESoundManager();
-
-public:
     uint16_t m_nNumAvailableChannels;
     int16_t  m_nChannel;
     CAESound m_aSounds[MAX_NUM_SOUNDS];
@@ -34,6 +30,9 @@ public:
 
 public:
     static void InjectHooks();
+
+    CAESoundManager();
+    ~CAESoundManager();
 
     bool Initialise();
     void Terminate();

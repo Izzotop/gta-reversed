@@ -4,9 +4,6 @@
 
 class CAEStaticChannel : public CAEAudioChannel {
 public:
-    CAEStaticChannel(IDirectSound* pDirectSound, unsigned short channelId, bool arg3, unsigned int samplesPerSec, unsigned short bitsPerSample);
-
-public:
     bool m_bUnkn1;
     bool m_bUnkn2;
     bool m_bNeedsSynch;
@@ -27,7 +24,7 @@ public:
     int field_8C;
 
 public:
-    static void InjectHooks();
+    CAEStaticChannel(IDirectSound* pDirectSound, unsigned short channelId, bool arg3, unsigned int samplesPerSec, unsigned short bitsPerSample);
 
 // VIRTUAL
     void Service() override { assert(false); /* Needs reversing */ };
@@ -38,7 +35,13 @@ public:
     void SynchPlayback() override;
     void Stop() override;
 
+// CLASS
+    bool SetAudioBuffer(IDirectSound3DBuffer* buffer, uint16_t soundIdInSlot, int16_t, int16_t, uint16_t loopOffset);
+
 private:
+    friend void InjectHooksMain();
+    static void InjectHooks();
+
     void Service_Reversed();
     bool IsSoundPlaying_Reversed();
     uint16_t GetPlayTime_Reversed();
@@ -46,9 +49,5 @@ private:
     void Play_Reversed(short, signed char, float);
     void SynchPlayback_Reversed();
     void Stop_Reversed();
-
-// CLASS
-public:
-    bool SetAudioBuffer(IDirectSound3DBuffer* buffer, uint16_t soundIdInSlot, int16_t, int16_t, uint16_t loopOffset);
 };
 VALIDATE_SIZE(CAEStaticChannel, 0x90);

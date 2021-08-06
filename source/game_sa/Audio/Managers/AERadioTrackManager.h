@@ -77,6 +77,7 @@ public:
     char field_36C;
     char field_36D[3];
 
+public:
     bool IsVehicleRadioActive();
     char *GetRadioStationName(signed char id);
 

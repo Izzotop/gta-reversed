@@ -32,7 +32,9 @@ public:
     char field_A1[3];
     CPed* m_pPed;
 
+public:
     CAEWeaponAudioEntity();
+
     void WeaponReload(eWeaponType weaptype, CPhysical* entity, int AudioEventId);
     void WeaponFire(eWeaponType weaptype, CPhysical* entity, int AudioEventId);
     void Terminate();

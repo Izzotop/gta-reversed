@@ -36,7 +36,6 @@ public:
     static CAEUserRadioTrackManager& instance;
 
 public:
-
     bool Initialise();
     void Shutdown();
     char* GetTrackPath(int32_t trackID);

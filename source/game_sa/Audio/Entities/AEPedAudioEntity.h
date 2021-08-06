@@ -32,6 +32,7 @@ public:
     float field_154;
     float field_158;
 
+public:
     void AddAudioEvent(int audioEventVolumeIndex, float a3, float a4, int argC, int a5, int a7, int a8);
 };
 

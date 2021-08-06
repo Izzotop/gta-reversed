@@ -46,7 +46,8 @@ HMODULE CAEMFDecoder::mfReadWriteModule = nullptr;
 HRESULT(__stdcall *CAEMFDecoder::MFCreateSourceReaderFromURL)(LPCWSTR, IMFAttributes*, IMFSourceReader**) = nullptr;
 HRESULT(__stdcall *CAEMFDecoder::MFCreateMediaType)(IMFMediaType**) = nullptr;
 
-CAEMFDecoder::CAEMFDecoder(char *filename, int trackID)
+// 0x4e7770
+CAEMFDecoder::CAEMFDecoder(char* filename, int trackID)
 : CAEStreamingDecoder(nullptr)
 , filename(filename)
 , initialized(false)
@@ -61,17 +62,12 @@ CAEMFDecoder::CAEMFDecoder(char *filename, int trackID)
 , sampleRate(0)
 , timeDivider(0.0f)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    using Constructor = void(__thiscall *)(CAEMFDecoder*, const char*, int);
-    ((Constructor) 0x4e7770)(this, filename, trackID);
-#endif
+
 }
 
+// 0x4e77c0
 CAEMFDecoder::~CAEMFDecoder()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    ((void(__thiscall *)(CAEMFDecoder*)) 0x4e77c0)(this);
-#else
     if (pcmAudio)
     {
         pcmAudio->Release();
@@ -95,15 +91,11 @@ CAEMFDecoder::~CAEMFDecoder()
         delete[] filename;
         filename = nullptr;
     }
-#endif
 }
 
+// 0x4e7cb0
 bool CAEMFDecoder::Initialise()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    using InitFunc = bool(__thiscall *)(CAEMFDecoder*);
-    return ((InitFunc) 0x4e7cb0)(this);
-#else
     if (CAEMFDecoder::quickTimeInitialized)
     {
         // Create source reader
@@ -195,15 +187,11 @@ bool CAEMFDecoder::Initialise()
     }
 
     return false;
-#endif
 }
 
+// 0x4e7860
 size_t CAEMFDecoder::FillBuffer(void *dest, size_t size)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    using ReadFunc = size_t(__thiscall *)(CAEMFDecoder*, void*, size_t);
-    return ((ReadFunc) 0x4e7860)(this, dest, size);
-#else
     constexpr size_t PCM_DIVIDER = sizeof(int16_t) * 2;
 
     bool playTimeSet = false;
@@ -285,18 +273,15 @@ size_t CAEMFDecoder::FillBuffer(void *dest, size_t size)
     }
 
     return writtenFrame * PCM_DIVIDER;
-#endif
 }
 
+// 0x4e7920
 long CAEMFDecoder::GetStreamLengthMs()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((long(__thiscall *)(CAEMFDecoder*)) 0x4e7920)(this);
-#else
     if (initialized)
         return lengthMs;
+
     return -1;
-#endif
 }
 
 long CAEMFDecoder::GetStreamPlayTimeMs()
@@ -310,12 +295,9 @@ long CAEMFDecoder::GetStreamPlayTimeMs()
 #endif
 }
 
+// 0x4e78e0
 void CAEMFDecoder::SetCursor(unsigned long pos)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    using SeekFunc = void(__thiscall *)(CAEMFDecoder*, unsigned long);
-    ((SeekFunc) 0x4e78e0)(this, pos);
-#else
     if (initialized)
     {
         PROPVARIANT seekDest;
@@ -323,34 +305,26 @@ void CAEMFDecoder::SetCursor(unsigned long pos)
         sourceReader->Flush(MF_SOURCE_READER_FIRST_AUDIO_STREAM);
         sourceReader->SetCurrentPosition(GUID_NULL, seekDest);
     }
-#endif
 }
 
+// 0x4e78c0
 int CAEMFDecoder::GetSampleRate()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((int(__thiscall *)(CAEMFDecoder*)) 0x4e78c0)(this);
-#else
     if (initialized)
         return sampleRate;
+
     return -1;
-#endif
 }
 
+// 0x4e77b0
 int CAEMFDecoder::GetStreamID()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((int(__thiscall *)(CAEMFDecoder*)) 0x4e77b0)(this);
-#else
     return trackID;
-#endif
 }
 
+// 0x4e7c70
 bool CAEMFDecoder::InitLibrary()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((bool(*)()) 0x4e7c70)();
-#else
     /*
     // MikuAuahDark: This is the original function
     // but I replace it with MediaFoundation
@@ -412,9 +386,9 @@ bool CAEMFDecoder::InitLibrary()
     }
 
     return false;
-#endif
 }
 
+// TODO: 0x
 void CAEMFDecoder::Shutdown()
 {
     // Free Media Foundation
@@ -435,29 +409,26 @@ void CAEMFDecoder::Shutdown()
     }
 }
 
-CAEMFDecoder *CAEMFDecoder::ctor(char *filename, int trackID)
+void CAEMFDecoder::InjectHooks()
 {
+    ReversibleHooks::Install("CAEMFDecoder", "CAEMFDecoder", 0x4e7770, &CAEMFDecoder::ctor);
+    ReversibleHooks::Install("CAEMFDecoder", "~CAEMFDecoder", 0x4e77c0, &CAEMFDecoder::dtor);
+    ReversibleHooks::Install("CAEMFDecoder", "Initialise", 0x4e7cb0, &CAEMFDecoder::Initialise);
+    ReversibleHooks::Install("CAEMFDecoder", "FillBuffer", 0x4e7860, &CAEMFDecoder::FillBuffer);
+    ReversibleHooks::Install("CAEMFDecoder", "GetStreamLengthMs", 0x4e7920, &CAEMFDecoder::GetStreamLengthMs);
+    ReversibleHooks::Install("CAEMFDecoder", "GetStreamPlayTimeMs", 0x4e7940, &CAEMFDecoder::GetStreamPlayTimeMs);
+    ReversibleHooks::Install("CAEMFDecoder", "SetCursor", 0x4e78e0, &CAEMFDecoder::SetCursor);
+    ReversibleHooks::Install("CAEMFDecoder", "GetSampleRate", 0x4e78c0, &CAEMFDecoder::GetSampleRate);
+    ReversibleHooks::Install("CAEMFDecoder", "GetStreamID", 0x4e77b0, &CAEMFDecoder::GetStreamID);
+    ReversibleHooks::Install("CAEMFDecoder", "InitLibrary", 0x4e7c70, &CAEMFDecoder::InitLibrary);
+}
+
+CAEMFDecoder* CAEMFDecoder::ctor(char* filename, int trackID) {
     this->CAEMFDecoder::CAEMFDecoder(filename, trackID);
     return this;
 }
 
-void CAEMFDecoder::dtor()
-{
+CAEMFDecoder* CAEMFDecoder::dtor() {
     this->CAEMFDecoder::~CAEMFDecoder();
-}
-
-void CAEMFDecoder::InjectHooks()
-{
-#ifndef USE_DEFAULT_FUNCTIONS
-    HookInstall(0x4e7770, &CAEMFDecoder::ctor);
-    HookInstall(0x4e77c0, &CAEMFDecoder::dtor);
-    HookInstall(0x4e7cb0, &CAEMFDecoder::Initialise);
-    HookInstall(0x4e7860, &CAEMFDecoder::FillBuffer);
-    HookInstall(0x4e7920, &CAEMFDecoder::GetStreamLengthMs);
-    HookInstall(0x4e7940, &CAEMFDecoder::GetStreamPlayTimeMs);
-    HookInstall(0x4e78e0, &CAEMFDecoder::SetCursor);
-    HookInstall(0x4e78c0, &CAEMFDecoder::GetSampleRate);
-    HookInstall(0x4e77b0, &CAEMFDecoder::GetStreamID);
-    HookInstall(0x4e7c70, &CAEMFDecoder::InitLibrary);
-#endif
+    return this;
 }

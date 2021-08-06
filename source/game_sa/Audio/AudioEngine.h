@@ -8,10 +8,6 @@ class CVector;
 
 class CAudioEngine {
 public:
-    CAudioEngine();
-    ~CAudioEngine();
-
-public:
     /*char field_0;
     char field_1;
     char m_nCurrentRadiostationId;
@@ -34,6 +30,9 @@ public:
 
 public:
     static void InjectHooks();
+
+    CAudioEngine();
+    ~CAudioEngine();
 
     void IsLoadingTuneActive();
     void ResetStatistics();

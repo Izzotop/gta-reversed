@@ -2,17 +2,19 @@
 
 #include "AEDataStream.h"
 
-class CAEStreamingDecoder
-{
+class CAEStreamingDecoder {
+protected:
+    CAEDataStream* dataStream;
+
 public:
-    CAEStreamingDecoder(CAEDataStream *dataStream);
+    CAEStreamingDecoder(CAEDataStream* dataStream);
 
 #ifdef USE_DEFAULT_FUNCTIONS
     void operator delete(void* mem);
 #endif
 
     virtual bool Initialise() = 0;
-    virtual size_t FillBuffer(void *dest, size_t size) = 0;
+    virtual size_t FillBuffer(void* dest, size_t size) = 0;
     virtual long GetStreamLengthMs() = 0;
     virtual long GetStreamPlayTimeMs() = 0;
     virtual void SetCursor(unsigned long pos) = 0;
@@ -20,16 +22,12 @@ public:
     virtual ~CAEStreamingDecoder();
     virtual int GetStreamID() = 0;
 
-protected:
-    CAEDataStream *dataStream;
-
 private:
-    friend void InjectHooksMain(void);
-
-    CAEStreamingDecoder *ctor(CAEDataStream *dataStream);
-    void dtor();
-
+    friend void InjectHooksMain();
     static void InjectHooks();
+
+    CAEStreamingDecoder* ctor(CAEDataStream* dataStream);
+    CAEStreamingDecoder* dtor();
 };
 
 VALIDATE_SIZE(CAEStreamingDecoder, 0x8);

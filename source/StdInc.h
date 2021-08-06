@@ -28,7 +28,7 @@
 #include "Debug\Debug.h"
 #include "Render\3D\PostEffects.h"
 
-#include "Engine\MemoryMgr.h"
+#include "Engine\Memory\MemoryMgr.h"
 
 #include "Render\Occlusion.h"
 #include "World\Zone\CullZones.h"

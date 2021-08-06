@@ -57,7 +57,7 @@ void WaitForDebugger() {
 
 void InjectHooksMain()
 {
-    // WaitForDebugger();
+     WaitForDebugger();
 
     CDebug::InjectHooks();
     InjectCommonHooks();

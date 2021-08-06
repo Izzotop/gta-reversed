@@ -29,8 +29,7 @@ union CAEAudioHardwarePlayFlags
 };
 
 class CAEAudioHardware {
-public:
-    CAEAudioHardware();
+
 
 public:
     uint8_t  field_0;
@@ -83,6 +82,8 @@ public:
 
 public:
     static void InjectHooks();
+
+    CAEAudioHardware();
 
     // Return types aren't real, I've just copied the signatures for now
     void GetActualNumberOfHardwareChannels();

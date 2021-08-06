@@ -5,15 +5,12 @@
 #include "Vector.h"
 
 #pragma pack(push, 1)
-class CAEAudioChannel
-{
-public:
-    CAEAudioChannel(IDirectSound* pDirectSound, unsigned short channelId, unsigned int samplesPerSec, unsigned short bitsPerSample);
-    virtual ~CAEAudioChannel();
+class CAEAudioChannel {
+
 
 public:
-    IDirectSound* m_pDirectSound;
-    IDirectSoundBuffer* m_pDirectSoundBuffer;
+    IDirectSound*         m_pDirectSound;
+    IDirectSoundBuffer*   m_pDirectSoundBuffer;
     IDirectSound3DBuffer* m_pDirectSound3DBuffer;
     uint8_t gap10[24];
     uint32_t m_dwFlags;
@@ -39,8 +36,11 @@ public:
     uint8_t pad;
     uint32_t m_dwBufferStatus;
 
-// VTABLE
 public:
+    CAEAudioChannel(IDirectSound* pDirectSound, unsigned short channelId, unsigned int samplesPerSec, unsigned short bitsPerSample);
+    virtual ~CAEAudioChannel();
+
+// VTABLE
     virtual void Service() = 0;
     virtual bool IsSoundPlaying() = 0;
     virtual uint16_t GetPlayTime() = 0;
@@ -49,12 +49,6 @@ public:
     virtual void SynchPlayback() = 0;
     virtual void Stop() = 0;
     virtual void SetFrequencyScalingFactor(float factor);
-
-private:
-    void SetFrequencyScalingFactor_Reversed(float factor);
-
-public:
-    static void InjectHooks();
 
     void SetPosition(CVector* vecPos);
     float GetVolume() const { return m_fVolume; };
@@ -73,6 +67,12 @@ public:
 // Those 2 require DirectSound EAX 4.0 extensions or some alternative to be available in project
     bool SetReverbAndDepth(uint32_t reverb, uint32_t depth);
     void SetNotInRoom(uint8_t type); // 0 - frontend, 1 - world
+
+private:
+    friend void InjectHooksMain();
+    static void InjectHooks();
+
+    void SetFrequencyScalingFactor_Reversed(float factor);
 };
 #pragma pack(pop)
 VALIDATE_SIZE(CAEAudioChannel, 0x60);

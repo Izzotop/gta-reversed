@@ -13,21 +13,20 @@
 class CEntity;
 
 class CAEAudioEntity {
+public:
+    CEntity* m_pEntity;
+    CAESound m_tempSound;
+
+    static int8_t*& m_pAudioEventVolumes;
+
 protected:
     CAEAudioEntity();
     ~CAEAudioEntity() = default;
-public:
-    CEntity *m_pEntity;
-    CAESound m_tempSound;
 
 public:
-// VTABLE
-    virtual void UpdateParameters(CAESound* sound, short curPlayPos) { /* Empty on purpose */ };
+    // VTABLE
+    virtual void UpdateParameters(CAESound* sound, short curPlayPos){/* Empty on purpose */};
 
-public:
-    static int8_t*& m_pAudioEventVolumes;
-
-public:
     static float GetDefaultVolume(eAudioEvents audioEvent) { return static_cast<float>(CAEAudioEntity::m_pAudioEventVolumes[audioEvent]); }
 };
 

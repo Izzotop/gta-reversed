@@ -9,6 +9,7 @@ ov_callbacks CAEVorbisDecoder::staticCallbacks = {
     &CAEVorbisDecoder::TellCallback
 };
 
+// 0x5026b0
 CAEVorbisDecoder::CAEVorbisDecoder(CAEDataStream* dataStream, int userTrack)
 : CAEStreamingDecoder(dataStream)
 , callbacks(staticCallbacks)
@@ -18,32 +19,22 @@ CAEVorbisDecoder::CAEVorbisDecoder(CAEDataStream* dataStream, int userTrack)
 , _dataStreamCopy(dataStream)
 , vorbisInfo(nullptr)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    using Constructor = void(__thiscall *)(CAEVorbisDecoder*, CAEDataStream*, int);
-    ((Constructor) 0x5026b0)(this, dataStream, userTrack);
-#endif
 }
 
+// 0x5023f0
 CAEVorbisDecoder::~CAEVorbisDecoder()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    ((void(__thiscall *)(CAEVorbisDecoder*)) 0x5023f0)(this);
-#else
     if (vorbisFileHandle)
     {
         ov_clear(vorbisFileHandle);
         delete vorbisFileHandle;
         vorbisFileHandle = nullptr;
     }
-#endif
 }
 
+// 0x5024d0
 bool CAEVorbisDecoder::Initialise()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    using InitFunc = bool(__thiscall *)(CAEVorbisDecoder*);
-    return ((InitFunc) 0x5024d0)(this);
-#else
     vorbisFileHandle = new OggVorbis_File();
     if (ov_open_callbacks(dataStream, vorbisFileHandle, nullptr, 0, callbacks) != 0)
         return false;
@@ -63,15 +54,11 @@ bool CAEVorbisDecoder::Initialise()
     }
 
     return true;
-#endif
 }
 
+// 0x502470
 size_t CAEVorbisDecoder::FillBuffer(void *dest, size_t size)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    using ReadFunc = size_t(__thiscall *)(CAEVorbisDecoder*, void*, size_t);
-    return ((ReadFunc) 0x502470)(this, dest, size);
-#else
     size_t readedTotal = 0;
     char *buffer = reinterpret_cast<char *> (dest);
 
@@ -105,14 +92,11 @@ size_t CAEVorbisDecoder::FillBuffer(void *dest, size_t size)
     }
 
     return readedTotal;
-#endif
 }
 
+// 0x502610
 long CAEVorbisDecoder::GetStreamLengthMs()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((long(__thiscall *)(CAEVorbisDecoder*)) 0x502610)(this);
-#else
     if (initialized)
     {
         double length = ov_time_total(vorbisFileHandle, -1);
@@ -120,14 +104,11 @@ long CAEVorbisDecoder::GetStreamLengthMs()
     }
 
     return -1;
-#endif
 }
 
+// 0x502640
 long CAEVorbisDecoder::GetStreamPlayTimeMs()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((long(__thiscall *)(CAEVorbisDecoder*)) 0x502640)(this);
-#else
     if (initialized)
     {
         double length = ov_time_tell(vorbisFileHandle);
@@ -135,69 +116,50 @@ long CAEVorbisDecoder::GetStreamPlayTimeMs()
     }
 
     return -1;
-#endif
 }
 
+// 0x502670
 void CAEVorbisDecoder::SetCursor(unsigned long pos)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    using SeekFunc = void(__thiscall *)(CAEVorbisDecoder*, unsigned long);
-    ((SeekFunc) 0x502670)(this, pos);
-#else
     if (initialized)
         ov_time_seek(vorbisFileHandle, pos * 0.001);
-#endif
 }
 
+// 0x502560
 int CAEVorbisDecoder::GetSampleRate()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((int(__thiscall *)(CAEVorbisDecoder*)) 0x502560)(this);
-#else
     return initialized ? static_cast<int> (vorbisInfo->rate) : -1;
-#endif
 }
 
+// 0x502460
 int CAEVorbisDecoder::GetStreamID()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((int(__thiscall *)(CAEVorbisDecoder*)) 0x502460)(this);
-#else
     return dataStream->m_nTrackId;
-#endif
 }
 
+// 0x502580
 size_t CAEVorbisDecoder::ReadCallback(void *ptr, size_t size, size_t nmemb, void *opaque)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((decltype(ReadCallback) *) 0x502580)(ptr, size, nmemb, opaque);
-#else
     if (opaque == nullptr)
         return 0;
 
     CAEDataStream *dataStream = reinterpret_cast<CAEDataStream *> (opaque);
     return dataStream->FillBuffer(ptr, size * nmemb) / size;
-#endif
 }
 
+// 0x5025d0
 int CAEVorbisDecoder::CloseCallback(void *opaque)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((decltype(CloseCallback) *) 0x5025d0)(opaque);
-#else
     if (opaque == nullptr)
         return -1;
 
     CAEDataStream *dataStream = reinterpret_cast<CAEDataStream *> (opaque);
     return dataStream->Close();
-#endif
 }
 
+// 0x5025b0
 int CAEVorbisDecoder::SeekCallback(void *opaque, ogg_int64_t offset, int whence)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((decltype(SeekCallback) *) 0x5025b0)(opaque, offset, whence);
-#else
     if (opaque == nullptr)
         return -1;
 
@@ -205,49 +167,42 @@ int CAEVorbisDecoder::SeekCallback(void *opaque, ogg_int64_t offset, int whence)
     unsigned long result = dataStream->Seek(static_cast<long> (offset), whence);
 
     return static_cast<int> (result);
-#endif
 }
 
+// 0x5025f0
 long CAEVorbisDecoder::TellCallback(void *opaque)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((decltype(TellCallback) *) 0x5025f0)(opaque);
-#else
     if (opaque == nullptr)
         return -1;
 
     CAEDataStream *dataStream = reinterpret_cast<CAEDataStream *> (opaque);
 
     return static_cast<int> (dataStream->GetCurrentPosition());
-#endif
-}
-
-CAEVorbisDecoder *CAEVorbisDecoder::ctor(CAEDataStream *dataStream, int unknown)
-{
-    this->CAEVorbisDecoder::CAEVorbisDecoder(dataStream, unknown);
-    return this;
-}
-
-void CAEVorbisDecoder::dtor()
-{
-    this->CAEVorbisDecoder::~CAEVorbisDecoder();
 }
 
 void CAEVorbisDecoder::InjectHooks()
 {
-#ifndef USE_DEFAULT_FUNCTIONS
-    HookInstall(0x5023f0, &CAEVorbisDecoder::dtor);
-    HookInstall(0x502460, &CAEVorbisDecoder::GetStreamID);
-    HookInstall(0x502470, &CAEVorbisDecoder::FillBuffer);
-    HookInstall(0x5024d0, &CAEVorbisDecoder::Initialise);
-    HookInstall(0x502560, &CAEVorbisDecoder::GetSampleRate);
-    HookInstall(0x502580, &CAEVorbisDecoder::ReadCallback);
-    HookInstall(0x5025d0, &CAEVorbisDecoder::CloseCallback);
-    HookInstall(0x5025b0, &CAEVorbisDecoder::SeekCallback);
-    HookInstall(0x5025f0, &CAEVorbisDecoder::TellCallback);
-    HookInstall(0x502610, &CAEVorbisDecoder::GetStreamLengthMs);
-    HookInstall(0x502640, &CAEVorbisDecoder::GetStreamPlayTimeMs);
-    HookInstall(0x502670, &CAEVorbisDecoder::SetCursor);
-    HookInstall(0x5026b0, &CAEVorbisDecoder::ctor);
-#endif
+    ReversibleHooks::Install("CAEVorbisDecoder", "CAEVorbisDecoder", 0x5026b0, &CAEVorbisDecoder::ctor);
+    ReversibleHooks::Install("CAEVorbisDecoder", "~CAEVorbisDecoder", 0x5023f0, &CAEVorbisDecoder::dtor);
+    ReversibleHooks::Install("CAEVorbisDecoder", "GetStreamID", 0x502460, &CAEVorbisDecoder::GetStreamID);
+    ReversibleHooks::Install("CAEVorbisDecoder", "FillBuffer", 0x502470, &CAEVorbisDecoder::FillBuffer);
+    ReversibleHooks::Install("CAEVorbisDecoder", "Initialise", 0x5024d0, &CAEVorbisDecoder::Initialise);
+    ReversibleHooks::Install("CAEVorbisDecoder", "GetSampleRate", 0x502560, &CAEVorbisDecoder::GetSampleRate);
+    ReversibleHooks::Install("CAEVorbisDecoder", "ReadCallback", 0x502580, &CAEVorbisDecoder::ReadCallback);
+    ReversibleHooks::Install("CAEVorbisDecoder", "CloseCallback", 0x5025d0, &CAEVorbisDecoder::CloseCallback);
+    ReversibleHooks::Install("CAEVorbisDecoder", "SeekCallback", 0x5025b0, &CAEVorbisDecoder::SeekCallback);
+    ReversibleHooks::Install("CAEVorbisDecoder", "TellCallback", 0x5025f0, &CAEVorbisDecoder::TellCallback);
+    ReversibleHooks::Install("CAEVorbisDecoder", "GetStreamLengthMs", 0x502610, &CAEVorbisDecoder::GetStreamLengthMs);
+    ReversibleHooks::Install("CAEVorbisDecoder", "GetStreamPlayTimeMs", 0x502640, &CAEVorbisDecoder::GetStreamPlayTimeMs);
+    ReversibleHooks::Install("CAEVorbisDecoder", "SetCursor", 0x502670, &CAEVorbisDecoder::SetCursor);
+}
+
+CAEVorbisDecoder* CAEVorbisDecoder::ctor(CAEDataStream* dataStream, int unknown) {
+    this->CAEVorbisDecoder::CAEVorbisDecoder(dataStream, unknown);
+    return this;
+}
+
+CAEVorbisDecoder* CAEVorbisDecoder::dtor() {
+    this->CAEVorbisDecoder::~CAEVorbisDecoder();
+    return this;
 }

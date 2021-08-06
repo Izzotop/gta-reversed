@@ -24,12 +24,8 @@ VALIDATE_SIZE(tSmoothFadeEntry, 0x20);
 
 class CAESmoothFadeThread {
 public:
-    CAESmoothFadeThread();
-
-public:
     static constexpr int NUM_SMOOTHFADE_ENTRIES = 64;
 
-public:
     HANDLE m_threadHandle;
     DWORD m_dwThreadId;
     tSmoothFadeEntry m_aEntries[NUM_SMOOTHFADE_ENTRIES];
@@ -46,6 +42,8 @@ public:
 public:
     static void InjectHooks();
 
+    CAESmoothFadeThread();
+
     void Initialise();
     void InitialiseRequestSlots();
     void Start();
@@ -56,7 +54,6 @@ public:
     bool RequestFade(IDirectSoundBuffer* buffer, float fTargetVolume, short fadeTime, bool bStopBufferAfterFade);
     void SetBufferVolume(IDirectSoundBuffer* buffer, float volume);
 
-public:
     static DWORD WINAPI SmoothFadeProc(void* pSmoothFade);
 };
 VALIDATE_SIZE(CAESmoothFadeThread, 0x81C);

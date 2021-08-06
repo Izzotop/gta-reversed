@@ -9,21 +9,6 @@
 #include "AEStreamingDecoder.h"
 
 class CAEWMADecoder : public CAEStreamingDecoder {
-public:
-    CAEWMADecoder(CAEDataStream* dataStream);
-    ~CAEWMADecoder() override;
-
-    bool Initialise() override;
-    size_t FillBuffer(void* dest, size_t size) override;
-    long GetStreamLengthMs() override;
-    long GetStreamPlayTimeMs() override;
-    void SetCursor(unsigned long pos) override;
-    int GetSampleRate() override;
-    int GetStreamID() override;
-
-    static bool InitLibrary();
-    static void Shutdown();
-
 private:
     static constexpr size_t TEMPBUFSIZE = 131072;
 
@@ -44,13 +29,27 @@ private:
     static HRESULT(__stdcall*& WMCreateSyncReader)(IUnknown*, DWORD, IWMSyncReader**);
     static HMODULE& wmvCoreModule;
 
+public:
+    CAEWMADecoder(CAEDataStream* dataStream);
+    ~CAEWMADecoder() override;
+
+    bool Initialise() override;
+    size_t FillBuffer(void* dest, size_t size) override;
+    long GetStreamLengthMs() override;
+    long GetStreamPlayTimeMs() override;
+    void SetCursor(unsigned long pos) override;
+    int GetSampleRate() override;
+    int GetStreamID() override;
+
+    static bool InitLibrary();
+    static void Shutdown();
+
 private:
-    friend void InjectHooksMain(void);
+    friend void InjectHooksMain();
+    static void InjectHooks();
 
     CAEWMADecoder* ctor(CAEDataStream* dataStream);
-    void dtor();
-
-    static void InjectHooks();
+    CAEWMADecoder* dtor();
 };
 
 VALIDATE_SIZE(CAEWMADecoder, 0x20038);

@@ -251,20 +251,15 @@ int CAEWMADecoder::GetSampleRate()
 #endif
 }
 
+// 0x502750
 int CAEWMADecoder::GetStreamID()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((int(__thiscall *)(CAEWMADecoder*)) 0x502750)(this);
-#else
     return dataStream->m_nTrackId;
-#endif
 }
 
+// 0x502b80
 bool CAEWMADecoder::InitLibrary()
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    return ((bool(*)()) 0x502b80)();
-#else
     if (CAEWMADecoder::WMCreateSyncReader != nullptr)
         return true;
 
@@ -293,7 +288,6 @@ bool CAEWMADecoder::InitLibrary()
     }
 
     return false;
-#endif
 }
 
 void CAEWMADecoder::Shutdown()
@@ -307,12 +301,9 @@ void CAEWMADecoder::Shutdown()
     }
 }
 
+// 0x502990
 HRESULT CAEWMADecoder::SelectStreamIndex(IWMProfile *profile)
 {
-#ifdef USE_DEFAULT_FUNCTIONS
-    using SelectStreamFunc = HRESULT(__thiscall *)(CAEWMADecoder*, IWMProfile*);
-    return ((SelectStreamFunc) 0x502990)(this, profile);
-#else
     if (profile == nullptr)
         return E_INVALIDARG;
 
@@ -358,33 +349,29 @@ HRESULT CAEWMADecoder::SelectStreamIndex(IWMProfile *profile)
         return E_INVALIDARG;
 
     return S_OK;
-#endif
-}
-
-CAEWMADecoder *CAEWMADecoder::ctor(CAEDataStream *dataStream)
-{
-    this->CAEWMADecoder::CAEWMADecoder(dataStream);
-    return this;
-}
-
-void CAEWMADecoder::dtor()
-{
-    this->CAEWMADecoder::~CAEWMADecoder();
 }
 
 void CAEWMADecoder::InjectHooks()
 {
-#ifndef USE_DEFAULT_FUNCTIONS
-    HookInstall(0x502720, &CAEWMADecoder::ctor);
-    HookInstall(0x502760, &CAEWMADecoder::dtor);
-    HookInstall(0x502c60, &CAEWMADecoder::Initialise);
-    HookInstall(0x5027d0, &CAEWMADecoder::FillBuffer);
-    HookInstall(0x502ad0, &CAEWMADecoder::GetStreamLengthMs);
-    HookInstall(0x502af0, &CAEWMADecoder::GetStreamPlayTimeMs);
-    HookInstall(0x502b50, &CAEWMADecoder::SetCursor);
-    HookInstall(0x502ab0, &CAEWMADecoder::GetSampleRate);
-    HookInstall(0x502750, &CAEWMADecoder::GetStreamID);
-    HookInstall(0x502990, &CAEWMADecoder::SelectStreamIndex);
-    HookInstall(0x502b80, &CAEWMADecoder::InitLibrary);
-#endif
+    ReversibleHooks::Install("CAEWMADecoder", "CAEWMADecoder", 0x502720, &CAEWMADecoder::ctor);
+    ReversibleHooks::Install("CAEWMADecoder", "~CAEWMADecoder", 0x502760, &CAEWMADecoder::dtor);
+    ReversibleHooks::Install("CAEWMADecoder", "Initialise", 0x502c60, &CAEWMADecoder::Initialise);
+    ReversibleHooks::Install("CAEWMADecoder", "FillBuffer", 0x5027d0, &CAEWMADecoder::FillBuffer);
+    ReversibleHooks::Install("CAEWMADecoder", "GetStreamLengthMs", 0x502ad0, &CAEWMADecoder::GetStreamLengthMs);
+    ReversibleHooks::Install("CAEWMADecoder", "GetStreamPlayTimeMs", 0x502af0, &CAEWMADecoder::GetStreamPlayTimeMs);
+    ReversibleHooks::Install("CAEWMADecoder", "SetCursor", 0x502b50, &CAEWMADecoder::SetCursor);
+    ReversibleHooks::Install("CAEWMADecoder", "GetSampleRate", 0x502ab0, &CAEWMADecoder::GetSampleRate);
+    ReversibleHooks::Install("CAEWMADecoder", "GetStreamID", 0x502750, &CAEWMADecoder::GetStreamID);
+    ReversibleHooks::Install("CAEWMADecoder", "SelectStreamIndex", 0x502990, &CAEWMADecoder::SelectStreamIndex);
+    ReversibleHooks::Install("CAEWMADecoder", "InitLibrary", 0x502b80, &CAEWMADecoder::InitLibrary);
+}
+
+CAEWMADecoder* CAEWMADecoder::ctor(CAEDataStream* dataStream) {
+    this->CAEWMADecoder::CAEWMADecoder(dataStream);
+    return this;
+}
+
+CAEWMADecoder* CAEWMADecoder::dtor() {
+    this->CAEWMADecoder::~CAEWMADecoder();
+    return this;
 }

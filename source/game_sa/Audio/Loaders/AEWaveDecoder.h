@@ -8,14 +8,13 @@
 
 #include "AEStreamingDecoder.h"
 
-class CAEWaveDecoder: public CAEStreamingDecoder
-{
+class CAEWaveDecoder : public CAEStreamingDecoder {
 public:
-    CAEWaveDecoder(CAEDataStream *dataStream);
+    CAEWaveDecoder(CAEDataStream* dataStream);
     virtual ~CAEWaveDecoder();
 
     bool Initialise() override;
-    size_t FillBuffer(void *dest, size_t size) override;
+    size_t FillBuffer(void* dest, size_t size) override;
     long GetStreamLengthMs() override;
     long GetStreamPlayTimeMs() override;
     void SetCursor(unsigned long pos) override;
@@ -24,26 +23,24 @@ public:
 
 private:
     bool initialized;
-    CAEDataStream *_dataStreamCopy;
+    CAEDataStream* _dataStreamCopy;
 
     // RIFF header
-    union
-    {
-        struct
-        {
+    union {
+        struct {
             char riffFourCC[4];
-            std::uint32_t fileSize;
+            uint32_t fileSize;
             char waveFourCC[4];
             char fmtFourCC[4];
-            std::uint32_t fmtChunkSize;
-            std::uint16_t formatTag;
-            std::uint16_t channelCount;
-            std::uint32_t sampleRate;
-            std::uint32_t bytesPerSecond;
-            std::uint16_t blockAlign;
-            std::uint16_t bitsPerSample;
-            std::uint32_t dataPosition;
-            std::uint32_t dataChunkSize;
+            uint32_t fmtChunkSize;
+            uint16_t formatTag;
+            uint16_t channelCount;
+            uint32_t sampleRate;
+            uint32_t bytesPerSecond;
+            uint16_t blockAlign;
+            uint16_t bitsPerSample;
+            uint32_t dataPosition;
+            uint32_t dataChunkSize;
         };
         char fileHeaderArray[44];
     };
@@ -51,7 +48,7 @@ private:
 private:
     friend void InjectHooksMain(void);
 
-    CAEWaveDecoder *ctor(CAEDataStream *dataStream);
+    CAEWaveDecoder* ctor(CAEDataStream* dataStream);
     void dtor();
 
     static void InjectHooks();

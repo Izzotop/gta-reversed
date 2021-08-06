@@ -4,12 +4,7 @@
 
 struct CAEStreamingDecoder;
 
-class CAEStreamingChannel : public CAEAudioChannel
-{
-public:
-    CAEStreamingChannel(IDirectSound* pSound, unsigned short channelId);
-    ~CAEStreamingChannel() override;
-
+class CAEStreamingChannel : public CAEAudioChannel {
 public:
     uint8_t field_60;
     uint8_t field_61;
@@ -34,6 +29,9 @@ public:
 
 public:
     static void InjectHooks();
+
+    CAEStreamingChannel(IDirectSound* pSound, unsigned short channelId);
+    ~CAEStreamingChannel() override;
 
 // VTABLE
     void Service() override;

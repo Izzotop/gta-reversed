@@ -11,10 +11,9 @@
 class CAEWeatherAudioEntity : public CAEAudioEntity {
 public:
     unsigned char m_nThunderFrequencyVariationCounter;
-private:
     char _pad7D[3];
-public:
 
+public:
 
 };
 
