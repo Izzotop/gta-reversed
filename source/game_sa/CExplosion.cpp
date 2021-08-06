@@ -16,7 +16,7 @@ void CExplosion::InjectHooks()
     ReversibleHooks::Install("CExplosion", "RemoveAllExplosionsInArea", 0x7369E0, &CExplosion::RemoveAllExplosionsInArea);
     ReversibleHooks::Install("CExplosion", "Initialise", 0x736A40, &CExplosion::Initialise);
     ReversibleHooks::Install("CExplosion", "AddExplosion", 0x736A50, &CExplosion::AddExplosion);
-    //ReversibleHooks::Install("CExplosion", "Update", 0x737620, &CExplosion::Update);
+    ReversibleHooks::Install("CExplosion", "Update", 0x737620, &CExplosion::Update);
 }
 
 
@@ -403,6 +403,118 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
 
 void CExplosion::Update()
 {
-    return plugin::Call<0x737620>();
+    for (auto& exp : aExplosions) {
+        if (!exp.m_nActiveCounter)
+            continue;
+        if (exp.m_nParticlesExpireTime) {
+            if (CTimer::m_snTimeInMilliseconds > (uint32_t)exp.m_nParticlesExpireTime) {
+                exp.m_nParticlesExpireTime = 0;
+                if (exp.m_fVisibleDistance != 0.0f) {
+                    CWorld::TriggerExplosion(
+                        exp.m_vecPosition,
+                        exp.m_fRadius,
+                        exp.m_fVisibleDistance,
+                        exp.m_pVictim,
+                        exp.m_pCreator,
+                        DoesNeedToVehProcessBombTimer(exp.m_nType),
+                        exp.m_fDamagePercentage
+                    );            
+                }
+            }
+        } else {
+            exp.m_fRadius += CTimer::ms_fTimeStep * exp.m_fPropagationRate;
+            switch (exp.m_nType) {
+            case eExplosionType::EXPLOSION_GRENADE:
+            case eExplosionType::EXPLOSION_ROCKET:
+            case eExplosionType::EXPLOSION_WEAK_ROCKET:
+            case eExplosionType::EXPLOSION_AIRCRAFT:
+            case eExplosionType::EXPLOSION_MINE:
+            case eExplosionType::EXPLOSION_OBJECT: {
+                if (CTimer::m_FrameCounter % 2) {
+                    CPointLights::AddLight(
+                        ePointLightType::PLTYPE_POINTLIGHT, exp.m_vecPosition, {}, 20.0f, 1.0f, 1.0f, 0.5f, 0, false, nullptr);
+                }
+                if (exp.m_nType == eExplosionType::EXPLOSION_AIRCRAFT && CGeneral::GetRandomNumberInRange(0, 100) < 5) {
+                    if (exp.m_pVictim) {
+                        CExplosion::AddExplosion(
+                            exp.m_pVictim,
+                            exp.m_pCreator,
+                            eExplosionType::EXPLOSION_ROCKET,
+                            exp.m_pVictim->GetPosition(),
+                            0,
+                            true,
+                            -1.0f,
+                            false
+                        );
+                    }
+                }
+                break;
+            }
+            case eExplosionType::EXPLOSION_MOLOTOV: {
+                const CVector pos = exp.m_vecPosition;
+                CWorld::SetPedsOnFire(pos.x, pos.y, pos.z, 6.0f, exp.m_pCreator);
+                CWorld::SetWorldOnFire(pos.x, pos.y, pos.z, 6.0f, exp.m_pCreator);
+                CWorld::SetCarsOnFire(pos.x, pos.y, pos.z, 0.1f, exp.m_pCreator);
+
+                CEntity* pHitEntity;
+                CColPoint colPoint;
+                if (exp.m_nActiveCounter < 10 && exp.m_nActiveCounter == 1) {
+                    const bool bGroundHit = CWorld::ProcessVerticalLine(
+                        pos, -1000.0f, colPoint, pHitEntity, true, false, false, false, true, false, nullptr);
+                    exp.m_fGroundZ = bGroundHit ? colPoint.m_vecPoint.z : pos.z;
+                }
+                break;
+            }
+            case eExplosionType::EXPLOSION_CAR:
+            case eExplosionType::EXPLOSION_QUICK_CAR:
+            case eExplosionType::EXPLOSION_BOAT: {
+                if (exp.m_pVictim && rand() % 32 == 0) {
+                    CVector rndOffset = {
+                        CGeneral::GetRandomNumberInRange(-0.5f, 0.5f),
+                        CGeneral::GetRandomNumberInRange(-0.5f, 0.5f),
+                        0.0f
+                    };
+                    rndOffset.Normalise();
+                    rndOffset *= CGeneral::GetRandomNumberInRange(1.0f, 2.0f);
+                    CCreepingFire::TryToStartFireAtCoors(exp.m_vecPosition + rndOffset, 0, true, false, 10.0f);
+                }
+                if (CTimer::m_FrameCounter % 2) {
+                    CPointLights::AddLight(
+                        ePointLightType::PLTYPE_POINTLIGHT, exp.m_vecPosition, {}, 15.0f, 1.0f, 0.7f, 0.5f, 0, true, nullptr);
+                }
+                break;
+            }
+            }
+
+            if ((uint32_t)exp.m_nExpireTime - CTimer::m_snTimeInMilliseconds <= 0)
+                exp.m_nActiveCounter = 0;
+            else 
+                exp.m_nActiveCounter++;
+            exp.m_nFuelTimer -= (int32_t)(CTimer::ms_fTimeStep / 50.0f * -1000.0f);
+
+            if (exp.m_nFuelTimer <= 200) {
+                switch (exp.m_nType) {
+                case eExplosionType::EXPLOSION_CAR:
+                case eExplosionType::EXPLOSION_QUICK_CAR:
+                case eExplosionType::EXPLOSION_BOAT:
+                case eExplosionType::EXPLOSION_AIRCRAFT: {
+                    const float fFuelTimerProgress = exp.m_nFuelTimer / 1000.0f;
+                    for (auto i = 0; i < 3; i++) {
+                        const float fOffsetDistance = exp.m_fFuelOffsetDistance[i];
+                        if (fOffsetDistance > 0.0f) {
+                            const float fFuelSpeed = exp.m_fFuelSpeed[i];
+                            const CVector& vecDir = exp.m_vecFuelDirection[i];
+
+                            CVector fxPos = exp.m_vecPosition + vecDir * (fOffsetDistance + fFuelTimerProgress * fFuelSpeed);
+                            if (auto pFx = g_fxMan.CreateFxSystem("explosion_fuel_car", &fxPos, nullptr, false))
+                                pFx->PlayAndKill();
+                        }
+                    }
+                    break;
+                }
+                }
+            }
+        }
+    }
 }
 

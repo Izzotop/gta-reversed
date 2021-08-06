@@ -67,6 +67,7 @@ public:
             m_pCreator->CleanUpOldReference(&m_pCreator);
         if (pNewCreator)
             pNewCreator->RegisterReference(&m_pCreator);
+        m_pCreator = pNewCreator;
     }
 
     void SetVictim(CEntity* pNewVictim) noexcept {
@@ -74,6 +75,7 @@ public:
             m_pVictim->CleanUpOldReference(&m_pVictim);
         if (pNewVictim)
             pNewVictim->RegisterReference(&m_pVictim);
+        m_pVictim = pNewVictim;
     }
 };
 VALIDATE_SIZE(CExplosion, 0x7C);
