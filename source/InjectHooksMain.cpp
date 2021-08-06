@@ -38,6 +38,7 @@ void InjectHooksMain()
 {
     // WaitForDebugger();
 
+    CExplosion::InjectHooks();
     CDebug::InjectHooks();
     InjectCommonHooks();
     CGame::InjectHooks();
