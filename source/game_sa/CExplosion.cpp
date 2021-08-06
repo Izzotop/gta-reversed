@@ -130,19 +130,26 @@ bool DoesNeedToVehProcessBombTimer(eExplosionType type) {
     return false;
 };
 
-void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionType type, CVector pos, uint lifetime, uchar usesSound, float cameraShake, uchar isVisible)
+void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionType type, CVector pos, uint lifetime, uchar usesSound, float cameraShake, uchar bInvisible)
 {
+    if (FindPlayerPed() == pCreator) {
+        auto& info = CWorld::GetFocusedPlayerInfo();
+        info.m_nHavocCaused += 5;
+        info.m_fCurrentChaseValue += 7.0f;
+    }
+
     if (auto pExp = GetFree()) {
         pExp->m_vecPosition = pos;
         pExp->m_nType = type;
         pExp->m_fRadius = 1.0f;
         pExp->m_fVisibleDistance = 0.0f;
         pExp->m_fGroundZ = 0.0f;
-        pExp->m_fDamagePercentage = 0.0f;
+        pExp->m_fDamagePercentage = 1.0f;
         pExp->m_nActiveCounter = 1;
         pExp->_pad = 1;
         pExp->m_bMakeSound = usesSound;
         pExp->m_nFuelTimer = 0;
+
         pExp->SetCreator(pCreator);
         pExp->SetVictim(pVictim);
 
@@ -197,7 +204,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
             }
         };
 
-        if (isVisible) {
+        if (bInvisible) {
             pExp->m_fRadius = 0.0f;
             pExp->m_fVisibleDistance = 0.0f;
         }
@@ -205,7 +212,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
         bool bNoFire = false;
         switch (type) {
         case eExplosionType::EXPLOSION_GRENADE: {
-            if (!isVisible) {
+            if (!bInvisible) {
                 pExp->m_fRadius = 9.0f;
                 pExp->m_fVisibleDistance = 300.0f;
             }
@@ -219,7 +226,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
             break;
         }
         case eExplosionType::EXPLOSION_MOLOTOV: {
-            if (!isVisible) {
+            if (!bInvisible) {
                 pExp->m_fRadius = 6.0f;
             }
             pExp->m_nExpireTime = (float)(CTimer::m_snTimeInMilliseconds + lifetime + 3000);
@@ -250,7 +257,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
         }
         case eExplosionType::EXPLOSION_ROCKET:
         case eExplosionType::EXPLOSION_WEAK_ROCKET: {
-            if (!isVisible) {
+            if (!bInvisible) {
                 pExp->m_fRadius = 10.0f;
                 pExp->m_fVisibleDistance = 300.0f;
             }
@@ -265,7 +272,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
         }
         case eExplosionType::EXPLOSION_CAR:
         case eExplosionType::EXPLOSION_QUICK_CAR: {
-            if (!isVisible) {
+            if (!bInvisible) {
                 pExp->m_fRadius = 9.0f;
                 pExp->m_fVisibleDistance = 300.0f;
             }
@@ -280,7 +287,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
         }
         case eExplosionType::EXPLOSION_BOAT:
         case eExplosionType::EXPLOSION_AIRCRAFT: {
-            if (!isVisible) {
+            if (!bInvisible) {
                 pExp->m_fRadius = 25.0f;
                 pExp->m_fVisibleDistance = 600.0f;
             }
@@ -290,7 +297,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
             CreateAndPlayFxWithSound("explosion_large");
         }
         case eExplosionType::EXPLOSION_MINE: {
-            if (!isVisible) {
+            if (!bInvisible) {
                 pExp->m_fRadius = 10.0f;
                 pExp->m_fVisibleDistance = 150.0f;
             }
@@ -302,7 +309,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
             break;
         }
         case eExplosionType::EXPLOSION_TANK_FIRE: {
-            if (!isVisible) {
+            if (!bInvisible) {
                 pExp->m_fRadius = 10.0f;
                 pExp->m_fVisibleDistance = 150.0f;
             }
@@ -313,7 +320,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
             break;
         }
         case eExplosionType::EXPLOSION_SMALL: {
-            if (!isVisible) {
+            if (!bInvisible) {
                 pExp->m_fRadius = 3.0f;
                 pExp->m_fVisibleDistance = 90.0f;
             }
@@ -324,7 +331,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
             break;
         }
         case eExplosionType::EXPLOSION_RC_VEHICLE: {
-            if (!isVisible) {
+            if (!bInvisible) {
                 pExp->m_fRadius = 3.0f;
                 pExp->m_fVisibleDistance = 90.0f;
             }
@@ -335,6 +342,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
             break;
         }
         }
+
         if (!bNoFire) {
             switch (type) {
             case eExplosionType::EXPLOSION_MOLOTOV:
@@ -358,7 +366,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
                                 0.8f,
                                 0,
                                 pExp->m_pCreator,
-                                CGeneral::GetRandomNumberInRange(5600.0f, 12600.0f) * 0.4f,
+                                (uint32_t)(CGeneral::GetRandomNumberInRange(5600.0f, 12600.0f) * 0.4f),
                                 3,
                                 1
                             );
@@ -374,8 +382,10 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
 
         if (pVictim)
             g_InterestingEvents.Add(eEventType::EVENT_ATTRACTOR, pVictim);
+
         CShadows::AddPermanentShadow(
             eShadowType::SHADOW_DEFAULT, gpShadowHeliTex, &pos, 8.0f, 0.0f, 0.0f, -8.0f, 200, 0, 0, 0, 10.0f, 30000, 1.0f);
+
         if (pExp->m_fVisibleDistance != 0.0f && !pExp->m_nParticlesExpireTime) {
             CWorld::TriggerExplosion(
                 pos,
@@ -387,6 +397,7 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
                 pExp->m_fDamagePercentage
             );
         }
+
         if (type == eExplosionType::EXPLOSION_MOLOTOV) {
             TheCamera.CamShake(cameraShake == -1.0f ? 0.2f : cameraShake, pos.x, pos.y, pos.z);
         } else {
