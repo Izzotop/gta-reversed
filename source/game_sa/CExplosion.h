@@ -44,8 +44,9 @@ public:
 
     static CAEExplosionAudioEntity& m_ExplosionAudioEntity;
     static CExplosion(&aExplosions)[16];
-
+public:
     static void InjectHooks();
+
     static void ClearAllExplosions();
     static void Shutdown();
     static int8_t GetExplosionActiveCounter(uchar id);
