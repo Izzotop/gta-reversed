@@ -55,27 +55,27 @@ void CExplosion::Shutdown()
     /* Empty */
 }
 
-int8_t CExplosion::GetExplosionActiveCounter(uchar id)
+int8_t CExplosion::GetExplosionActiveCounter(uint8_t id)
 {
     return aExplosions[id]._pad;
 }
 
-void CExplosion::ResetExplosionActiveCounter(uchar id)
+void CExplosion::ResetExplosionActiveCounter(uint8_t id)
 {
     aExplosions[id]._pad = 0;
 }
 
-bool CExplosion::DoesExplosionMakeSound(uchar id)
+bool CExplosion::DoesExplosionMakeSound(uint8_t id)
 {
     return aExplosions[id].m_bMakeSound;
 }
 
-int32_t CExplosion::GetExplosionType(uchar id)
+int32_t CExplosion::GetExplosionType(uint8_t id)
 {
     return aExplosions[id].m_nType;
 }
 
-const CVector& CExplosion::GetExplosionPosition(uchar id)
+const CVector& CExplosion::GetExplosionPosition(uint8_t id)
 {
     return aExplosions[id].m_vecPosition;
 }
@@ -130,7 +130,7 @@ bool DoesNeedToVehProcessBombTimer(eExplosionType type) {
     return false;
 };
 
-void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionType type, CVector pos, uint lifetime, uchar usesSound, float cameraShake, uchar bInvisible)
+void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionType type, CVector pos, uint32_t lifetime, uint8_t usesSound, float cameraShake, uint8_t bInvisible)
 {
     if (FindPlayerPed() == pCreator) {
         auto& info = CWorld::GetFocusedPlayerInfo();

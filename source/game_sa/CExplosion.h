@@ -49,15 +49,15 @@ public:
 
     static void ClearAllExplosions();
     static void Shutdown();
-    static int8_t GetExplosionActiveCounter(uchar id);
-    static void ResetExplosionActiveCounter(uchar id);
-    static bool DoesExplosionMakeSound(uchar id);
-    static int32_t GetExplosionType(uchar id);
-    static const CVector& GetExplosionPosition(uchar id);
+    static int8_t GetExplosionActiveCounter(uint8_t id);
+    static void ResetExplosionActiveCounter(uint8_t id);
+    static bool DoesExplosionMakeSound(uint8_t id);
+    static int32_t GetExplosionType(uint8_t id);
+    static const CVector& GetExplosionPosition(uint8_t id);
     static bool TestForExplosionInArea(eExplosionType type, float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
     static void RemoveAllExplosionsInArea(CVector pos, float r);
     static void Initialise();
-    static void AddExplosion(CEntity* pNewVictim, CEntity* pNewCreator, eExplosionType type, CVector pos, uint lifetimea, uchar usesSound, float cameraShake, uchar isVisible);
+    static void AddExplosion(CEntity* pNewVictim, CEntity* pNewCreator, eExplosionType type, CVector pos, uint32_t lifetimea, uint8_t usesSound, float cameraShake, uint8_t isVisible);
     static void Update();
 
     static CExplosion* GetFree(); // NOTSA
