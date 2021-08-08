@@ -62,9 +62,10 @@ public:
     static void AddExplosion(CEntity* pNewVictim, CEntity* pNewCreator, eExplosionType type, CVector pos, uint32_t lifetimea, uint8_t usesSound, float cameraShake, uint8_t isVisible);
     static void Update();
 
-    static CExplosion* GetFree(); // NOTSA
-
+private:
     // NOTSA functions:
+    static CExplosion* GetFree();
+
     void SetCreator(CEntity* pNewCreator) noexcept {
         if (m_pCreator)
             m_pCreator->CleanUpOldReference(&m_pCreator);
