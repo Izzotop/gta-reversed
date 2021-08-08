@@ -1,6 +1,5 @@
 #pragma once
 
-#include "PluginBase.h"
 #include "CVector.h"
 #include "CAEExplosionAudioEntity.h"
 
@@ -31,7 +30,7 @@ public:
     float          m_nExpireTime{};
     float          m_fDamagePercentage{};
     uint8_t        m_nActiveCounter{};
-    byte           _pad{};
+    // char           _pad;
     bool           m_bMakeSound{true};
     float          m_nCreatedTime{};
     int32_t        m_nParticlesExpireTime{};
@@ -44,19 +43,22 @@ public:
 
     static CAEExplosionAudioEntity& m_ExplosionAudioEntity;
     static CExplosion(&aExplosions)[16];
+
 public:
     static void InjectHooks();
 
-    static void ClearAllExplosions();
+    static void Initialise();
     static void Shutdown();
+    static void ClearAllExplosions();
+
     static int8_t GetExplosionActiveCounter(uint8_t id);
     static void ResetExplosionActiveCounter(uint8_t id);
     static bool DoesExplosionMakeSound(uint8_t id);
     static int32_t GetExplosionType(uint8_t id);
     static const CVector& GetExplosionPosition(uint8_t id);
+
     static bool TestForExplosionInArea(eExplosionType type, float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
     static void RemoveAllExplosionsInArea(CVector pos, float r);
-    static void Initialise();
     static void AddExplosion(CEntity* pNewVictim, CEntity* pNewCreator, eExplosionType type, CVector pos, uint32_t lifetimea, uint8_t usesSound, float cameraShake, uint8_t isVisible);
     static void Update();
 

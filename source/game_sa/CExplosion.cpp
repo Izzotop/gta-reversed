@@ -57,12 +57,12 @@ void CExplosion::Shutdown()
 
 int8_t CExplosion::GetExplosionActiveCounter(uint8_t id)
 {
-    return aExplosions[id]._pad;
+    return aExplosions[id].m_nActiveCounter;
 }
 
 void CExplosion::ResetExplosionActiveCounter(uint8_t id)
 {
-    aExplosions[id]._pad = 0;
+    aExplosions[id].m_nActiveCounter = 0;
 }
 
 bool CExplosion::DoesExplosionMakeSound(uint8_t id)
@@ -148,7 +148,6 @@ void CExplosion::AddExplosion(CEntity * pVictim, CEntity * pCreator, eExplosionT
     pExp->m_fGroundZ = 0.0f;
     pExp->m_fDamagePercentage = 1.0f;
     pExp->m_nActiveCounter = 1;
-    pExp->_pad = 1;
     pExp->m_bMakeSound = usesSound;
     pExp->m_nFuelTimer = 0;
 
