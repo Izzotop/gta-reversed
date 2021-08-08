@@ -19,6 +19,15 @@ void CExplosion::InjectHooks()
     ReversibleHooks::Install("CExplosion", "Update", 0x737620, &CExplosion::Update);
 }
 
+void CExplosion::Initialise()
+{
+    ClearAllExplosions();
+}
+
+void CExplosion::Shutdown()
+{
+    /* Empty */
+}
 
 void CExplosion::ClearAllExplosions()
 {
@@ -48,11 +57,6 @@ void CExplosion::ClearAllExplosions()
         }
         */
     }
-}
-
-void CExplosion::Shutdown()
-{
-    /* Empty */
 }
 
 int8_t CExplosion::GetExplosionActiveCounter(uint8_t id)
@@ -103,11 +107,6 @@ void CExplosion::RemoveAllExplosionsInArea(CVector pos, float r)
             exp.m_nActiveCounter = 0;
         }
     }
-}
-
-void CExplosion::Initialise()
-{
-    ClearAllExplosions();
 }
 
 CExplosion* CExplosion::GetFree() {
@@ -419,6 +418,7 @@ void CExplosion::Update()
     for (auto& exp : aExplosions) {
         if (!exp.m_nActiveCounter)
             continue;
+
         if (exp.m_nParticlesExpireTime) {
             if (CTimer::m_snTimeInMilliseconds > (uint32_t)exp.m_nParticlesExpireTime) {
                 exp.m_nParticlesExpireTime = 0;

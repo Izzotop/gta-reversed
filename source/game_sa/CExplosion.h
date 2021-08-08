@@ -68,16 +68,20 @@ public:
     void SetCreator(CEntity* pNewCreator) noexcept {
         if (m_pCreator)
             m_pCreator->CleanUpOldReference(&m_pCreator);
+
         if (pNewCreator)
             pNewCreator->RegisterReference(&m_pCreator);
+
         m_pCreator = pNewCreator;
     }
 
     void SetVictim(CEntity* pNewVictim) noexcept {
         if (m_pVictim)
             m_pVictim->CleanUpOldReference(&m_pVictim);
+
         if (pNewVictim)
             pNewVictim->RegisterReference(&m_pVictim);
+
         m_pVictim = pNewVictim;
     }
 };
