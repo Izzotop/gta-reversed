@@ -260,6 +260,10 @@ public:
     //! unused
     static void UpdateForAnimViewer();
     static bool WeAreTryingToPhaseVehicleOut(int modelId);
+
+public:
+    // NOTSA functions
+    inline static eStreamingLoadState GetLoadState(eModelID modelId) { return ms_aInfoForModel[modelId].m_nLoadState; }
 };
 
 extern RwStream& gRwStream;
