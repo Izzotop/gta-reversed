@@ -263,7 +263,10 @@ public:
 
 public:
     // NOTSA functions
-    inline static eStreamingLoadState GetLoadState(eModelID modelId) { return ms_aInfoForModel[modelId].m_nLoadState; }
+    static eStreamingLoadState GetLoadState(eModelID modelId) {
+        assert(modelId >= 0);
+        return ms_aInfoForModel[modelId].m_nLoadState;
+    }
 };
 
 extern RwStream& gRwStream;
