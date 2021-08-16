@@ -777,7 +777,7 @@ void CFileLoader::LoadLevel(const char* filename) {
         RwTexDictionarySetCurrent(currentTXD);
     }
 
-    char buf[64];
+#define LineBeingsWith(str) (strncmp(line, str, sizeof(str)) == 0)
 
     bool bFirstIplLoaded = false;
     FILESTREAM file = CFileMgr::OpenFile(filename, "r");
@@ -785,51 +785,62 @@ void CFileLoader::LoadLevel(const char* filename) {
         if (*line == '#')
             continue;
 
-        if (strncmp("EXIT", line, 4) == 0)
+        if (LineBeingsWith("EXIT"))
             break;
 
-        if (strncmp("TEXDICTION", line, 10) == 0) {
-            strcpy(buf, line + 11);
-            LoadingScreenLoadingFile(buf);
-            RwTexDictionary* txd = LoadTexDictionary(buf);
+        if (LineBeingsWith("TEXDICTION")) {
+            char txdFilePath[64];
+            strcpy(txdFilePath, line + sizeof("TEXDICTION")); // NOTE: Possible buffer overflow
+
+            // Game loading screen stuff
+            {
+                const char* sep = strrchr(txdFilePath, '\\');
+                const char* txdFileName = sep ? sep + 1 : txdFilePath;
+                sprintf(gString, "Loading %s", txdFileName);
+                LoadingScreen("Loading the Game", gString);
+            }
+
+            RwTexDictionary* txd = LoadTexDictionary(txdFilePath);
             AddTexDictionaries(currentTXD, txd);
             RwTexDictionaryDestroy(txd);
-        } else if (strncmp("IMG", line, 3) == 0) {
-            const char* fname = line + 4; // skips "IMG "
-            if (strcmp(fname, "MODELS\\GTA_INT.IMG") != 0) {
+
+        } else if (LineBeingsWith("IMG")) {
+            const char* fname = line + sizeof("IMG");
+            if (strcmp(fname, "MODELS\\GTA_INT.IMG") != 0)
                 CStreaming::AddImageToList(fname, true);
-            }
-        } else if (strncmp("COLFILE", line, 7) == 0)
+        }
+        else if (LineBeingsWith("COLFILE"))
         {
-            const char* fname = line + 10; // skips "COLFILE 0 "
+            const char* fname = line + sizeof("COLFILE 0");
             LoadingScreenLoadingFile(fname);
             LoadCollisionFile(fname, 0);
         }
-        else if (strncmp("MODELFILE", line, 9) == 0)
+        else if (LineBeingsWith("MODELFILE"))
         {
-            const char* fname = line + 10;
+            const char* fname = line + sizeof("MODELFILE");
             LoadingScreenLoadingFile(fname);
             LoadAtomicFile(fname);
         }
-        else if (strncmp("HIERFILE", line, 8) == 0)
+        else if (LineBeingsWith("HIERFILE"))
         {
-            const char* fname = line + 9;
+            const char* fname = line + sizeof("HIERFILE");
             LoadingScreenLoadingFile(fname);
             LoadClumpFile(fname);
         }
-        else if (strncmp("IDE", line, 3) == 0)
+        else if (LineBeingsWith("IDE"))
         {
-            const char* fname = line + 4; // skips "IDE "
+            const char* fname = line + sizeof("IDE");
             LoadingScreenLoadingFile(fname);
             LoadObjectTypes(fname);
         }
-        else if (strncmp("IPL", line, 3) == 0)
+        else if (LineBeingsWith("IPL"))
         {
             if (!bFirstIplLoaded) {
                 MatchAllModelStrings();
             }
 
-            strcpy(buf, line + 4); // skips "IPL "
+            char iplFileName[60]{};
+            strcpy(iplFileName, line + sizeof("IPL")); // NOTE: Possible buffer overflow
 
             if (!bFirstIplLoaded) {
                 LoadingScreenLoadingFile("Object Data");
@@ -853,8 +864,9 @@ void CFileLoader::LoadLevel(const char* filename) {
 
                 bFirstIplLoaded = true;
             }
-            LoadingScreenLoadingFile(buf);
-            LoadScene(buf);
+
+            LoadingScreenLoadingFile(iplFileName);
+            LoadScene(iplFileName);
         }
         else
         {
@@ -862,6 +874,7 @@ void CFileLoader::LoadLevel(const char* filename) {
         }
     }
 
+#undef LineBeingsWith
     CFileMgr::CloseFile(file);
     RwTexDictionarySetCurrent(currentTXD);
     if (bFirstIplLoaded) {
