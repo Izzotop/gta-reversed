@@ -663,11 +663,11 @@ void CFileLoader::LoadCullZone(const char* line) {
 // IPL -> ENEX
 // 0x5B8030
 void CFileLoader::LoadEntryExit(const char* line) {
-    float   enter_x, enter_y, enter_z;
+    CVector enterPosn;
     float   enter_rotation;
     float   x_radius, y_radius;
-    int32_t c8; // constant 8
-    float   exit_x, exit_y, exit_z;
+    float   c8; // constant 8
+    CVector exitPosn;
     float   exitRotation;
     int32_t interiorId;
     int32_t markerType;
@@ -682,10 +682,12 @@ void CFileLoader::LoadEntryExit(const char* line) {
     sscanf(
         line,
         "%f %f %f %f %f %f %f %f %f %f %f %d %d %s %d %d %d %d",
-        &enter_x, &enter_y, &enter_z, &enter_rotation,
+        &enterPosn.x, &enterPosn.y, &enterPosn.z,
+        &enter_rotation,
         &x_radius, &y_radius,
         &c8,
-        &exit_x, &exit_y, &exit_z, &exitRotation,
+        &exitPosn.x, &exitPosn.y, &exitPosn.z,
+        &exitRotation,
         &interiorId,
         &markerType,
         interiorName,
@@ -698,11 +700,13 @@ void CFileLoader::LoadEntryExit(const char* line) {
         *name = 0;
         name = &interiorName[1];
     }
-    int id = CEntryExitManager::AddOne(
-        enter_x, enter_y, enter_z, enter_rotation,
+    int32_t id = CEntryExitManager::AddOne(
+        enterPosn.x, enterPosn.y, enterPosn.z,
+        enter_rotation,
         x_radius, y_radius,
         c8,
-        exit_x, exit_y, exit_z, exitRotation,
+        exitPosn.x, exitPosn.y, exitPosn.z,
+        exitRotation,
         interiorId,
         markerType,
         skyColor,
@@ -747,7 +751,7 @@ void CFileLoader::LoadGarage(const char* line) {
     float    frontX, frontY;
     uint32_t door;
     int32_t  type;
-    char*    name;
+    char     name[8];
 
     auto iNumRead = sscanf(
         line,
@@ -1022,6 +1026,54 @@ void CFileLoader::LoadTimeCyclesModifier(const char* line) {
     CBox box;
     box.Set(vec1, vec2);
     return CTimeCycle::AddOne(box, farClip, extraColor, extraColorIntensity, falloffDist, lodDistMult);
+}
+
+// 0x5B3DE0
+int CFileLoader::LoadTimeObject(const char* line) {
+    int32_t modelId;
+    char    modelName[24];
+    char    texName[24];
+    float   drawDistance[3];
+    int32_t flags;
+    int32_t timeOn;
+    int32_t timeOff;
+
+    int numValuesRead = sscanf(line, "%d %s %s %f %d %d %d", &modelId, modelName, texName, &drawDistance[0], &flags, &timeOn, &timeOff);
+
+    if (numValuesRead != 7 || drawDistance[0] < 4.0) {
+        int32_t numObjs;
+
+        if (sscanf(line, "%d %s %s %d", &modelId, modelName, texName, &numObjs) != 4)
+            return -1;
+
+        switch (numObjs) {
+        case 1:
+            sscanf(line, "%d %s %s %d %f %d %d %d", &modelId, modelName, texName, &numObjs, &drawDistance[0], &flags, &timeOn, &timeOff);
+            break;
+        case 2:
+            sscanf(line, "%d %s %s %d %f %f %d %d %d", &modelId, modelName, texName, &numObjs, &drawDistance[0], &drawDistance[1], &flags, &timeOn, &timeOff);
+            break;
+        case 3:
+            sscanf(line, "%d %s %s %d %f %f %f %d %d %d", &modelId, modelName, texName, &numObjs, &drawDistance[0], &drawDistance[1], &drawDistance[2], &flags, &timeOn, &timeOff);
+            break;
+        }
+    }
+
+    CTimeModelInfo* timeModel = CModelInfo::AddTimeModel(modelId);
+    timeModel->m_fDrawDistance = drawDistance[0];
+    timeModel->SetModelName(modelName);
+    timeModel->SetTexDictionary(texName);
+
+    CTimeInfo* timeInfo = timeModel->GetTimeInfo();
+    timeInfo->SetTimes(timeOn, timeOff);
+
+    SetAtomicModelInfoFlags(timeModel, flags);
+
+    CTimeInfo* otherTimeInfo = timeInfo->FindOtherTimeModel(modelName);
+    if (otherTimeInfo)
+        otherTimeInfo->SetOtherTimeModel(modelId);
+
+    return modelId;
 }
 
 // 0x5B6F30
