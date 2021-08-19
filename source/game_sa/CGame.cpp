@@ -176,11 +176,11 @@ bool CGame::Init1(char const *datFile) {
 
 // 0x5BA1A0
 void CGame::Init2(char const* datFile) {
-    LoadingScreen((char*)"Loading the Game", (char*)"Add Particles");
+    LoadingScreen("Loading the Game", "Add Particles");
     CTheZones::PostZoneCreation();
     CEntryExitManager::PostEntryExitsCreation();
 
-    LoadingScreen((char*)"Loading the Game", (char*)"Setup paths");
+    LoadingScreen("Loading the Game", "Setup paths");
     CPathFind::PreparePathData();
 
     for (int i = 0; i < CWorld::TOTAL_PLAYERS; ++i) {
@@ -189,7 +189,7 @@ void CGame::Init2(char const* datFile) {
     }
 
     TestModelIndices();
-    LoadingScreen((char*)"Loading the Game", (char*)"Setup water");
+    LoadingScreen("Loading the Game", "Setup water");
     CClothes::Init();
     CWaterLevel::WaterLevelInitialise();
     CDraw::SetFOV(120.0f);
@@ -199,23 +199,23 @@ void CGame::Init2(char const* datFile) {
         return;
     }
 
-    LoadingScreen((char*)"Loading the Game", (char*)"Setup streaming");
+    LoadingScreen("Loading the Game", "Setup streaming");
     CStreaming::LoadInitialVehicles();
     CStreaming::LoadInitialPeds();
     CStreaming::LoadAllRequestedModels(false);
 
-    LoadingScreen((char*)"Loading the Game", (char*)"Load animations");
+    LoadingScreen("Loading the Game", "Load animations");
     CAnimManager::LoadAnimFiles();
 
-    LoadingScreen((char*)"Loading the Game", (char*)"Setup streaming");
+    LoadingScreen("Loading the Game", "Setup streaming");
     CStreaming::LoadInitialWeapons();
     CStreaming::LoadAllRequestedModels(false);
 
-    LoadingScreen((char*)"Loading the Game", (char*)"Ped Init");
+    LoadingScreen("Loading the Game", "Ped Init");
     CPed::Initialise();
     CRenderer::Init();
 
-    LoadingScreen((char*)"Loading the Game", (char*)"Setup game variables");
+    LoadingScreen("Loading the Game", "Setup game variables");
     CRadar::Initialise();
     CRadar::LoadTextures();
 
@@ -237,11 +237,11 @@ void CGame::Init2(char const* datFile) {
     CGlass::Init();
     CGarages::Init_AfterRestart();
 
-    LoadingScreen((char*)"Loading the Game", (char*)"Load scripts");
+    LoadingScreen("Loading the Game", "Load scripts");
     CTheScripts::Init(datFile);
     CGangs::Initialise();
 
-    LoadingScreen((char*)"Loading the Game", (char*)"Setup game variables");
+    LoadingScreen("Loading the Game", "Setup game variables");
     CClock::Initialise(1000);
     CHeli::InitHelis();
     CCranes::InitCranes();
@@ -285,7 +285,7 @@ void CGame::Initialise(char const *datFile) {
     CColAccel::EndCache();
     CGame::Init2(datFile);
     CStencilShadows::Init();
-    LoadingScreen((char *) "Loading the Game", (char *) "Start script");
+    LoadingScreen("Loading the Game", "Start script");
     CTheScripts::StartTestScript();
     CTheScripts::Process();
     TheCamera.Process();

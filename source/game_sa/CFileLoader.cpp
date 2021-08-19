@@ -40,7 +40,7 @@ void CFileLoader::InjectHooks() {
     // ReversibleHooks::Install("CFileLoader", "LoadCollisionModelVer4", 0x537AE0, &CFileLoader::LoadCollisionModelVer4);
     ReversibleHooks::Install("CFileLoader", "LoadCullZone", 0x5B4B40, &CFileLoader::LoadCullZone);
     ReversibleHooks::Install("CFileLoader", "LoadEntryExit", 0x5B8030, &CFileLoader::LoadEntryExit);
-    // ReversibleHooks::Install("CFileLoader", "LoadGarage", 0x5B4530, &CFileLoader::LoadGarage);
+    ReversibleHooks::Install("CFileLoader", "LoadGarage", 0x5B4530, &CFileLoader::LoadGarage);
     // ReversibleHooks::Install("CFileLoader", "LoadLevel", 0x5B9030, &CFileLoader::LoadLevel);
     ReversibleHooks::Install("CFileLoader", "LoadObject", 0x5B3C60, &CFileLoader::LoadObject);
     ReversibleHooks::Install("CFileLoader", "LoadObjectInstance_inst", 0x538090, static_cast<CEntity* (*)(CFileObjectInstance*, const char*)>(&CFileLoader::LoadObjectInstance));
@@ -716,6 +716,7 @@ void CFileLoader::LoadEntryExit(const char* line) {
     );
 
     CEntryExit* entryExit = CEntryExitManager::mp_poolEntryExits->GetAt(id);
+    // todo:
     if ((markerType & 0x1) != 0)
         entryExit->m_nFlags.bUnknownInterior = true;
 
@@ -744,9 +745,6 @@ void CFileLoader::LoadEntryExit(const char* line) {
 // IPL -> GRGE
 // 0x5B4530
 void CFileLoader::LoadGarage(const char* line) {
-    return plugin::Call<0x5B4530, const char*>(line);
-
-    // fails
     CVector  vec1, vec2;
     float    frontX, frontY;
     uint32_t door;
@@ -775,6 +773,9 @@ void CFileLoader::LoadGarage(const char* line) {
 
 // 0x5B9030
 void CFileLoader::LoadLevel(const char* filename) {
+    return plugin::Call<0x5B9030, const char*>(filename);
+
+    // fails
     RwTexDictionary* currentTXD = RwTexDictionaryGetCurrent();
     if (!currentTXD) {
         currentTXD = RwTexDictionaryCreate();
@@ -891,23 +892,21 @@ void CFileLoader::LoadLevel(const char* filename) {
 
 // IPL -> OCCL
 // 0x5B4C80
-void CFileLoader::LoadOcclusionVolume(const char* line, const char* filename) {
-    float   directMidX, directMidY;
-    float   bottomZ;
-    float   widthX, widthY;
-    float   height;
-    float   rotX, rotY, rotZ = 0.0f;
-    int32_t flags = 0;
+void CFileLoader::LoadOcclusionVolume(char const* line, char const* filename)
+{
+    float fRotY = 0.0F, fRotX = 0.0F;
+    uint32_t nFlags = 0;
+    float fCenterX, fCenterY, fBottomZ, fWidth, fLength, fHeight, fRotZ;
 
-    sscanf(line, "%f %f %f %f %f %f %f %f %f %d ", &directMidX, &directMidY, &bottomZ, &widthX, &widthY, &height, &rotX, &rotY, &rotZ, &flags);
+    sscanf(line, "%f %f %f %f %f %f %f %f %f %d ", &fCenterX, &fCenterY, &fBottomZ, &fWidth, &fLength, &fHeight, &fRotZ, &fRotY, &fRotX, &nFlags);
+    auto fCenterZ = fHeight * 0.5F + fBottomZ;
+    auto strLen = strlen(filename);
 
-    bool isInterior = false;
-    uint32_t len = strlen(filename);
-    if (filename[len - 7] == 'i' && filename[len - 6] == 'n' && filename[len - 5] == 't')
-        isInterior = true;
+    bool bIsInterior = false;
+    if (filename[strLen - 7] == 'i' && filename[strLen - 6] == 'n' && filename[strLen - 5] == 't')
+        bIsInterior = true;
 
-    bottomZ = height * 0.5f + bottomZ;
-    COcclusion::AddOne(directMidX, directMidY, bottomZ, widthX, widthY, height, rotX, rotY, rotZ, flags, isInterior);
+    COcclusion::AddOne(fCenterX, fCenterY, fCenterZ, fWidth, fLength, fHeight, fRotZ, fRotY, fRotX, nFlags, bIsInterior);
 }
 
 // 0x5B41C0
